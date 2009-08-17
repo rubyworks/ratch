@@ -1,0 +1,11 @@
+---
+
+document:
+  rdoc "README.rdoc", "lib", :output=>"doc/rdoc"
+
+clean:
+  touch "doc/rdoc"
+
+reset:
+  rm_r "doc/rdoc"
+

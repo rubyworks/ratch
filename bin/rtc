@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+
+#$0 = ARGV.shift
+
+require 'ratch/script'
+
+procedure = Hash.new{ |h,k| h[k] = [] }
+
+scripts = Dir['task/*.rtc']
+scripts.each do |s|
+  data = YAML.load(File.new(s))
+  data.each do |phase, action|
+    procedure[phase] << action
+  end
+end
+
+pipeline = {}
+pipeline[:main]  = [:generate, :analyize, :document, :validate, :package, :release, :publish, :announce]
+pipeline[:clean] = [:clean, :reset]
+pipeline[:site]  = [:generate, :analyize, :document, :publish]
+pipeline[:attn]  = [:generate, :announce]
+
+#til = ARGV.find{ |e| /(^[-]|=)/ !~ e }
+#unless til
+#  abort "supply phase"
+#end
+#til = til.downcase
+
+script = Ratch::Script.new
+script.cli.usage["<phase>", "phase or pipe:phase to run"]
+script.cli.parse!
+
+if script.cli.help?
+  puts script.cli.usage.help
+  exit
+end
+
+til = script.cli.arguments[0]
+
+if til.index(':')
+  pipe, til = *til.split(':')
+elsif til == 'clean' or til == 'reset'
+  pipe = :clean
+else
+  pipe = :main
+end
+
+pipeline[pipe.to_sym].each do |phase|
+  puts "#{phase} ---------------------"
+  procedure[phase.to_s].each do |action|
+    script.instance_eval(action)
+    #eval action
+  end
+  break if phase == til.to_sym
+end
+
+#script = Ratch::Script.new
+#script.instance_eval(File.read($0))
+

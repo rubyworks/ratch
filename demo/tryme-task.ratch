@@ -1,0 +1,12 @@
+#!/usr/bin/env ratch
+
+task :hello do
+  puts "Hello"
+end
+
+task :world => [:hello] do
+  puts "World"
+end
+
+run :world
+

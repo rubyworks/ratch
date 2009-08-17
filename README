@@ -1,0 +1,87 @@
+= Ratch -- Ruby-based Batch Scripts
+
+  http://ratch.rubyforge.org
+
+
+== Introduction
+
+Ratch is Ruby-based DSL for building batch scripts. It's intent
+is to ease the burdone a batch script writers, by supplementing
+the standard ruby environamet to be more condusive the needs
+of batch scripting.
+
+In addition to using Ratch to write stand-alone batch scripts,
+it makes a very powerful library for other applications that
+require batch-like functionality. In general any program that
+access the file system extensively could benifit from it's use.
+
+
+
+== Installation
+
+Standard installation procedure apply.
+
+  $ gem install ratch
+
+or manually
+
+  $ tar -xzf ratch-1.0.0.tgz
+  $ cd ratch-1.0.0
+  $ setup-rb all
+
+
+
+== Usage
+
+To use for your own scripts, simply add a bang line.
+
+  #!/usr/bin/env ratch
+
+On Windows, of course, you will want to associate the .ratch extension
+name to the ratch executable instead.
+
+To use Ratch as a library, simply require 'ratch', and subclass.
+
+  require 'ratch'
+
+  class MyClass < Ratch::Service
+
+
+  end
+
+Ratch also provides a delegated service which automatically supplies
+method_missing() to delegate to the given *context*. This is called
+a Ratch Plugin.
+
+  class MyClass < Ratch::Plugin
+
+  end
+
+  MyClass.new(context)
+
+For details on all the functionality Ratch provides, please refer to
+the API documentation.
+
+
+
+== Development
+
+You can use gitweb to browse the 'ratch' repository.
+
+To pull the 'ratch' repository anonymously, use:
+
+        git clone git://rubyforge.org/ratch.git
+        
+
+Developers: You can push to the 'ratch' repository using:
+
+        gitosis@rubyforge.org:ratch.git
+        
+
+
+== Copying
+
+Copyright (c) 2007, 2008 Tiger Ops & Thomas Sawyer
+
+Ratch is licensed under the terms of the MIT license.
+

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet href="layout.xsl" type="text/xsl" ?>
+
+<content>
+
+<h1 class="top">Introduction</h1>
+
+<p>Ratch stands for <u>R</u>uby-based b<u>atch</u> files. Specifically Ratch is a Domain 
+Specific Language for writing batch scripts in Ruby. ... Ratch is being used as the 
+bases of Reap services, making it much more convient to build project scripts
+than plain Ruby provides.</p>
+
+<p>Use Ratch as you would Ruby when writing a script. Instead of the ruby shebang line
+use a ratch shebang line.</p>
+
+<pre>
+  #!/usr/bin/env ratch
+</pre>
+
+<p>For details on all that Ratch provides, see the RDocs.</p>
+
+<p>Ratch is still Beta sofware. The DSL will continue to evolve for the foreseeable future.</p>
+
+
+<h1>Installation</h1>
+
+<p>Via RubyGems:</p>
+
+<pre>
+  $ gem install ratch
+</pre>
+
+<p>To install from source you will need <a href="http://setup.rubyforge.org">Ruby Setup</a>.</p>
+
+<pre>
+  $ tar -xzf ratch-x.y.z.tar.gz
+  $ cd ratch-x.y.z
+  $ setup.rb all
+</pre>
+
+<p>Microsoft Windows users, you'll have to use '@ruby task/setup@' instead.</p>
+
+
+<h1>Development</h1>
+
+<p>You can use gitweb to browse the 'ratch' repository.</p>
+
+<p>To pull the 'ratch' repository anonymously, use:</p>
+
+<pre>
+  git clone git://rubyforge.org/ratch.git
+</pre>  
+
+<p>Developers: You can push to the 'ratch' repository using:</p>
+
+<pre>
+  gitosis@rubyforge.org:ratch.git
+</pre>    
+
+<h1>Copying</h1>
+
+<p>Ratch -- Ruby-based Batch Files</p>
+
+<p>Copyright &#x00A9; 2007 TigerOps (Sponsered by &#x3c8;&#x3c4; Corp.)</p>
+
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see 
+<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+
+</content>

@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+$0 = ARGV.shift
+
+require 'ratch/script'
+
+script = Ratch::Script.new
+
+script.instance_eval(File.read($0))
+

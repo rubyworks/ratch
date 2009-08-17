@@ -1,0 +1,150 @@
+
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 11pt;
+  font-family: times;
+  text-align: center;
+  color: #333333;
+}
+
+img {
+  border: none;
+}
+
+h1 {
+  margin-top: 25px;
+  font-size: 2.5em;
+}
+
+h1.top {
+  margin-top: 0px;
+}
+
+h2 {
+  margin-top: 25px;
+}
+
+p {
+  font-size: 1em;
+  line-height: 16pt;
+  text-align: justify;
+}
+
+pre {
+  padding: 5px 10px 20px 10px;
+  font-size: 0.9em;
+  background-color: #FFDDDD;
+  background-color: black;
+  color: pink;
+  font-weight: bold;
+}
+
+a { text-decoration: none; color: #CC0000; }
+a:hover { text-decoration: underline; }
+
+pre.script { background-color: #DDFFDD; color: black; }
+
+.container {
+  /* border: 1px solid #bbbbbb; */
+  margin: 5px auto;
+  width: 720px;
+  padding: 10px;
+  border: 1px solid pink;
+}
+
+.content {
+  padding: 20px 10px;
+  background: white;
+  text-align: left;
+}
+
+.banner {
+  background: url(../images/abstract.jpg) no-repeat white;
+  margin: 0;
+  padding: 45px 30px 60px 30px;
+  font-weight: bold;
+  color: white;
+  text-align: left;
+}
+
+.title1 {
+  padding: 0px;
+  font: bold 64pt sans-serif;
+  color: white;
+  letter-spacing: 8pt;
+}
+
+.title2 {
+  padding: 0 10px;
+  font-size: 12pt;
+  font-family: sans-serif;
+  color: pink;
+  letter-spacing: 3px;
+}
+
+.menu {
+  width: 720px;
+  margin: 0 auto;
+  margin-top: 20px;
+  font-size: 1.0em;
+  font-weight: bold;
+  text-align: right;
+  color: #CC1133;
+}
+
+.menu a {
+  color: red;
+  text-decoration: none;
+  padding: 5px;
+}
+
+.menu a:hover {
+  color: pink;
+  text-decoration: underline;
+}
+
+.ad {
+  background: white;
+  padding-top: 10px;
+}
+
+.date {
+  float:right; color:gray; margin: 0;
+}
+
+.copyright {
+  border-top: 1px solid gray;
+  text-align: left;
+  color: red;
+  margin: 0 auto;
+  font-size: 8pt;
+  font-weight: normal;
+  font-family: sans-serif;
+  padding: 10px;
+}
+
+.copyright a {
+  color: red;
+}
+
+.important {
+  color: red;
+}
+
+.rev {
+  font-size: 10pt;
+  padding-left: 15px;
+}
+
+p.top {
+  font-weight: bold;
+}
+
+#tigerops {
+  float: left;
+  width: 230px;
+  height: 1540px;
+  border: none;
+}
+

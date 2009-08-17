@@ -1,0 +1,10 @@
+package:
+  box "gem", :output=>'pkg'
+  box "tar", :output=>'pkg'
+  #box "zip", :output=>'pkg'
+
+clean:
+  rm_r "pkg/*.gem"
+  rm_r "pkg/*.tar.gz"
+  rm_r "pkg/*.zip
+

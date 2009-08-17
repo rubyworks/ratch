@@ -1,0 +1,25 @@
+stage :document
+
+  rdoc  :output => 'site/rdoc'
+  ridoc :output => 'doc/ri'
+  stats
+  notes
+
+stage :validate
+
+  respect "test/*"
+
+stage :package
+
+  box tar
+  box gem
+
+stage :release
+
+  rubyforge.release
+
+stage :promote
+
+  rubyforge.announce
+  # email ruby-talk@ruby-lang.org
+
