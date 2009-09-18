@@ -17,7 +17,7 @@ require 'folio'
 #require 'facets/openhash'
 #require 'facets/argvector'
 
-require 'plugins/rdoc'
+#require 'plugins/rdoc'
 
 
 module Ratch
@@ -52,6 +52,10 @@ module Ratch
 
     #
     def load_plugins
+      $LOAD_PATH.each do |path|
+        plugins = Dir[File.join(path, 'ratchets/*.rb')]
+        plugins.each{ ||  require(
+      end
       Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
         instance_eval(File.read(file))
       end
@@ -211,7 +215,7 @@ module Ratch
 
     # Load configuration data from a file.
     # Results are cached and and empty Hash is
-    # returned if the file is not found. 
+    # returned if the file is not found.
     #
     # Since they are YAML files, they can optionally
     # end with '.yaml' or '.yml'.

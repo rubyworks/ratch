@@ -62,4 +62,3 @@ module Ratch
   end
 
 end
-
