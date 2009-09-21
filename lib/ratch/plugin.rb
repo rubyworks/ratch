@@ -6,7 +6,7 @@ module Ratch
   #
   # The plugin acts a base class for ecapsulating batch routines.
   # This helps to keep the main batch context free of the clutter
-  # of private supporting methods.
+  # of supporting methods.
   #
   # Plugins are tightly coupled to the batch context,
   # which allows them to call on the context easily.
@@ -18,7 +18,7 @@ module Ratch
   # Unless the tight coupling of a plugin is required, use the
   # loose coupling of a Service class instead.
   #
-  # The context must be a subclass of Ratch::DSL.
+  # The context must be an instance of a Ratch::Script.
   #
   class Plugin
 
@@ -34,11 +34,12 @@ module Ratch
     def initialize(context, options=nil)
       @context = context
 
-      raise TypeError, "context must be a subclass of Ratch::DSL" unless context.is_a?(Ratch::DSL)
+      raise TypeError, "context must be a subclass of Ratch::Script" unless context.is_a?(Ratch::Script)
 
       initialize_defaults
 
       options ||= {}
+
       options.each do |k, v|
         send("#{k}=", v) if respond_to?("#{k}=") && !v.nil?
       end

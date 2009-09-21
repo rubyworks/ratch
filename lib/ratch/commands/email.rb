@@ -1,6 +1,6 @@
 module Ratch
 
-  class Script
+  class Shell
 
     # Email function to easily send out an email.
     #
@@ -20,6 +20,7 @@ module Ratch
     #     file         File that contains message.
     #
     def email(options)
+      options[:file] = localize(options[:file]) if options[:file]
       emailer = Emailer.new(options.rekey)
       success = emailer.email
       if Exception === success

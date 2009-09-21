@@ -10,10 +10,7 @@ require 'ratch/core_ext'
 require 'ratch/shell'
 require 'ratch/io'
 require 'ratch/cli'
-require 'ratch/task'
-
-#require 'ratch/emailer'
-#require 'ratch/index'
+#require 'ratch/task'  # TODO: really?
 
 module Ratch
 
@@ -59,7 +56,7 @@ module Ratch
 
     private
 
-    # This is used for subclasses.
+    # This can be used by subclasses.
     def initialize_defaults
     end
 
