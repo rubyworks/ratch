@@ -1,14 +1,10 @@
-require 'ratch/dsl'
+require 'ratch/script'
 
 module Ratch
 
   # = Service
-  #
-  # In particular this means creating module for RunModes and FileUtils
-  # which uses it, as these are the primary couplings between the batch
-  # context and the services that are shared by all.
 
-  class Service < DSL
+  class Service < Script
 
     private
 

@@ -1,11 +1,35 @@
-begin
-  require 'facets/net/smtp_tls'
-rescue LoadError
-  require 'net/smtp'
-end
-
-
 module Ratch
+
+  class Script
+
+    # Email function to easily send out an email.
+    #
+    # Settings:
+    #
+    #     subject      Subject of email message.
+    #     from         Message FROM address [email].
+    #     to           Email address to send announcemnt.
+    #     server       Email server to route message.
+    #     port         Email server's port.
+    #     domain       Email server's domain name.
+    #     account      Email account name if needed.
+    #     password     Password for login..
+    #     login        Login type: plain, cram_md5 or login [plain].
+    #     secure       Uses TLS security, true or false? [false]
+    #     message      Mesage to send -or-
+    #     file         File that contains message.
+    #
+    def email(options)
+      emailer = Emailer.new(options.rekey)
+      success = emailer.email
+      if Exception === success
+        puts "Email failed: #{success.message}."
+      else
+        puts "Email sent successfully to #{success.join(';')}."
+      end
+    end
+
+  end
 
   # Emailer class makes it easy send out an email.
   #
@@ -67,6 +91,8 @@ module Ratch
 
     #
     def initialize(options={})
+      require_smtp
+
       options = options.rekey
 
       if not options[:server]
@@ -169,6 +195,15 @@ module Ratch
       #end
 
       return inp
+    end
+
+    #
+    def require_smtp
+      begin
+        require 'facets/net/smtp_tls'
+      rescue LoadError
+        require 'net/smtp'
+      end
     end
 
   end

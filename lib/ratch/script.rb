@@ -1,24 +1,19 @@
 require 'yaml'
 require 'rbconfig'  # replace with facets/rbsystem?
-require 'fileutils'
-
-require 'ratch/core_ext'
-#require 'ratch/index'
-require 'ratch/io'
-require 'ratch/commandline'
-require 'ratch/emailer'
-
-require 'ratch/task'
 
 require 'facets/platform'
-
-require 'folio'
-
 #require 'facets/openhash'
 #require 'facets/argvector'
 
-#require 'plugins/rdoc'
+require 'ratch/core_ext'
 
+require 'ratch/shell'
+require 'ratch/io'
+require 'ratch/cli'
+require 'ratch/task'
+
+#require 'ratch/emailer'
+#require 'ratch/index'
 
 module Ratch
 
@@ -32,190 +27,74 @@ module Ratch
   # How rare.
   #
   class Script < Module
+    #include Taskable
+    #include Taskable::Dsl
+
+    # FIXME: Use facets/plugin_manager
+    #def load_plugins
+    #  $LOAD_PATH.each do |path|
+    #    plugins = Dir[File.join(path, 'ratchets/*.rb')]
+    #    plugins.each{ |file|  require(file) }
+    #  end
+    #end
 
     #
-    def initialize(ioc={})
-      include Taskable
-      include Taskable::Dsl
-
+    def initialize(options={})
       extend self
 
-      @cli = ioc[:cli] || Commandline.new
+      initialize_defaults
+
+      options.each do |k, v|
+        send("#{k}=", v) if respond_to?("#{k}=")
+      end
+
+      @cli = ioc[:cli] || CLI.new
+
       @io  = ioc[:io]  || IO.new(@cli)
 
-      mode = {
-        :dryrun  => @cli.dryrun?,
-        :verbose => @cli.verbose?
-        #:noop => ?
-      }
+      path = options[:path] || Dir.pwd
 
-      @fio = ioc[:fio] || Folio::Shell.new(mode)
-
-      load_plugins
+      @shell = Shell.new(path, :noop => @cli.noop?, :verbose => @cli.verbose?, :quiet => @cli.quiet?)
     end
 
-    #
-    def load_plugins
-      $LOAD_PATH.each do |path|
-        plugins = Dir[File.join(path, 'ratchets/*.rb')]
-        plugins.each{ ||  require(
-      end
-      Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
-        instance_eval(File.read(file))
-      end
+    private
+
+    # This is used for subclasses.
+    def initialize_defaults
     end
+
+    # The #cli method provides delagated access to commandline
+    # arguments and options via a Ratch::CLI interface.
+    attr :cli
 
     # Delagate input/output routines to Ratch::IO object.
     attr :io
 
-    # Delagate file operations to Folio::Shell.
-    attr :fio
-
-    # Delagate commandline settings to Ratch::Commandline object.
-    attr :cli
-
-    alias_method :commandline, :cli
-
-    # DEPRECATE!
-    alias_method :command, :cli
-
-    #
-    #def commandline
-    #  #@commandline ||= ArgVector.new(ARGV)
-    #  @commandline
-    #end
+    # Delagate file operations to Shell.
+    attr :shell
 
     def force?   ; cli.force?   ; end
-    def trace?   ; cli.trace?   ; end
     def debug?   ; cli.debug?   ; end
-    def pretend? ; cli.pretend? ; end
-    def dryrun?  ; cli.pretend? ; end
     def quiet?   ; cli.quiet?   ; end
+    def noop?    ; cli.noop?    ; end
     def verbose? ; cli.verbose? ; end
+
+    def trace?   ; cli.debug && cli.verbose? ; end
+    def dryrun?  ; cli.noop? && cli.verbose? ; end
 
     # Current platform.
     def current_platform
       Platform.local.to_s
     end
 
-    # Shell runner.
-    def shell(cmd)
-      if dryrun?
-        puts cmd
-        true
-      else
-        puts "--> system call: #{cmd}" if trace?
-        if quiet?
-          silently{ system(cmd) }
-        else
-          system(cmd)
-        end
-      end
-    end
-
-    # TODO: DEPRECATE #sh in favor of #shell (?)
-    alias_method :sh, :shell
-
-    # Delegate to Filio::Shell.
+    # Delegate to Shell.
     def method_missing(s, *a, &b)
-      if @fio.respond_to?(s)
-        @fio.__send__(s, *a, &b)
+      if @shell.respond_to?(s)
+        @shell.__send__(s, *a, &b)
       else
         super
       end
     end
-
-    # Provides convenient starting points in the file system.
-    #
-    #   root   #=> #<Pathname:/>
-    #   home   #=> #<Pathname:/home/jimmy>
-    #   work   #=> #<Pathname:/home/jimmy/Documents>
-    #
-    # TODO: Replace these with Folio when Folio's is as capable.
-
-    # Current root path.
-    def root(*args)
-      Pathname['/', *args]
-    end
-
-    # Current home path.
-    def home(*args)
-      Pathname['~', *args].expand_path
-    end
-
-    # Current working path.
-    def work(*args)
-      Pathname['.', *args]
-    end
-
-    alias_method :pwd, :work
-
-    # Bonus FileUtils features.
-    #def cd(*a,&b)
-    #  puts "cd #{a}" if dryrun? or trace?
-    #  fileutils.chdir(*a,&b)
-    #end
-
-    # Read file.
-    def file_read(path)
-      File.read(path)
-    end
-
-    # Write file.
-    def file_write(path, text)
-      if dryrun?
-        puts "write #{path}"
-      else
-        File.open(path, 'w'){ |f| f << text }
-      end
-    end
-
-    # Assert that a path exists.
-    def exists?(path)
-      paths = Dir.glob(path)
-      paths.not_empty?
-    end
-    alias_method :exist?, :exists? #; module_function :exist?
-    alias_method :path?,  :exists? #; module_function :path?
-
-    # Is a given path a regular file? If +path+ is a glob
-    # then checks to see if all matches are refular files.
-    def file?(path)
-      paths = Dir.glob(path)
-      paths.not_empty? && paths.all?{ |f| FileTest.file?(f) }
-    end
-
-    # Is a given path a directory? If +path+ is a glob
-    # checks to see if all matches are directories.
-    def dir?(path)
-      paths = Dir.glob(path)
-      paths.not_empty? && paths.all?{ |f| FileTest.directory?(f) }
-    end
-    alias_method :directory?, :dir? #; module_function :directory?
-
-
-    # TODO: Deprecate these?
-
-    # Assert that a path exists.
-    def exists!(*paths)
-      abort "path not found #{path}" unless paths.any?{|path| exists?(path)}
-    end
-    alias_method :exist!, :exists! #; module_function :exist!
-    alias_method :path!,  :exists! #; module_function :path!
-
-    # Assert that a given path is a file.
-    def file!(*paths)
-      abort "file not found #{path}" unless paths.any?{|path| file?(path)}
-    end
-
-    # Assert that a given path is a directory.
-    def dir!(*paths)
-      paths.each do |path|
-        abort "Directory not found: '#{path}'." unless  dir?(path)
-      end
-    end
-    alias_method :directory!, :dir! #; module_function :directory!
-
 
     # Load configuration data from a file.
     # Results are cached and and empty Hash is
@@ -282,33 +161,12 @@ module Ratch
       name
     end
 
-    # Email function to easily send out an email.
-    #
-    # Settings:
-    #
-    #     subject      Subject of email message.
-    #     from         Message FROM address [email].
-    #     to           Email address to send announcemnt.
-    #     server       Email server to route message.
-    #     port         Email server's port.
-    #     domain       Email server's domain name.
-    #     account      Email account name if needed.
-    #     password     Password for login..
-    #     login        Login type: plain, cram_md5 or login [plain].
-    #     secure       Uses TLS security, true or false? [false]
-    #     message      Mesage to send -or-
-    #     file         File that contains message.
-    #
-    def email(options)
-      emailer = Emailer.new(options.rekey)
-      success = emailer.email
-      if Exception === success
-        puts "Email failed: #{success.message}."
-      else
-        puts "Email sent successfully to #{success.join(';')}."
-      end
-    end
 
+    #
+    def report(message)
+      #puts message unless quiet?
+      io.report(message)
+    end
 
     # Internal status report.
     # Only output if dryrun or trace mode.
@@ -329,38 +187,6 @@ module Ratch
   end
 
 end
-
-
-
-
-
-
-
-    # Delegate file system routines to FileUtils or FileUtils::DryRun,
-    # depending on dryrun mode.
-    #def fileutils
-    #  dryrun? ? ::FileUtils::DryRun : ::FileUtils
-    #end
-
-    # Add FileUtils Features
-    #::FileUtils.private_instance_methods(false).each do |meth|
-    #  next if meth =~ /^fu_/
-    #  module_eval %{
-    #    def #{meth}(*a,&b)
-    #      fileutils.#{meth}(*a,&b)
-    #    end
-    #  }
-    #end
-
-    # Add FileTest Features
-    #::FileTest.private_instance_methods(false).each do |meth|
-    #  next if meth =~ /^fu_/
-    #  module_eval %{
-    #    def #{meth}(*a,&b)
-    #      FileTest.#{meth}(*a,&b)
-    #    end
-    #  }
-    #end
 
 
 #    # Compress directory.
@@ -413,3 +239,69 @@ end
 =end
 
 
+=begin
+    # TODO: Deprecate these?
+
+    # Assert that a path exists.
+    def exists!(*paths)
+      abort "path not found #{path}" unless paths.any?{|path| exists?(path)}
+    end
+    alias_method :exist!, :exists! #; module_function :exist!
+    alias_method :path!,  :exists! #; module_function :path!
+
+    # Assert that a given path is a file.
+    def file!(*paths)
+      abort "file not found #{path}" unless paths.any?{|path| file?(path)}
+    end
+
+    # Assert that a given path is a directory.
+    def dir!(*paths)
+      paths.each do |path|
+        abort "Directory not found: '#{path}'." unless  dir?(path)
+      end
+    end
+    alias_method :directory!, :dir! #; module_function :directory!
+=end
+
+    # Provides convenient starting points in the file system.
+    #
+    #   root   #=> #<Pathname:/>
+    #   home   #=> #<Pathname:/home/jimmy>
+    #   work   #=> #<Pathname:/home/jimmy/Documents>
+    #
+    # TODO: Replace these with Folio when Folio's is as capable.
+
+    # Current root path.
+    #def root(*args)
+    #  Pathname['/', *args]
+    #end
+
+    # Current home path.
+    #def home(*args)
+    #  Pathname['~', *args].expand_path
+    #end
+
+    # Current working path.
+    #def work(*args)
+    #  Pathname['.', *args]
+    #end
+
+    #alias_method :pwd, :work
+
+    # Bonus FileUtils features.
+    #def cd(*a,&b)
+    #  puts "cd #{a}" if dryrun? or trace?
+    #  fileutils.chdir(*a,&b)
+    #end
+
+    # DEPRECATE!
+    #alias_method :commandline, :cli
+
+    # DEPRECATE!
+    #alias_method :command, :cli
+
+    #
+    #def commandline
+    #  #@commandline ||= ArgVector.new(ARGV)
+    #  @commandline
+    #end
