@@ -1,13 +1,21 @@
-module Ratchet
+module Ratchets
+
+  def Stats(options)
+    Stats.new(self, options)
+  end
 
   def stats(options={},&block)
-    Stats.new(options,&block).analyize
+    Stats.new(self, options,&block).analyize
   end
 
   # = Simple Code Statistics Plugin
   #
   # The Stats plugin is a simple code statistics analyizer,
   # producing a basic LOC analysis.
+  #
+  #   analyize
+  #   reset
+  #   clean
   #
   # TODO: Add support for testable demo/ (how?).
   #
@@ -21,14 +29,6 @@ module Ratchet
 
     # Default folders and/or file patterns to exclude from analysis.
     DEFAULT_EXCLUDE = ['ext']
-
-    #pipeline :main, :analyize
-    #pipeline :main, :reset
-    #pipeline :main, :clean
-
-    #pipeline :site, :analyize
-    #pipeline :site, :reset
-    #pipeline :site, :clean
 
     # Directories to scan for scripts. The default is the project's loadpath.
     attr_accessor :loadpath
@@ -49,15 +49,6 @@ module Ratchet
     # Title of pacakge. Thisis used to put a header in the output.
     attr_accessor :title
 
-    # Setup default attribute values.
-    def initialize_defaults
-      @title    = metadata.title #|| metadata.package
-      @loadpath = metadata.loadpath #|| ['lib']
-      @testpath = DEFAULT_TESTPATH
-      @exclude  = DEFAULT_EXCLUDE
-      @output   = project.log + DEFAULT_FOLDER
-    end
-
     # Scan source code counting files, lines of code and
     # comments and presents a report of it's findings.
     #
@@ -72,15 +63,40 @@ module Ratchet
       #() #.inject([]){ |memo, find| memo.concat(glob(find)); memo }
       #Dir.multiglob_with_default(DEFAULT_STATS_FILES)
 
-      if log(output).outofdate?(*files) or force?
+      if output.outofdate?(*files) or force?
         generate_stats(files)
       else
-        out = log(output).file.relative_path_from(project.root)
+        out = output.relative_path_from(project.root)
         report "Stats are current (#{out})."
       end
     end
 
+    # Reset output directory, marking it as out-of-date.
+    def reset
+      if File.directory?(output)
+        File.utime(0,0,output)
+        report "reset #{output}" #unless dryrun?
+      end
+    end
+
+    # Remove rdocs products.
+    def clean
+      if File.directory?(output)
+        rm_r(output)
+        status "removed #{output}" #unless dryrun?
+      end
+    end
+
   private
+
+    # Setup default attribute values.
+    def initialize_defaults
+      @title    = metadata.title #|| metadata.package
+      @loadpath = metadata.loadpath #|| ['lib']
+      @testpath = DEFAULT_TESTPATH
+      @exclude  = DEFAULT_EXCLUDE
+      @output   = project.log + DEFAULT_FOLDER
+    end
 
     # Save stats to output.
     #
@@ -89,9 +105,9 @@ module Ratchet
       if dryrun?
         report "write #{log_file}"
       else
-        mkdir_p(File.dirname(log_file.to_s))
-        log(log_file).write(text)
-        rfile = log(log_file).file.relative_path_from(project.root)
+        mkdir_p(log_file.parent)
+        write(log_file, text)
+        rfile = log_file.relative_path_from(project.root)
         status "Updated #{rfile}"
       end
     end

@@ -1,25 +1,20 @@
-module Ratchet
+module Ratchets
 
-  def rspec(options={},&block)
-    RSpec.new(options,&block).validate
+  def RSpec(options={}, &block)
+    RSpec.new(self, options, &block)
   end
 
-  def specdoc(options={},&block)
-    RSpec.new(options,&block).document
+  def spec(options={}, &block)
+    RSpec(options, &block).validate
+  end
+
+  def specdoc(options={}, &block)
+    RSpec(options, &block).document
   end
 
   # = RSpec Plugin
   #
   class RSpec < Plugin
-
-    #pipeline :main, :validate
-    #pipeline :main, :document
-
-    # Only availabel if there is a spec/ directory.
-    # TODO: Is this too restrictive?
-    available do |project|
-      Dir['spec']
-    end
 
     # File glob(s) of spec files. Defaults to ['spec/**/*_spec.rb', 'spec/**/spec_*.rb'].
     attr_accessor :specs

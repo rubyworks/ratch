@@ -1,4 +1,5 @@
 require 'facets/pathname'
+require 'ratch/pathlist'
 
 class Pathname
 
@@ -8,17 +9,18 @@ class Pathname
   end
 
   #
-  def mkdir_p
-    FileUtils.mkdir_p(to_s)
+  def [](*globs)
+    Pathlist.new(self)[*globs]
   end
 
-  #
-  #def [](*globs)
-  #  globs.map{ |g| glob(g) }.flatten
+  # NOT SURE ABOUT THIS IDEA
+  #def mkdir_p
+  #  FileUtils.mkdir_p(to_s)
   #end
 
+
 # Already in Facets
-#
+
 #    def glob(*opts)
 #      flags = 0
 #      opts.each do |opt|

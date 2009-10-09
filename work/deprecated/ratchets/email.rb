@@ -3,9 +3,9 @@ require 'facets/boolean'
 module Ratchets
 
   #
-  def email(options,&block)
+  def email(options, &block)
     #options = options.merge(block.to_h) if block
-    EMail.new(options, &block).send
+    EMail.new(self, options, &block).send
   end
 
   # = Email Plugin
@@ -155,5 +155,5 @@ module Ratchets
   end
 
 end
-end
+
 

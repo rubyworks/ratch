@@ -1,22 +1,27 @@
-module Ratchet
+module Ratchets
 
   #
-  def rubyprof(options={},&block)
-    RubyProf.new(options,&block).analyize
+  def RCov(options, &block)
+    RCov.new(self, options, &block)
   end
 
-  # = RubyProf Profiling Plugin
   #
-  # This is a Reap service plugin for ruby-proof command line tool.
+  def rcov(options={}, &block)
+    RCov(options, &block).analyize
+  end
+
+  # = RCov Service
   #
-  class RubyProf < Plugin
+  # RCov code coverage utility.
+  #
+  class RCov < Plugin
 
-    #pipeline :main, :analyize
-    #pipeline :main, :reset
-    #pipeline :main, :clean
-
-    # Default script files to run via ruby-prof.
+    # Default script files to run via rcov.
     DEFAULT_SCRIPTS = ['test/**/test_*.rb', 'test/**/*_test.rb']
+
+    # Output directory. This defaults to an rcov/ folder in the
+    # the project's log directory.
+    attr :output
 
     # Pattern of script files to run for coverage check. Usually
     # these are your test files, but they can be any ruby scripts.
@@ -24,39 +29,27 @@ module Ratchet
     # whose name begins with test_ or ends with _test.
     attr :scripts
 
-    # Output directory. This defaults to an rubyprof/ folder in the
-    # the project's log directory.
-    attr :output
-
-    # Additional commandline options string passed to ruby-prof.
+    # Additional commandline options string passed to rcov.
     attr :options
 
-    #
+    # TODO: Default scripts must be improved. How?
+    #       esp. how to use Quarry?
     def initialize_defaults
-      @output  = project.log + 'rubyprof'
+      @output  = project.log + 'rcov'
       @scripts = DEFAULT_SCRIPTS
     end
 
-    # Shell out to ruby-prof.
-    #
-    # TODO: Need to create an index.html file to link to all the others.
-    #
+    # Shell out to rcov.
     def analyize
       files = scripts.map{ |s| Dir[s] }.flatten
       # create output directory if needed
       mkdir_p(output) unless File.exist?(output)
       # if nothing is out-of-date
       if outofdate?(output, *files) or force?
-        # make a profile for each script
-        files.each do |file|
-          fname = output + "#{File.basename(file)}.html"
-          if outofdate?(output, file) or force?
-            sh "ruby-prof #{options} -m 1 -p graph_html -f #{fname} #{file}"
-          end
-        end
-        report "ruby-prof updated (at #{output.sub(Dir.pwd,'')})"
+        sh "rcov #{options} -t -o #{output} #{files.join(' ')}"
+        report "rcov updated (at #{output.sub(Dir.pwd,'')})"
       else
-        report "ruby-prof is current (at #{output.sub(Dir.pwd,'')})"
+        report "rcov is current (at #{output.sub(Dir.pwd,'')})"
       end
     end
 

@@ -1,7 +1,11 @@
 module Ratchets
 
-  def rdoc(options={}, &block)
-    RDoc.new(options, &block).document
+  def RDoc(options={}) #, &block)
+    RDoc.new(self, options) #, &block)
+  end
+
+  def rdoc(options={}) #, &block)
+    RDoc.new(options).document #, &block).document
   end
 
   # RDoc documentation plugin generates RDocs for your project.
@@ -22,10 +26,10 @@ module Ratchets
     DEFAULT_OUTPUT       = "doc/rdoc"
 
     # Locations to check for existance in deciding where to store rdoc documentation.
-    DEFAULT_OUTPUT_MATCH = "{rdoc,doc/rdoc}"
+    DEFAULT_OUTPUT_MATCH = "{doc/rdoc,rdoc}"
 
     # Default main file.
-    DEFAULT_MAIN         = "README"
+    DEFAULT_MAIN         = "README{,.*}"
 
     # Default rdoc template to use.
     DEFAULT_TEMPLATE     = "darkfish"
@@ -41,17 +45,11 @@ module Ratchets
     def initialize_defaults
       @title    = metadata.title
       @files    = metadata.loadpath + ['[A-Z]*', 'bin'] # DEFAULT_FILES
-
       @output   = Dir[DEFAULT_OUTPUT_MATCH].first || DEFAULT_OUTPUT
-      @main     = DEFAULT_MAIN
       @extra    = DEFAULT_EXTRA
+      @main     = Dir[DEFAULT_MAIN].first
       @template = ENV['RDOC_TEMPLATE'] || DEFAULT_TEMPLATE
     end
-
-    #def main_document ; document ; end
-    #def site_document ; document ; end
-    #def main_clean    ; clean    ; end
-    #def site_clean    ; clean    ; end
 
   public
 
@@ -61,10 +59,10 @@ module Ratchets
     # Where to save rdoc files (doc/rdoc).
     attr_accessor :output
 
-    # Template to use (defaults to ENV['RDOC_TEMPLATE'] or 'html')
+    # Template to use (defaults to ENV['RDOC_TEMPLATE'] or 'darkfish')
     attr_accessor :template
 
-    # Main file.  This can be file pattern. (README{,.txt})
+    # Main file.  This can be a file pattern. (README{,.*})
     attr_accessor :main
 
     # Which files to document.
@@ -102,6 +100,16 @@ module Ratchets
       adfile   = options['adfile']   || self.adfile
       extra    = options['extra']    || self.extra
 
+      # NOTE: Due to a bug in RDOC this needs to be done so that
+      # alternate templates can be used.
+      begin
+        gem('rdoc')
+        #gem(templib || template)
+      rescue LoadError
+      end
+
+      require 'rdoc/rdoc'
+
       # you can specify more than one possibility, first match wins
       adfile = [adfile].flatten.compact.find do |f|
         File.exist?(f)
@@ -112,11 +120,12 @@ module Ratchets
       include_files = files.to_list.uniq
       exclude_files = exclude.to_list.uniq
 
-      if mfile = project.manifest_file       
+      if mfile = project.manifest_file
         exclude_files << mfile.basename.to_s # TODO: I think base name should retun a string?
       end
 
       filelist = amass(include_files, exclude_files)
+      filelist = filelist.select{ |fname| File.file?(fname) }
 
       if outofdate?(output, *filelist) or force?
         status "Generating #{output}"
@@ -126,14 +135,20 @@ module Ratchets
         #target_output = File.expand_path(File.join(output, subdir))
         #target_output = File.join(output, subdir)
 
-        cmdopts = {}
-        cmdopts['op']         = output
-        cmdopts['main']       = main if main
-        cmdopts['template']   = template
-        cmdopts['title']      = title
-        cmdopts['exclude']    = exclude_files
+        argv = []
+        argv.concat(extra.split(/\s+/))
+        argv.concat ['--op', output]
+        argv.concat ['--main', main] if main
+        argv.concat ['--template', template] if template
+        argv.concat ['--title', title] if title
 
-        rdoc_target(output, include_files, cmdopts)
+        exclude_files.each do |file|
+          argv.concat ['--exclude', file]
+        end
+
+        argv = argv + filelist #include_files
+
+        rdoc_target(output, include_files, argv)
         rdoc_insert_ads(output, adfile)
 
         touch(output)
@@ -164,24 +179,30 @@ module Ratchets
     #
     # TODO: Use RDoc programmatically rather than via shell.
     #
-    def rdoc_target(output, input, rdocopt={})
+    def rdoc_target(output, input, argv=[])
       #if outofdate?(output, *input) or force?
         rm_r(output) if exist?(output) and safe?(output)  # remove old rdocs
 
-        rdocopt['op'] = output
+        #rdocopt['op'] = output
 
-        if template == 'hanna'
-          cmd = "hanna #{extra} " + [input, rdocopt].to_console
-        else
-          cmd = "rdoc #{extra} " + [input, rdocopt].to_console
-        end
+        #if template == 'hanna'
+        #  cmd = "hanna #{extra} " + [input, rdocopt].to_console
+        #else
+        #  cmd = "rdoc #{extra} " + [input, rdocopt].to_console
+        #end
+
+        #argv = ("#{extra}" + [input, rdocopt].to_console).split(/\s+/)
 
         if verbose? or dryrun?
-          shell(cmd)
+          puts "rdoc " + argv.join(" ")
+          #sh(cmd) #shell(cmd)
         else
-          silently do
-            shell(cmd)
-          end
+          puts "rdoc " + argv.join(" ") if trace?
+          rdoc = ::RDoc::RDoc.new
+          rdoc.document(argv)
+          #silently do
+          #  sh(cmd) #shell(cmd)
+          #end
         end
       #else
       #  puts "RDocs are current -- #{output}"

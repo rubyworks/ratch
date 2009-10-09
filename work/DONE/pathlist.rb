@@ -1,13 +1,13 @@
 module Ratch
 
-  class PathArray < Array
+  class Pathlist < Array
 
     #
     attr :local
 
     #
-    def initialize(local)
-      @local = local
+    def initialize(local, *globs)
+      @local = Pathname.new(local)
     end
 
     #
@@ -20,6 +20,7 @@ module Ratch
           concat(Dir.glob(@local + entry).map{ |f| Pathname.new(f) )
         end
       end
+      return self
     end
 
     # relative to local

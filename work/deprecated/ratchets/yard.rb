@@ -1,8 +1,13 @@
-module Ratchet
+module Ratchets
 
   #
-  def yard(options={},&block)
-    Yard.new(options,&block).document
+  def Yard(options)
+    Yard.new(self, options)
+  end
+
+  #
+  def yard(options={}) #={},&block)
+    Yard.new(self, options).document #,&block).document
   end
 
   # Yard documentation plugin generates docs for your project.
@@ -13,8 +18,17 @@ module Ratchet
   #
   # This plugin provides two services for both the +main+ and +site+ pipelines.
   #
-  # * +document+ - create yard docs
-  # * +clean+    - remove yard docs
+  #   main:document  - create yard docs
+  #   main:reset     - reset yard docs
+  #   main:clean     - remove yard docs
+  #
+  #   site:document  - create yard docs
+  #   site:reset     - reset yard docs
+  #   site:clean     - remove yard docs
+  #
+  # TODO: Need to use YARD programatically rather than
+  # by shelling out. Also need to update this class to be
+  # more like the RDoc plugin (which has improved logic).
   #
   class Yard < Plugin
 
@@ -25,9 +39,9 @@ module Ratchet
     #pipeline :site, :clean
 
     # TODO: IMPROVE
-    available do |project|
-      !project.metadata.loadpath.empty?
-    end
+    #available do |project|
+    #  !project.metadata.loadpath.empty?
+    #end
 
     # Default location to store yard documentation files.
     DEFAULT_OUTPUT       = "doc/yard"
@@ -42,7 +56,7 @@ module Ratchet
     DEFAULT_TEMPLATE     = "default"
 
     # Deafult extra options to add to yardoc call.
-    DEFAULT_EXTRA        = ''
+    DEFAULT_EXTRA        = ""
 
     #DEFAULT_FILES        = '[A-Z]*;lib/**/*;bin/*'
 
@@ -180,17 +194,17 @@ module Ratchet
     #
     def yard_target(output, input, options={})
       #if outofdate?(output, *input) or force?
-        rm_r(output) if exist?(output) and safe?(output)  # remove old rdocs
+        rm_r(output) if exist?(output) and safe?(output)  # remove old yardocs
 
         options['output-dir'] = output
 
         cmd = "yardoc #{extra} " + [input, options].to_console
 
         if verbose? or dryrun?
-          shell(cmd)
+          sh(cmd)
         else
           silently do
-            shell(cmd)
+            sh(cmd)
           end
         end
       #else
@@ -199,23 +213,23 @@ module Ratchet
     end
 
     # Insert an ad into rdocs, if available.
-    def rdoc_insert_ads(site, adfile)
-      return if dryrun?
-      return unless adfile && File.file?(adfile)
-      adtext = File.read(adfile)
-      #puts
-      dirs = Dir.glob(File.join(site,'*/'))
-      dirs.each do |dir|
-        files = Dir.glob(File.join(dir, '**/*.html'))
-        files.each do |file|
-          html = File.read(file)
-          bodi = html.index('<body>')
-          next unless bodi
-          html[bodi + 7] = "\n" + adtext
-          File.write(file, html) unless dryrun?
-        end
-      end
-    end
+    #def rdoc_insert_ads(site, adfile)
+    #  return if dryrun?
+    #  return unless adfile && File.file?(adfile)
+    #  adtext = File.read(adfile)
+    #  #puts
+    #  dirs = Dir.glob(File.join(site,'*/'))
+    #  dirs.each do |dir|
+    #    files = Dir.glob(File.join(dir, '**/*.html'))
+    #    files.each do |file|
+    #      html = File.read(file)
+    #      bodi = html.index('<body>')
+    #     next unless bodi
+    #      html[bodi + 7] = "\n" + adtext
+    #      File.write(file, html) unless dryrun?
+    #    end
+    #  end
+    #end
 
   end
 

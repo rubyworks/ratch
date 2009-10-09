@@ -1,8 +1,8 @@
-module Ratchet
+module Ratchets
 
   #
-  def testrb(options, &block)
-    Testrb.new(options,&block).runtests
+  def testrb(options) #, &block)
+    TestRB.new(self, options).runtests #,&block).runtests
   end
 
   # = Testrb Plugin
@@ -10,15 +10,15 @@ module Ratchet
   # This Reap service plugin runs your test/unit (or mint/test ?)
   # based unit tests using the +testrb+ commandline tool.
   #
-  class Testrb < Plugin
+  class TestRB < Plugin
 
     #pipeline :main, :validate do
     #  runtests
     #end
 
-    available do |project|
-      !Dir['test/**/*.rb'].empty?
-    end
+    #available do |project|
+    #  !Dir['test/**/*.rb'].empty?
+    #end
 
     # Default test file patterns.
     DEFAULT_TESTS = ["test/**/test_*.rb", "test/**/*_test.rb" ]
@@ -130,7 +130,7 @@ module Ratchet
       # TODO: Use a subdirectory for log. Also html or xml format possible?
 
       filelist = files.select{|file| !File.directory?(file) }.join(' ')
-      logfile  = log('testrb.log').file
+      logfile  = project.log + 'testrb.log'
 
       # TODO: Does tee work on Windows?
 
@@ -140,7 +140,7 @@ module Ratchet
         command = %[testrb -I#{loadpath.join(':')} #{filelist} 2>&1 | tee -a #{logfile}]
       end
 
-      success = sh(command, :show=>true)
+      success = sh(command) #, :show=>true) #show?
 
       abort "Tests failed." unless success
 

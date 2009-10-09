@@ -1,7 +1,11 @@
 module Ratchets
 
-  def ri(options={}, &block)
-    RI.new(options, &block).document
+  def RI(options)
+    RI.new(self, options)
+  end
+
+  def ri(options={}) #, &block)
+    RI.new(options).document #, &block).document
   end
 
   # = RI Documentation Plugin
@@ -19,35 +23,23 @@ module Ratchets
   # * +ridoc+ - Create ri docs
   # * +clean+ - Remove ri docs
   #
-  class RIDoc < Plugin
+  class RI < Plugin
 
     # Default location to store ri documentation files.
     DEFAULT_OUTPUT       = "doc/ri"
 
     # Locations to check for existance in deciding where to store ri documentation.
-    DEFAULT_OUTPUT_MATCH = "{ri,doc/ri}"
+    DEFAULT_OUTPUT_MATCH = "{doc/ri,ri}"
 
-    #DEFAULT_INCLUDE  = "lib/**/*"
-
-    pipeline :main, :document
-    pipeline :site, :document
-
-    pipeline :main, :clean
-    pipeline :site, :clean
-
-    #available do |project|
-    #  !project.metadata.loadpath.empty?
-    #end
+    # Deafult extra options to add to rdoc call.
+    DEFAULT_EXTRA        = ""
 
     #
     def initialize_defaults
-      @title  = metadata.title
-      @files  = metadata.loadpath.map{ |lp| File.join(lp, '**', '*') } # || DEFAULT_INCLUDE
+      @files  = metadata.loadpath
       @output = Dir[DEFAULT_OUTPUT_MATCH].first || DEFAULT_OUTPUT
+      @extra  = DEFAULT_EXTRA
     end
-
-    # Title of documents. Defaults to general metadata title field.
-    attr_accessor :title
 
     # Where to save rdoc files (doc/rdoc).
     attr_accessor :output
@@ -61,6 +53,9 @@ module Ratchets
     # Paths to specifically exclude.
     attr_accessor :exclude
 
+    # Additional options passed to the rdoc command.
+    attr_accessor :extra
+
     # Generate ri documentation. This utilizes
     # rdoc to produce the appropriate files.
     #
@@ -69,28 +64,22 @@ module Ratchets
       input   = self.files
       exclude = self.exclude
 
-      cmdopts = {}
-      cmdopts['op']      = output
-      cmdopts['exclude'] = exclude
+      include_files = files.to_list.uniq
+      exclude_files = exclude.to_list.uniq
 
-      #input = files #.collect do |i|
-      #  dir?(i) ? File.join(i,'**','*') : i
-      #end
+      filelist = amass(include_files, exclude_files)
+      filelist = filelist.select{ |fname| File.file?(fname) }
 
-      if outofdate?(output, *input) or force?
+      if outofdate?(output, *filelist) or force?
         status "Generating #{output}"
 
-        rm_r(output) if exist?(output) and safe?(output)  # remove old ridocs
+        cmdopts = {}
+        cmdopts['op']      = output
+        cmdopts['exclude'] = exclude
 
-        #input = input.collect{ |i| glob(i) }.flatten
-        vector = [input, cmdopts]
-        if verbose?
-          sh "rdoc --ri -a #{vector.to_console}"
-        else
-          silently do
-            sh "rdoc --ri -a #{vector.to_console}"
-          end
-        end
+        ridoc_target(output, include_files, cmdopts)
+
+        touch(output)
       else
         status "ri docs are current (#{output})"
       end
@@ -113,7 +102,29 @@ module Ratchets
       end
     end
 
-  end
+  private
 
-end
+    # Generate ri docs for input targets.
+    #
+    # TODO: Use RDoc programmatically rather than via shell.
+    #
+    def ridoc_target(output, input, rdocopt={})
+      rm_r(output) if exist?(output) and safe?(output)  # remove old ri docs
+
+      rdocopt['op'] = output
+
+      cmd = "rdoc --ri -a #{extra} " + [input, rdocopt].to_console
+
+      if verbose? or dryrun?
+        sh(cmd)
+      else
+        silently do
+          sh(cmd)
+        end
+      end
+    end
+
+  end #class Ri
+
+end #module Ratch
 

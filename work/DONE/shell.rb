@@ -132,7 +132,7 @@ module Ratch
 
     def dir(path)
       #Directory.new(name)
-      raise unless File.directory?(name)
+      raise unless File.directory?(path)
       Pathname.new(localize(path))
     end
 
@@ -214,9 +214,9 @@ module Ratch
     alias_method '+', '/'
 
     #
-    def system(command_string)
-      work.cd do
-        super
+    def system(cmd)
+      locally do
+        super(cmd)
       end
     end
 
@@ -225,13 +225,13 @@ module Ratch
       #puts "--> system call: #{cmd}" if verbose?
       puts cmd if verbose?
       return true if noop?
-      locally do
+      #locally do
         if quiet?
           silently{ system(cmd) }
         else
           system(cmd)
         end
-      end
+      #end
     end
 
     # Shell runner.
@@ -324,7 +324,7 @@ module Ratch
     def identical?(path, other)
       FileTest.identical?(localize(path), localize(other))
     end
-    alias_method :compare_file, :indentical?
+    alias_method :compare_file, :identical?
 
     # Assert that a path exists.
     #def exists?(path)
@@ -681,8 +681,6 @@ module Ratch
 
     #
     def locally(&block)
-p work.to_s
-p Dir.pwd
       if work.to_s == Dir.pwd
         block.call
       else

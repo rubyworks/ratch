@@ -1,8 +1,8 @@
-module Ratchet
+module Ratchets
 
   #
-  def vclog(options={},&block)
-    VClog.new(options,&block).document
+  def vclog(options={}, &block)
+    VClog.new(options, &block).document
   end
 
   # VClog plugin. Automatically generate changelogs from SCM commits messages.
@@ -14,17 +14,6 @@ module Ratchet
   # TODO: How to apply naming policy from here?
   #
   class VClog < Plugin
-
-    #pipeline :main, :document
-
-    available do |project|
-      begin
-        require 'vclog/vcs'
-        true #(project.root + '.svn').directory?
-      rescue LoadError
-        false
-      end
-    end
 
     # Current version of project.
     attr_accessor :version
@@ -78,6 +67,11 @@ module Ratchet
 
     #
     def valid?
+      begin
+        require 'vclog/vcs'
+      rescue LoadError
+        return false
+      end
       return false unless format =~ /^(html|xml|txt)$/
       return false unless layout =~ /^(gnu|rel)$/
       return true
@@ -166,6 +160,5 @@ module Ratchet
 
   end
 
-end
 end
 

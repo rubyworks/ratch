@@ -1,12 +1,14 @@
-module Ratchet
+module Ratchets
 
   #
   def autotools(options={},&block)
-    Autotools.new(options,&block)
+    Autotools.new(self, options,&block)
   end
 
   #
-  def make(type=nil)
+  def make(*type_and_opts)
+    opts = Hash===type_and_opts ? type_and_opts.pop : {}
+    type = type_and_opts.pop
     case type.to_sym
     when :config, :configure
       autotools.configure
@@ -27,9 +29,11 @@ module Ratchet
   # TODO: win32 cross-compile ?
   #
   class Autotools < Plugin
+
+    #
     MAKE_COMMAND = ENV['make'] || (RUBY_PLATFORM =~ /(win|w)32$/ ? 'nmake' : 'make')
 
-    #service_condition do |project|
+    #def valid?
     #  project.compiles?
     #end
 
@@ -96,7 +100,7 @@ module Ratchet
         cd(directory) do
           sh "ruby extconf.rb"
         end
-      end  
+      end
     end
 
   private
@@ -107,7 +111,7 @@ module Ratchet
         cd(directory) do
           shell "#{MAKE_COMMAND} #{target}"
         end
-      end  
+      end
     end
 
     # Eric Hodel said NOT to copy the compiled libs.

@@ -1,8 +1,8 @@
-module Ratchet
+module Ratchets
 
   #
   def syntax(options={},&block)
-    Syntax.new(options,&block).analyize
+    Syntax.new(self, options,&block).analyize
   end
 
   # = Syntax Checker Plugin
@@ -58,7 +58,7 @@ module Ratchet
       max     = files.collect{ |f| f.size }.max
       list    = []
 
-      if logfile('syntax.log').outofdate?(*files) or force?
+      if logfile.outofdate?(*files) or force?
         io.puts "Started"
 
         start = Time.now
@@ -83,7 +83,8 @@ module Ratchet
       max  = max || file.size + 2
       #libs = loadpath.join(';')
       #r = system "ruby -c -Ibin:lib:test #{s} &> /dev/null"
-      r = system "ruby -c -I#{libsI} #{file} > /dev/null 2>&1"
+      cmd = "ruby -c -I#{libsI} #{file} > /dev/null 2>&1"
+      r = system cmd
       if r
         if verbose?
           io.printline("%-#{max}s" % file, "[PASS]")
@@ -105,23 +106,32 @@ module Ratchet
     #
     def log_syntax_errors(list)
       if list.empty?
-         logfile('syntax.log').clear
+        #logfile.write('Syntax Ok')
+        File.open(logfile, 'w'){ |f| f << 'Syntax Ok' }
       else
+        errs = ""
         io.puts "\n-- Syntax Errors --\n"
         list.each do |file|
           io.print "* #{file}"
           err = `ruby -c -I#{libsI} #{file} 2>&1`
           io.puts(err) if verbose?
-          logfile('syntax.log').write("=== #{file}\n#{err}\n\n")
+          #logfile.write("=== #{file}\n#{err}\n\n")
+          errs << "=== #{file}\n#{err}\n\n" 
         end
+        File.open(logfile, 'w'){ |f| f << errs }
       end
     end
 
-    private
+    #
+    def logfile
+      project.log + 'syntax.rdoc'
+    end
+
+   private
 
     #
     def libsI
-      loadpath.join(';')
+      loadpath.join(':')
     end
 
 =begin
@@ -184,3 +194,4 @@ module Ratchet
   end
 
 end
+

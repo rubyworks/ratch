@@ -1,12 +1,17 @@
-require 'reap/plugins'
-require File.dirname(__FILE__) + '/rubyforge.rb'
+require File.dirname(__FILE__) + '/rubyforge/rubyforge.rb'
 
-module Reap
-module Plugins
+module Ratchets
+
+  def Rubyforge(options={})
+    Rubyforge.new(self, options)
+  end
 
   # = Rubyforge Plugin
   #
   # Interface with the RubyForge project hosting services.
+  # This plugin will upload release packages, publish your
+  # website via rsync, and make new announcements.
+  #
   # Supports the following services:
   #
   # * release  - Upload release packages
@@ -14,34 +19,19 @@ module Plugins
   # * announce - Post news announcement
   # * touch    - Test connection
   #
+  # This plugin can run automatically if the POM repository
+  # entry references 'rubyforge.org'.
+  #
+  # Please note that making news announcements is currently
+  # not functional.
+  #
+  # TODO: Use new REST API.
+  #
+  # TODO: Check Rubyforge config to see which Rubyforge
+  # services are being used and adjust actions for this plugin
+  # accordingly.
+  #
   class Rubyforge < Plugin
-
-    #pipeline :main, :publish  => :release,
-    #                :release  => :release,
-    #                :announce => :promote
-    #pipeline :site, :publish  => :release
-
-    pipeline :main, :release do
-      release
-      publish
-    end
-
-    pipeline :main, :promote do
-      announce
-    end
-
-    pipeline :site, :release do
-      publish
-    end
-
-    #available do |project|
-    #  begin
-    #    require 'forge/rubyforge'
-    #    true
-    #  #rescue LoadError
-    #  #  false
-    #  end
-    #end
 
     HOME    = ENV["HOME"] || ENV["HOMEPATH"] || File.expand_path("~")
     REPORT  = /<h\d><span style="color:red">(.*?)<\/span><\/h\d>/
@@ -131,6 +121,8 @@ module Plugins
 
         @notelog   = Dir.glob('{release,news,notes,notice}{,.txt}', File::FNM_CASEFOLD).first
         @changelog = nil
+
+        @site_map  = metadata.sitemap
 
         #options = {}
         #options[:unixname] = metadata.project
@@ -259,12 +251,12 @@ module Plugins
       sitemap = self.sitemap
 
       if !sitemap
-        index  = project.admin.glob_first(DEFAULT_SITE)
+        index  = project.root.glob_first(DEFAULT_SITE)
         source = File.dirname(index)
         #unless src
-        #  if src = project.admin.glob_first('doc')
+        #  if src = project.root.glob_first('doc')
         #    unless src.glob_first('index.{html,xml,rhtml}')
-        #      src = project.admin.glob_first('doc/rdoc')
+        #      src = project.root.glob_first('doc/rdoc')
         #    end
         #  end
         #end
@@ -409,8 +401,23 @@ module Plugins
     #    false
     #  end
     #end
+
   end
 
+end
+
+
+
+
+
+
+
+
+
+
+
+
+=begin
   # = Rubyforge Publish Plugin
   #
   # Interface with the RubyForge project hosting services.
@@ -664,12 +671,12 @@ module Plugins
       sitemap = self.sitemap
 
       if !sitemap
-        index  = project.admin.glob_first(DEFAULT_SITE)
+        index  = project.root.glob_first(DEFAULT_SITE)
         source = File.dirname(index)
         #unless src
-        #  if src = project.admin.glob_first('doc')
+        #  if src = project.root.glob_first('doc')
         #    unless src.glob_first('index.{html,xml,rhtml}')
-        #      src = project.admin.glob_first('doc/rdoc')
+        #      src = project.root.glob_first('doc/rdoc')
         #    end
         #  end
         #end
@@ -740,6 +747,7 @@ module Plugins
     def announcement
       project.announcement
     end
+=end
 
 =begin
     #
@@ -815,8 +823,4 @@ module Plugins
     #  end
     #end
 
-  end
-
-end
-end
 

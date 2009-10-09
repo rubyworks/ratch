@@ -1,10 +1,15 @@
-require 'rexml/text'
-#require 'reap/project/scm'
+module Ratchets
 
-module Ratchet
+  #
+  def Notes(options)
+    require 'rexml/text'
+    #require 'project/scm'
+    Notes.new(self, options)
+  end
 
-  def takenote(options, &block)
-    Notes.new(options, &block).document
+  #
+  def notes(options, &block)
+    Notes(options, &block).document
   end
 
   # = Development Notes Plugin
@@ -31,10 +36,6 @@ module Ratchet
 
     # Default note labels to look for in source code.
     DEFAULT_LABELS = ['TODO', 'FIXME', 'OPTIMIZE', 'DEPRECATE']
-
-    #pipeline :main, :document
-    #pipeline :main, :reset
-    #pipeline :main, :clean
 
     #available do |project|
     #  true
@@ -228,7 +229,8 @@ module Ratchet
     #
     def log_notes_save(dir, text, format)
       file = dir + "notes.#{format}"
-      log(file).write(text)
+      mkdir_p(file.parent)
+      write(file, text)
       return file
     end
 
