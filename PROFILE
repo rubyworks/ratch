@@ -1,0 +1,26 @@
+--- 
+title: Ratch
+author: trans <transfire@gmail.com>
+contact: trans <transfire@gmail.com>
+resources: 
+  repo: 
+  repository: 
+  homepage: http://ratch.rubyforge.org
+  home: http://ratch.rubyforge.org
+pkgmap: |-
+  - i **/*
+  - x doc
+  - x work
+version: 1.2.0
+suite: proutils
+homepage: http://ratch.rubyforge.org
+authors: []
+
+summary: Ruby-based Batch Scripting
+ruby: |-
+  - 1.8.6
+  - 1.8.7
+description: |-
+  Ratch is a Ruby-based batch scripting language.
+  It's a DSL over regular RUby to make the life
+  of the batch script writter easier.
