@@ -1,0 +1,16 @@
+#! /usr/bin/ruby1.8
+
+# for FileTest.root?
+require 'facets/filetest'
+
+name = ARGV[0]
+
+if name
+  Dir.chdir '..' until FileTest.executable?(name) or FileTest.root?(Dir.pwd)
+  if FileTest.executable?( name )
+    system name
+  end
+else
+  puts "Script #{name} not found."
+end
+
