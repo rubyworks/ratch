@@ -2,15 +2,20 @@ require 'yaml'
 require 'rbconfig'  # replace with facets/rbsystem?
 
 require 'facets/platform'
+require 'facets/plugin_manager'
+
 #require 'facets/openhash'
 #require 'facets/argvector'
 
 require 'ratch/core_ext'
-
 require 'ratch/shell'
 require 'ratch/io'
 require 'ratch/cli'
+require 'ratch/plugin'
 #require 'ratch/task'  # TODO: really?
+
+#require 'ratch/log'
+require 'pom/project'
 
 module Ratch
 
@@ -27,17 +32,13 @@ module Ratch
     #include Taskable
     #include Taskable::Dsl
 
-    # FIXME: Use facets/plugin_manager
-    #def load_plugins
-    #  $LOAD_PATH.each do |path|
-    #    plugins = Dir[File.join(path, 'ratchets/*.rb')]
-    #    plugins.each{ |file|  require(file) }
-    #  end
-    #end
-
     #
     def initialize(options={})
       extend self
+
+      @project = POM::Project.new
+
+      options[:path] = @project.root
 
       initialize_defaults
 
@@ -45,16 +46,24 @@ module Ratch
         send("#{k}=", v) if respond_to?("#{k}=")
       end
 
-      @cli = ioc[:cli] || CLI.new
-
-      @io  = ioc[:io]  || IO.new(@cli)
+      @cli = options[:cli] || CLI.new
+      @io  = options[:io]  || IO.new(@cli)
 
       path = options[:path] || Dir.pwd
 
       @shell = Shell.new(path, :noop => @cli.noop?, :verbose => @cli.verbose?, :quiet => @cli.quiet?)
     end
 
-    private
+  public
+
+    attr :project
+
+    #
+    def metadata
+      project.metadata
+    end
+
+  private
 
     # This can be used by subclasses.
     def initialize_defaults
@@ -79,6 +88,17 @@ module Ratch
     def trace?   ; cli.debug && cli.verbose? ; end
     def dryrun?  ; cli.noop? && cli.verbose? ; end
 
+    # Access a log by name.
+    #def logfile(path)
+    #  @logfile ||= {}
+    #  @logfile[path.to_s] ||= (
+    #    Log.new(project.log + name.to_s, :noop=>noop?, :verbose=>verbose?)
+    #  )
+    #end
+
+    # to be deprecated
+    #alias_method :log, :logfile
+
     # Current platform.
     def current_platform
       Platform.local.to_s
@@ -89,7 +109,11 @@ module Ratch
       if @shell.respond_to?(s)
         @shell.__send__(s, *a, &b)
       else
-        super
+        if @io.respond_to?(s)
+          @io.__send__(s, *a, &b)
+        else
+          super
+        end
       end
     end
 
@@ -158,7 +182,7 @@ module Ratch
       name
     end
 
-
+=begin
     #
     def report(message)
       #puts message unless quiet?
@@ -180,6 +204,7 @@ module Ratch
     def password(prompt=nil)
       io.password(prompt)
     end
+=end
 
   end
 

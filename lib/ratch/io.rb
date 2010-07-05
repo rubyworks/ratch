@@ -25,10 +25,11 @@ module Ratch
       @stdin  = stdin  || $stdin
     end
 
-    def force?  ; cli.force? ; end
-    def quiet?  ; cli.quiet? ; end
-    def debug?  ; cli.debug? ; end
-    def noop?   ; cli.noop?  ; end
+    def force?   ; cli.force?   ; end
+    def quiet?   ; cli.quiet?   ; end
+    def debug?   ; cli.debug?   ; end
+    def noop?    ; cli.noop?    ; end
+    def verbose? ; cli.verbose? ; end
 
     def trace?  ; cli.verbose? && cli.debug? ; end
     def dryrun? ; cli.verbose? && cli.noop?  ; end
@@ -38,15 +39,14 @@ module Ratch
       stdout.puts message unless quiet?
     end
 
-    # Internal status report.
-    #
-    # Only output if verbose mode.
     #
     def status(message)
-      stderr.puts message if verbose? #unless quiet?
+      stderr.puts message unless quiet?
     end
 
-    # TODO: better name than status?
+    # Internal status report.
+    # Only output if verbose mode.
+    #
     def trace(message)
       stderr.puts message if verbose?
     end
@@ -86,13 +86,13 @@ module Ratch
     end
 
     #
-    def print(str)
-      stdout.print(str) unless quiet?
+    def print(str=nil)
+      stdout.print(str.to_s) unless quiet?
     end
 
     #
-    def puts(str)
-      stdout.puts(str) unless quiet?
+    def puts(str=nil)
+      stdout.puts(str.to_s) unless quiet?
     end
 
 =begin

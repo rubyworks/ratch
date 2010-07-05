@@ -51,11 +51,19 @@ module Ratch
     #   def initialize_defaults
     #     @gravy = true
     #   end
-    #
+
     def initialize_defaults
     end
 
+    # Override in plugin to make sure the plugin will be able to run.
+    # Ie. Configuration and project layout is all as needs be.
+
+    def valid?
+      true
+    end
+
     # TODO: Allow this to be optional? How?
+
     def method_missing(s, *a, &b)
       @context.send(s, *a, &b)
     end
@@ -63,3 +71,8 @@ module Ratch
   end
 
 end
+
+module Ratchets
+  Plugin = Ratch::Plugin
+end
+

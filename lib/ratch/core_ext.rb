@@ -1,4 +1,4 @@
-require 'facets'
+#require 'facets'
 
 __DIR__ = File.dirname(__FILE__)
 
