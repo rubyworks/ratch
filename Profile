@@ -1,0 +1,24 @@
+--- 
+title  : Ratch
+summary: Ruby-based Batch Scripting
+contact: trans <transfire@gmail.com>
+
+requires:
+  - syckle (build)
+  - qed (test)
+
+authors:
+  - Trans <transfire@gmail.com>
+
+resources: 
+  home: http://rubyworks.github.org/ratch
+  code: http://github.org/rubyworks/ratch
+
+description:
+  Ratch is a Ruby-based batch scripting language.
+  It's a DSL over regular RUby to make the life
+  of the batch script writter easier.
+
+organization : RubyWorks
+license      : Apache 2.0
+copyright    : Copyright (c) 2009 Thomas Sawyer
