@@ -2,21 +2,19 @@ module Ratch
 
   # = Plugin
   #
-  # A Plugin is essentially a delegated Service class..
+  # A Plugin is essentially a delegated Script class.
   #
   # The plugin acts a base class for ecapsulating batch routines.
-  # This helps to keep the main batch context free of the clutter
+  # This helps to keep the main batch context free from the clutter
   # of supporting methods.
   #
-  # Plugins are tightly coupled to the batch context,
-  # which allows them to call on the context easily.
-  # However this means plugins cannot be used independent
-  # of a batch context, and changes in the batch context
-  # can cause effects in plugin behvior that can be harder
-  # to track down and fix if a bug arises.
-  #
-  # Unless the tight coupling of a plugin is required, use the
-  # loose coupling of a Service class instead.
+  # Plugins are tightly coupled to the batch context, which allows them
+  # to call on the context easily. However this means plugins cannot
+  # be used independent of a batch context, and changes in the batch
+  # context# can cause effects in plugin behavior that can be harder
+  # to track down and fix if a bug arises. So, unless the tight coupling 
+  # of a plugin is required, use the loose coupling of a separate class 
+  # instead.
   #
   # The context must be an instance of a Ratch::Script.
   #
@@ -51,19 +49,17 @@ module Ratch
     #   def initialize_defaults
     #     @gravy = true
     #   end
-
+    #
     def initialize_defaults
     end
 
     # Override in plugin to make sure the plugin will be able to run.
     # Ie. Configuration and project layout is all as needs be.
-
     def valid?
       true
     end
 
     # TODO: Allow this to be optional? How?
-
     def method_missing(s, *a, &b)
       @context.send(s, *a, &b)
     end
@@ -72,7 +68,7 @@ module Ratch
 
 end
 
-module Ratchets
-  Plugin = Ratch::Plugin
-end
+#module Ratchets
+#  Plugin = Ratch::Plugin
+#end
 

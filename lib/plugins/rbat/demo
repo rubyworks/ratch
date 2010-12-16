@@ -1,0 +1,5 @@
+# demo -- silly demo script
+# =========================
+
+puts "DEMO!"
+

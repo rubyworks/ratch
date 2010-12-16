@@ -19,6 +19,7 @@ module Ratch
     end
 
     def noop?    ; @noop    ; end
+
     def verbose? ; @verbose ; end
 
     #

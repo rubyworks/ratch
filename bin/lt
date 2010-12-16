@@ -1,56 +1,12 @@
-#! /usr/bin/ruby1.8
+#!/usr/bin/env ruby
 
-# scan task scripts for descriptions
-
-def script_desc(dir)
-  help = {}
-  files = Dir.glob(File.join(dir,'**/*'))
-  files.each do |fname|
-    next if FileTest.directory?(fname)
-    next unless FileTest.executable?(fname)
-    desc = ''
-    File.open(fname) do |f|
-      line = ''
-      until f.eof?
-        line = f.gets
-        case line
-        when /^(#!|\s*$)/
-          next
-        when /^\s*#(.*)/
-          desc = $1.strip; break
-        else
-          desc = nil; break
-        end
-      end
-    end
-    help[fname] = desc
-  end
-  help
-end
-
-def show(dir)
-  tasks = script_desc(dir)
-  max = tasks.keys.max{ |a,b| a.size <=> b.size }.size
-  if dir == ''
-    max += 4 + 2
-  else
-    max += dir.size + 2
-  end
-  tasks = tasks.sort_by{|k,v| k }
-  tasks.each do |name, sum|
-    if dir == ''
-      cmd = "ratch #{name}"
-    else
-      cmd = name
-    end
-    puts "%-#{max}s # %s" % [cmd, sum]
-  end
-end
+require 'ratch/help'
 
 dir = ARGV[0] || '.'
 
 if File.directory?(dir)
-  show( dir )
+  Ratch.list(dir)
 else
   puts "#{dir} is not a directory"
 end
+

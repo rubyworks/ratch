@@ -1,0 +1,31 @@
+# help(1) -- display available rb commands
+# =========================================
+#
+# ## SYNOPSIS
+#
+# `rb help`
+# `rb help` [<command>]
+#
+# ## DESCRIPTION
+#
+# **help** displays the available list of rb commands.
+# If `<command>` is given, then the full help header for
+# that command will be displayed.
+
+require 'ratch/help'
+
+command = ARGV.shift
+
+if command
+  file = nil
+  file ||= Dir[File.expand_path("~/.config/rb/#{command}")].first
+  file ||= Plugin.find("rb/#{command}").first
+  
+  puts Ratch::Help.header(file)
+else
+  dirs = []
+  dirs << File.expand_path("~/.config/rb/") 
+  dirs << Plugin.find("rb")
+
+  Ratch::Help.list(dirs, :all=>true)
+end

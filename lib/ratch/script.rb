@@ -1,27 +1,20 @@
 require 'yaml'
-require 'rbconfig'  # replace with facets/rbsystem?
+require 'rbconfig'
+require 'plugin'    # rename to plugin_manager ?
+require 'path/shell'
 
-require 'facets/platform'
-require 'facets/plugin_manager'
-
-#require 'facets/openhash'
-#require 'facets/argvector'
-
-require 'ratch/core_ext'
-require 'ratch/shell'
-require 'ratch/io'
+require 'ratch/core_ext/all'
 require 'ratch/cli'
 require 'ratch/plugin'
 #require 'ratch/task'  # TODO: really?
-
 #require 'ratch/log'
-require 'pom/project'
+#require 'ratch/shell'
 
 module Ratch
 
   # = Ratch Script
   #
-  # The DSL class is the heart of Ratch, it provides all the convenece methods
+  # The DSL class is the heart of Ratch, it provides all the methods
   # that make Ratch so convenient for writing Ruby-based batch script.
   #
   # The Ratch Script class is used to run stand-alone ratch scripts.
@@ -32,35 +25,37 @@ module Ratch
     #include Taskable
     #include Taskable::Dsl
 
+    # load script plugins
+    ::Plugin.find('ratch/script/*') do |file|
+      module_eval(File.read(file), file)  # require file
+    end
+
     #
     def initialize(options={})
       extend self
 
-      @project = POM::Project.new
+      #@project = Gemdo::Project.new
+      #options[:path] = @project.root
 
-      options[:path] = @project.root
+      #@_stdout = options[:stdout] || $stdout
+      #@_stderr = options[:stderr] || $stderr
+      #@_stdin  = options[:stdin]  || $stdin
 
       initialize_defaults
 
-      options.each do |k, v|
-        send("#{k}=", v) if respond_to?("#{k}=")
-      end
+      #options.each do |k, v|
+      #  send("#{k}=", v) if respond_to?("#{k}=")
+      #end
 
-      @cli = options[:cli] || CLI.new
-      @io  = options[:io]  || IO.new(@cli)
+      @script_delegates = []
+
+      @cli = options[:cli]  || CLI.new
 
       path = options[:path] || Dir.pwd
 
-      @shell = Shell.new(path, :noop => @cli.noop?, :verbose => @cli.verbose?, :quiet => @cli.quiet?)
-    end
+      @shell = ::Path::Shell.new(path, :noop => @cli.noop?, :verbose => @cli.verbose?, :quiet => @cli.quiet?)
 
-  public
-
-    attr :project
-
-    #
-    def metadata
-      project.metadata
+      use @shell
     end
 
   private
@@ -70,23 +65,84 @@ module Ratch
     end
 
     # The #cli method provides delagated access to commandline
-    # arguments and options via a Ratch::CLI interface.
-    attr :cli
-
-    # Delagate input/output routines to Ratch::IO object.
-    attr :io
+    # arguments and options via the Ratch::CLI interface.
+    def cli
+      @cli
+    end
 
     # Delagate file operations to Shell.
-    attr :shell
+    def shell
+      @shell
+    end
 
     def force?   ; cli.force?   ; end
     def debug?   ; cli.debug?   ; end
     def quiet?   ; cli.quiet?   ; end
     def noop?    ; cli.noop?    ; end
     def verbose? ; cli.verbose? ; end
+    def trace?   ; cli.trace?   ; end
+    def dryrun?  ; cli.dryrun?  ; end
 
-    def trace?   ; cli.debug && cli.verbose? ; end
-    def dryrun?  ; cli.noop? && cli.verbose? ; end
+    # Convenient method to get simple console reply.
+    #def ask(question, answers=nil)
+    #  stdout.print "#{question}"
+    #  stdout.print " [#{answers}] " if answers
+    #  stdout.flush
+    #  until inp = stdin.gets ; sleep 1 ; end
+    #  inp.strip
+    #end
+
+    # Ask for a password. (FIXME: only for unix so far)
+    #def password(prompt=nil)
+    #  prompt ||= "Enter Password: "
+    #  inp = ''
+    #  stdout << "#{prompt} "
+    #  stdout.flush
+    #  begin
+    #    #system "stty -echo"
+    #    #inp = gets.chomp
+    #    until inp = $stdin.gets
+    #      sleep 1
+    #    end
+    #  ensure
+    #    #system "stty echo"
+    #  end
+    #  return inp.chomp
+    #end
+
+    # TODO: Until we have better support for getting input acorss platforms
+    # we are using #ask only.
+    def password(prompt=nil)
+      prompt ||= "Enter Password: "
+      ask(prompt)
+    end
+
+    #
+    def print(str=nil)
+      super(str.to_s) unless quiet?
+    end
+
+    #
+    def puts(str=nil)
+      super(str.to_s) unless quiet?
+    end
+
+    #
+    def report(message)
+      puts(message) unless quiet?
+    end
+
+    #
+    def status(message)
+      puts message unless quiet?
+    end
+
+    # Internal status report.
+    # Only output if verbose mode.
+    #
+    def trace(message)
+      puts message if verbose?
+    end
 
     # Access a log by name.
     #def logfile(path)
@@ -99,22 +155,20 @@ module Ratch
     # to be deprecated
     #alias_method :log, :logfile
 
-    # Current platform.
-    def current_platform
-      Platform.local.to_s
+   #
+    def use(object)
+      @script_delegates << object
     end
 
-    # Delegate to Shell.
+    #
     def method_missing(s, *a, &b)
-      if @shell.respond_to?(s)
-        @shell.__send__(s, *a, &b)
-      else
-        if @io.respond_to?(s)
-          @io.__send__(s, *a, &b)
-        else
-          super
+      @script_delegates.each do |delegate|
+        if delegate.respond_to?(s)
+          v = delegate.__send__(s, *a, &b)
+          return v
         end
       end
+      super(s, *a, &b)
     end
 
     # Load configuration data from a file.

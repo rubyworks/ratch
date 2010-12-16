@@ -1,15 +1,56 @@
-require 'optparse'
+#require 'optparse'
+require 'facets/argvector'
 
 module Ratch
 
   #
-  # TODO: switch to ArgVector so it can be used by anyone without preprocessing?
-  #
   class CLI
-    attr :usage
-    attr :options
 
-    def initialize
+    # Commandline arguments
+    attr :arguments
+
+    # Commandline named parameters.
+    attr :parameters
+
+    #
+    def initialize(argv=nil)
+      argv = ArgVector.new(argv || ARGV)
+
+      @arguments, @parameters = *argv.parameters
+    end
+
+    #
+    def noop?
+      @parameters['noop'] || @parameters['n']
+    end
+
+    #
+    def verbose?
+      @parameters['verbose'] || @parameters['v']
+    end
+
+    #
+    def dryrun?
+      @parameters['dryrun'] or (noop? and verbose?)
+    end
+
+    #
+    def trace?
+      @parameters['trace'] or (debug? and verbose?)
+    end
+
+    #
+    def method_missing(s, *a, &b)
+      s = s.to_s.chomp('?')
+      @parameters[s]
+    end
+
+  end
+
+end
+
+=begin
+    def
       @options = {}
       @usage   = OptionParser.new
 
@@ -54,14 +95,5 @@ module Ratch
       @argv ||= ARGV.dup
       @usage.parse!(@argv)
     end
+=end
 
-    def arguments
-      @argv
-    end
-
-    def method_missing(s, *a, &b)
-      @options[s.to_sym]
-    end
-  end
-
-end
