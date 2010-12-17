@@ -1,8 +1,0 @@
-= Design
-
-Ratch ...
-
- 
-    def rcov()
-
-    end

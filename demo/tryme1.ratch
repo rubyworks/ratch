@@ -2,5 +2,5 @@
 
 puts "Hello World"
 
-p commandline
+p cli
 
