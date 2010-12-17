@@ -1,0 +1,363 @@
+require 'path/name'
+
+testcase Path::Name do
+
+  # Support Classes
+
+  class AnotherStringLike # :nodoc:
+    def initialize(s) @s = s end
+    def to_str() @s end
+    def ==(other) @s == other end
+  end
+
+  testunit :initialize do
+    p1 = Path::Name.new('a')
+    p1.to_s.assert == 'a'
+
+    p2 = Path::Name.new(p1)
+    p1.assert == p2
+  end
+
+  testunit :==, :===, :eql? do
+    obj = Path::Name.new("a")
+    str = "a"
+    sym = :a
+    ano = AnotherStringLike.new("a")
+
+    obj.assert == str
+    str.assert == obj
+    obj.assert == ano
+    ano.assert == obj
+    obj.assert == sym
+    sym.assert == obj
+
+    obj2 = Path::Name.new("a")
+    obj.assert == obj2
+    obj.assert === obj2
+    obj.assert.eql? obj2
+  end
+
+  testunit :hash do
+    h = {}
+    h[Path::Name.new("a")] = 1
+    h[Path::Name.new("a")] = 2
+    h.size.assert == 1
+  end
+
+  testunit :<=> do
+
+    testsect "vs. Path::Name" do
+
+      def assert_pathname_cmp(e, s1, s2)
+        p1 = Path::Name.new(s1)
+        p2 = Path::Name.new(s2)
+        r = p1 <=> p2
+        assert(e == r,
+          "#{p1.inspect} <=> #{p2.inspect}: <#{e}> expected but was <#{r}>")
+      end
+
+      assert_pathname_cmp( 0, "a", "a")
+      assert_pathname_cmp( 1, "b", "a")
+      assert_pathname_cmp(-1, "a", "b")
+      ss = %w(
+        a
+        a/
+        a/b
+        a.
+        a0
+      )
+      s1 = ss.shift
+      ss.each {|s2|
+        assert_pathname_cmp(-1, s1, s2)
+        s1 = s2
+      }
+
+    end
+
+    testsect "vs. String" do
+      (Path::Name.new("a") <=> "a").assert.nil?
+      ("a" <=> Path::Name.new("a")).assert.nil?
+    end
+
+  end
+
+
+== syntactical
+
+  assert Path::Name.new("/").root?
+  assert Path::Name.new("//").root?
+  assert Path::Name.new("///").root?
+
+  assert! Path::Name.new("").root?
+  assert! Path::Name.new("a").root?
+
+== paths
+
+  Path::Name.new('/').to_s.assert == '/'
+  Path::Name.new('.').to_s.assert == '.'
+
+  Path::Name.new('..').to_s.assert == '..'
+  Path::Name.new('a/').to_s.assert == 'a/'
+  Path::Name.new('/a').to_s.assert == '/a'
+
+== cleanpath
+
+  table = {
+    '/'      => '/',
+    '//'     => '/',
+    ''       => '',
+    '.'      => '.',
+    '..'     => '..',
+
+    'a'      => 'a',
+    '/.'     => '/',
+    '/..'    => '/',
+    '/a'     => '/a',
+    './'     => '.',
+    '../'    => '..',
+    'a/'     => 'a/',
+
+    'a//b'   => 'a/b',
+    'a/.'    => 'a/.',
+    'a/./'   => 'a/.',
+    'a/../'  => 'a/..',
+    '/a/.'   => '/a/.',
+    './..'   => '..',
+    '../.'   => '..',
+    './../'  => '..',
+    '.././'  => '..',
+    '/./..'  => '/',
+    '/../.'  => '/',
+    '/./../' => '/',
+    '/.././' => '/',
+
+    'a/b/c'  => 'a/b/c',
+    './b/c'  => 'b/c',
+    'a/./c'  => 'a/c',
+    'a/b/.'  => 'a/b/.',
+    'a/../.' => 'a/..',
+
+    '/../.././../a' => '/a',
+
+    'a/b/../../../../c/../d' => 'a/b/../../../../c/../d'
+  }
+
+  table.each do |path, result|
+    Path::Name(path).cleanpath(true).to_s.assert == result
+  end
+
+== cleanpath_no_symlink
+
+  Path::Name.new('').cleanpath.to_s.assert == ''
+
+  # given result
+  table = Hash.new(*%w{
+    /   /
+    /   //
+    /   /./..
+    /   /../.
+    /   /./../
+    /   /.././
+    /   /.
+    /   /..
+
+    .   .
+    .   ./
+    .   a/../
+    .   a/../.
+
+    ..  ..
+    ..  ./..
+    ..  ../.
+    ..  ./../
+    ..  .././
+    ..  ../
+
+    a      a
+    a      a/
+    a      a/.
+    a      a/./
+
+    /a     /a
+    /a     /a/.
+    /a     /../.././../a
+
+    a/b    a//b
+    a/b    a/b/.
+
+    b/c    ./b/c
+    a/c    a/./c
+
+    a/b/c  a/b/c
+
+    ../../d   a/b/../../../../c/../d
+  })
+
+  table.each do |expect, given|
+    Path::Name.new(given).cleanpath.to_s.assert == expect
+  end
+
+== destructive update
+
+  path = Path::Name.new("a")
+  path.to_s.replace("b")
+  path.assert == Path::Name.new("a")
+
+== nul character
+
+  # assert_raise(ArgumentError) { Path::Name.new("\0") }
+
+== relative_path_from
+
+  def assert_relpath(result, dest, base)
+    assert_equal(Path::Name.new(result),
+      Path::Name.new(dest).relative_path_from(Path::Name.new(base)))
+  end
+
+  assert_relpath("../a", "a", "b")
+  assert_relpath("../a", "a", "b/")
+  assert_relpath("../a", "a/", "b")
+  assert_relpath("../a", "a/", "b/")
+  assert_relpath("../a", "/a", "/b")
+  assert_relpath("../a", "/a", "/b/")
+  assert_relpath("../a", "/a/", "/b")
+  assert_relpath("../a", "/a/", "/b/")
+
+  assert_relpath("../b", "a/b", "a/c")
+  assert_relpath("../a", "../a", "../b")
+
+  assert_relpath("a", "a", ".")
+  assert_relpath("..", ".", "a")
+
+  assert_relpath(".", ".", ".")
+  assert_relpath(".", "..", "..")
+  assert_relpath("..", "..", ".")
+
+  assert_relpath("c/d", "/a/b/c/d", "/a/b")
+  assert_relpath("../..", "/a/b", "/a/b/c/d")
+  assert_relpath("../../../../e", "/e", "/a/b/c/d")
+  assert_relpath("../b/c", "a/b/c", "a/d")
+
+  assert_relpath("../a", "/../a", "/b")
+  assert_relpath("../../a", "../a", "b")
+  assert_relpath(".", "/a/../../b", "/b")
+  assert_relpath("..", "a/..", "a")
+  assert_relpath(".", "a/../b", "b")
+
+  assert_relpath("a", "a", "b/..")
+  assert_relpath("b/c", "b/c", "b/..")
+
+== relative_path_from error
+
+  def assert_relpath_err(dest, base)
+    assert_raise(ArgumentError) {
+      Path::Name.new(dest).relative_path_from(Path::Name.new(base))
+    }
+  end
+
+  assert_relpath_err("/", ".")
+  assert_relpath_err(".", "/")
+  assert_relpath_err("a", "..")
+  assert_relpath_err(".", "..")
+
+== plus
+
+  def assert_pathname_plus(a, b, c)
+    a = Path::Name.new(a)
+    b = Path::Name.new(b)
+    c = Path::Name.new(c)
+    d = b + c
+    assert(a == d,
+      "#{b.inspect} + #{c.inspect}: #{a.inspect} expected but was #{d.inspect}")
+  end
+
+  assert_pathname_plus('a/b', 'a', 'b')
+  assert_pathname_plus('a', 'a', '.')
+  assert_pathname_plus('b', '.', 'b')
+  assert_pathname_plus('.', '.', '.')
+  assert_pathname_plus('/b', 'a', '/b')
+
+  assert_pathname_plus('/', '/', '..')
+  assert_pathname_plus('.', 'a', '..')
+  assert_pathname_plus('a', 'a/b', '..')
+  assert_pathname_plus('../..', '..', '..')
+  assert_pathname_plus('/c', '/', '../c')
+  assert_pathname_plus('c', 'a', '../c')
+  assert_pathname_plus('a/c', 'a/b', '../c')
+  assert_pathname_plus('../../c', '..', '../c')
+
+== taint
+
+  obj = Path::Name.new("a"); assert_same(obj, obj.taint)
+  obj = Path::Name.new("a"); assert_same(obj, obj.untaint)
+
+  assert! Path::Name.new("a"      )           .tainted?
+  assert! Path::Name.new("a"      )      .to_s.tainted?
+
+  assert  Path::Name.new("a"      ).taint     .tainted?
+  assert  Path::Name.new("a"      ).taint.to_s.tainted?
+  assert  Path::Name.new("a".taint)           .tainted?
+  assert  Path::Name.new("a".taint)      .to_s.tainted?
+  assert  Path::Name.new("a".taint).taint     .tainted?
+  assert  Path::Name.new("a".taint).taint.to_s.tainted?
+
+  str = "a"
+  path = Path::Name.new(str)
+  str.taint
+
+  assert! path     .tainted?
+  assert! path.to_s.tainted?
+
+== untaint
+
+  obj = Path::Name.new("a"); assert_same(obj, obj.untaint)
+
+  assert! Path::Name.new("a").taint.untaint     .tainted?
+  assert! Path::Name.new("a").taint.untaint.to_s.tainted?
+
+  str = "a".taint
+  path = Path::Name.new(str)
+  str.untaint
+
+  assert path     .tainted?
+  assert path.to_s.tainted?
+
+== freeze
+
+  obj = Path::Name.new("a"); assert_same(obj, obj.freeze)
+
+  assert! Path::Name.new("a"       )            .frozen?
+  assert! Path::Name.new("a".freeze)            .frozen?
+
+  assert  Path::Name.new("a"       ).freeze     .frozen?
+  assert  Path::Name.new("a".freeze).freeze     .frozen?
+
+  assert! Path::Name.new("a"       )       .to_s.frozen?
+  assert! Path::Name.new("a".freeze)       .to_s.frozen?
+  assert! Path::Name.new("a"       ).freeze.to_s.frozen?
+  assert! Path::Name.new("a".freeze).freeze.to_s.frozen?
+
+== to_s
+
+  str = "a"
+  obj = Path::Name.new(str)
+  obj.to_s.assert == str
+  obj.to_s.assert!.equal?(str)
+  obj.to_a.assert!.equal?(obj.to_s)
+
+== kernel_open
+
+  count = 0
+  stat1 = File.stat(__FILE__)
+  result = Kernel.open(Path::Name.new(__FILE__)) do |f|
+    stat2 = f.stat
+    stat2.dev.assert  == stat1.dev
+    stat2.ino.assert  == stat1.ino
+    stat2.size.assert == stat1.size
+    count += 1
+    2
+  end
+  count.assert  == 1
+  result.assert == 2
+
+QED.
