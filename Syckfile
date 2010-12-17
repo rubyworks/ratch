@@ -1,32 +1,94 @@
 ---
-#sow:
-#  service: SowGen
+email:
+  service : Email
+  file    : ~
+  subject : ~
+  mailto  : ruby-talk@ruby-lang.org
+  active  : true
 
-syntax:
-  service: Syntax
+grancher:
+  service: grancher
+  active: true
 
-stats:
-  service: BasicStats
+gemcutter:
+  service: GemCutter
+  active: true
 
-notes:
-  service: Notes
+box:
+  service: Box
+  types  : [gem]
+  active : true
 
-test:
-  service: TestUnit
+ridoc:
+  service: RIDoc
+  include: ~
+  exclude: ~
+  active : true
 
 rdoc:
   service : RDoc
-  template: ./.config/rdoc-template
-  inline  : true
+  template: newfish
+  include : ~
+  exclude : [ Syckfile ]
+  active  : true
 
-ri:
-  service: RIDoc
+syntax:
+  service  : Syntax
+  loadpath : ~
+  exclude  : ~
+  active   : false
 
-rubygem:
-  service: Gem
-  exclude: [gen, doc/rdoc, doc/ri, log, web, work]
+testrb:
+  service  : testrb
+  tests    : ~
+  exclude  : ~
+  loadpath : ~
+  requires : ~
+  live     : false   
+  active   : false
 
-rubyforge:
-  service: Rubyforge
-  groupid: 6276
+dnote:
+  service  : DNote
+  loadpath : ~
+  labels   : ~
+  exclude  : [work]
+  output   : ~
+  format   : ~
+  active   : true
+
+stats:
+  service  : Stats
+  title    : ~
+  loadpath : ~
+  exclude  : ~
+  output   : ~
+  active   : true
+
+vclog:
+  service  : VClog
+  formats  : [json]
+  #layout   : rel    # gnu
+  typed    : false
+  output   : ~
+  active   : false
+
+
+#sow:
+#  service: SowGen
+
+#test:
+#  service: TestUnit
+
+#rdoc:
+#  service : RDoc
+#  template: ./.config/rdoc-template
+#  inline  : true
+
+#rubygem:
+#  service: Gem
+#  exclude: [gen, doc/rdoc, doc/ri, log, web, work]
+
+#rubyforge:
+#  service: Rubyforge
+#  groupid: 6276
 

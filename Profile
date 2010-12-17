@@ -7,18 +7,31 @@ requires:
   - syckle (build)
   - qed (test)
 
-authors:
-  - Trans <transfire@gmail.com>
-
-resources: 
-  home: http://rubyworks.github.org/ratch
-  code: http://github.org/rubyworks/ratch
-
 description:
   Ratch is a Ruby-based batch scripting language.
   It's a DSL over regular RUby to make the life
   of the batch script writter easier.
 
+  Integrated set of a path-related libraries
+
+  Path is all about paths. It's provides a reimplementation of the Ruby
+  standard Pathname library, Path::Name, a superior globbing
+  facility, Path::List and an isolated shell-evironment, Path::Shell.
+
+resources: 
+  home: http://rubyworks.github.org/ratch
+  code: http://github.org/rubyworks/ratch
+  mail: http://groups.gooogle.com/group/rubyworks-mailinglist
+
+repositories:
+  public: git://github.com/rubyworks/ratch.git
+
+authors:
+  - Trans <transfire@gmail.com>
+
+created      : 2009-09-22 
 organization : RubyWorks
 license      : Apache 2.0
 copyright    : Copyright (c) 2009 Thomas Sawyer
+
+loadpath: [lib, vendor]

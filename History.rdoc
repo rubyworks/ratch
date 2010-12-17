@@ -1,6 +1,33 @@
-= Change History
+= RELEASE HISTORY
 
-== 2008-08-16
+== 1.2.0 // 2010-01-07
 
-Initial public release.
+This release attends to some admin issues and a few
+light improvements. It also removes Path::Store which
+is being move to a new project.
+
+Changes:
+
+* Add Path::Name#first and #last methods.
+* Fix Path::Name#amass method.
+
+
+== 1.1.0 // 2009-10-21
+
+Changes:
+
+* Added Path::Name#amass which a more flexible #glob like method.
+
+
+== 1.0.0 // 2009-09-22
+
+This is the initial stand-alone release of Path, a collection
+of Path-related classes partially spun-off from Ruby Facets
+and briefly called Folio.
+
+Changes:
+
+* 1 Major Enhancement
+
+    * Happy Birthday!
 

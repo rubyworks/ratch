@@ -15,6 +15,9 @@ it makes a very powerful library for other applications that
 require batch-like functionality. In general any program that
 access the file system extensively could benifit from it's use.
 
+Path is all about paths. It's provides a reimplementation of the Ruby
+standard Pathname library, Path::Name, a superior globbing
+facility, Path::List and an isolated shell-evironment, Path::Shell.
 
 
 == Installation
