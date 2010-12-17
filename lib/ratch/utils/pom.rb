@@ -3,8 +3,8 @@ class Ratch
   # Methods for utilizing Ruby POM.
   module POM
 
-    def preinitialize
-      require 'pom/project'
+    def self.included(base)
+      require 'pom'
     end
 
     #

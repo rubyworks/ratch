@@ -1,12 +1,16 @@
 module Path
 
-  class Shell
+  #
+  module GZip
+
+    #
+    def self.included(base)
+      require 'zlib'
+    end
 
     # Create a gzip file.
     #
     def gzip(file, tofile=nil, options={})
-      require 'zlib'
-
       noop, verbose = *util_options(options)
 
       tofile ||= File.basename(file) + '.gz'
@@ -26,8 +30,6 @@ module Path
     # Unpack a gzip file.
     #
     def ungzip(file, options={})
-      require 'zlib'
-
       noop, verbose = *util_options(options)
 
       fname = File.basename(file).chomp(File.extname(file))

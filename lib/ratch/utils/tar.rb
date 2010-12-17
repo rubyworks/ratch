@@ -1,18 +1,18 @@
-#--
-# TODO: Add compress support ?
-# TODO: Add bzip support ?
-#++
+module Ratch
 
-module Path
+  #--
+  # TODO: Add compress support ?
+  # TODO: Add bzip support ?
+  #++
+  module Tar
 
-  class Shell
-
-    def self.require_minitar
+    #
+    def self.included(base)
       require 'zlib'
       begin
         require 'archive/tar/minitar'
       rescue LoadError
-        require 'path/minitar'
+        #require 'ratch/minitar'
       end
     end
 

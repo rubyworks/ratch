@@ -1,13 +1,11 @@
-#--
-# TODO: Find way to zip without shelling-out.
-#++
-module Path
+module Ratch
 
-  class Shell
+  # Method for zipping and unzipping files.
+  #
+  # TODO: replace with a pure ruby zip library
+  module Zip
 
     # Zip
-    #
-    # TODO: replace with a pure ruby zip library
     #
     def zip(folder, file=nil, options={})
       noop, verbose = *util_options(options)

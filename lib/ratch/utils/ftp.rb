@@ -1,10 +1,13 @@
-module Path
+module Ratch
 
-  class Shell
+  # FIXME: This module needs major work. MEthods #files and
+  # stage_transfer need to either be generalized and moved to
+  # Shell or Script, or removed.
+  module FTP
 
     # Use ftp to upload files.
     #
-    def ftp( keys )
+    def ftp(keys)
       keys = upload_parameters(keys)
 
       # set transfer rules
@@ -121,4 +124,3 @@ module Path
   end
 
 end
-

@@ -1,12 +1,19 @@
-begin
-  require 'xdg'
-rescue LoadError
-  require 'path/xdg'
-end
+module Ratch
 
-module Path
+  # XDG module provides some conenience methods for working
+  # with the XDG dirtectory standard.
+  #
+  # FIXME: This module need serious work. The method names are too general
+  # and the it probably is easy enough to do without the xdg gem dependency.
+  module XDG
 
-  class Shell
+    def self.included(base)
+      begin
+        require 'xdg'
+      rescue LoadError
+        raise "The Ratch::XDG module requires the `xdg` gem."
+      end
+    end
 
     # Look up a config file.
     def config(path)
