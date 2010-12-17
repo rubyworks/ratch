@@ -11,7 +11,7 @@ module Ratch
   # Plugins are tightly coupled to the batch context, which allows them
   # to call on the context easily. However this means plugins cannot
   # be used independent of a batch context, and changes in the batch
-  # context# can cause effects in plugin behavior that can be harder
+  # context can cause effects in plugin behavior that can be harder
   # to track down and fix if a bug arises. So, unless the tight coupling 
   # of a plugin is required, use the loose coupling of a separate class 
   # instead.
