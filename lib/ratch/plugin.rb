@@ -18,6 +18,7 @@ module Ratch
   #
   # The context must be an instance of a Ratch::Script.
   #
+  # TODO: Better name for this class ?
   class Plugin
 
     # The batch context.

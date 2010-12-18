@@ -5,6 +5,11 @@ module Ratch
   # TODO: Perhaps utilize confectionary gem?
   module Config
 
+    #
+    def self.included(base)
+      require 'yaml'
+    end
+
     # Load configuration data from a file.
     # Results are cached and and empty Hash is
     # returned if the file is not found.

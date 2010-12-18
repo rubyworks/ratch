@@ -2,6 +2,18 @@ require 'ratch/plugin'
 
 module Ratch
 
+    # to be deprecated
+    #alias_method :log, :logfile
+
+    # Access a log by name.
+    #def logfile(path)
+    #  @logfile ||= {}
+    #  @logfile[path.to_s] ||= (
+    #    Log.new(project.log + name.to_s, :noop=>noop?, :verbose=>verbose?)
+    #  )
+    #end
+
+
   # = Log
   #
   # The Log class provides a common and easy to use means for

@@ -1,4 +1,5 @@
 require 'thread'
+#require 'rbconfig'
 require 'ratch/ruby/pathname'
 require 'ratch/ruby/filetest'
 require 'ratch/ruby/fileutils'
@@ -17,20 +18,21 @@ module Ratch
   #
   class Shell
 
-    # require shell commands
-    Dir[File.dirname(__FILE__) + '/shell/*.rb'].each do |file|
-      require(file) #instance_eval(File.read(file))
-    end
-
     # New Shell object.
-    def initialize(*path_opts)
-      opts = (Hash===path_opts.last ? path_opts.pop : {})
-      path = path_opts
+    #
+    #   Shell.new(:noop=>true)
+    #   Shell.new('..', :quiet=>true)
+    #
+    def initialize(*args)
+      path, opts = parse_arguments(*args)
 
-      @quiet   = opts[:quiet]
-      @noop    = opts[:noop]
-      @verbose = opts[:verbose]
-      @debug   = opts[:debug]
+      opts.rekey!(&:to_sym)
+
+      @_quiet = opts[:quiet]
+      @_noop  = opts[:noop]
+      @_warn  = opts[:warn]
+      @_debug = opts[:debug]
+      #@_force = opts[:force]
 
       if path.empty?
         path = Dir.pwd
@@ -41,7 +43,13 @@ module Ratch
       raise FileNotFound, "#{path}" unless ::File.exist?(path)
       raise FileNotFound, "#{path}" unless ::File.directory?(path)
 
-      @work  = dir(path)
+      @_work  = dir(path)
+    end
+
+    #
+    def parse_arguments(*args)
+      opts = (Hash===args.last ? args.pop : {})
+      return args, opts
     end
 
     #
@@ -66,14 +74,14 @@ module Ratch
     #  end
     #end
 
-    def quiet?   ; @quiet   ; end
-    def debug?   ; @debug   ; end
+    def quiet?  ; @_quiet ; end
+    def warn?   ; @_warn  ; end
+    def debug?  ; @_debug ; end
+    def noop?   ; @_noop  ; end
+    #def force?  ; @_force ; end
 
-    def noop?    ; @noop    ; end
-    def verbose? ; @verbose ; end
-
-    def dryrun?  ; @noop  && @verbose ; end
-    def trace?   ; @debug && @verbose ; end
+    def dryrun?  ; noop?  && warn? ; end
+    def trace?   ; debug? && warn? ; end
 
     # String representation is work directory path.
     def to_s ; work.to_s ; end
@@ -81,12 +89,38 @@ module Ratch
     #
     def ==(other)
       return false unless self.class===other
-      return true  if     @work == other.work
+      return true  if     @_work == other.work
       false
     end
 
     # Present working directory.
     #attr :work
+
+
+    # Provides convenient starting points in the file system.
+    #
+    #   root   #=> #<Pathname:/>
+    #   home   #=> #<Pathname:/home/jimmy>
+    #   work   #=> #<Pathname:/home/jimmy/Documents>
+    #
+    # TODO: Replace these with Folio when Folio's is as capable.
+
+    # Current root path.
+    #def root(*args)
+    #  Pathname['/', *args]
+    #end
+
+    # Current home path.
+    #def home(*args)
+    #  Pathname['~', *args].expand_path
+    #end
+
+    # Current working path.
+    #def work(*args)
+    #  Pathname['.', *args]
+    #end
+
+    #alias_method :pwd, :work
 
   # TODO: Should these take the *args?
 
@@ -102,8 +136,8 @@ module Ratch
 
     # Current working path.
     def work(*args)
-      return @work if args.empty?
-      return dir(@work, *args)
+      return @_work if args.empty?
+      return dir(@_work, *args)
     end
 
     # Alias for #work.
@@ -185,13 +219,18 @@ module Ratch
       end
     end
 
+    # Glob files.
+    #def glob(*args, &blk)
+    #  Dir.glob(*args, &blk)
+    #end
+
     # TODO: Ultimately merge #glob and #multiglob.
-    def multiglob(*a)
-      Dir.multiglob(*a)
+    def multiglob(*args, &blk)
+      Dir.multiglob(*args, &blk)
     end
 
-    def multiglob_r(*a)
-      Dir.multiglob_r(*a)
+    def multiglob_r(*args, &blk)
+      Dir.multiglob_r(*args, &blk)
     end
 
     # Match pattern. Like #glob but returns file objects.
@@ -210,8 +249,8 @@ module Ratch
     # Join paths.
     # TODO: Should this return a new directory object? Or should it change directories?
     def /(path)
-      #@work += dir   # did not work, why?
-      @work = dir(localize(path))
+      #@_work += dir   # did not work, why?
+      @_work = dir(localize(path))
       self
     end
 
@@ -260,22 +299,29 @@ module Ratch
     #
     def cd(path, &block)
       if block
-        work_old = @work
+        work_old = @_work
         begin
-          @work = dir(localize(path))
+          @_work = dir(localize(path))
           locally(&block)
           #mutex.synchronize do
-          #  Dir.chdir(@work){ block.call }
+          #  Dir.chdir(@_work){ block.call }
           #end
         ensure
-          @work = work_old
+          @_work = work_old
         end
       else
-        @work = dir(localize(path))
+        @_work = dir(localize(path))
       end
     end
 
     alias_method :chdir, :cd
+
+
+    # Bonus FileUtils features.
+    #def cd(*a,&b)
+    #  puts "cd #{a}" if dryrun? or trace?
+    #  fileutils.chdir(*a,&b)
+    #end
 
     # -- File IO Shortcuts -----------------------------------------------
 
@@ -541,6 +587,23 @@ module Ratch
       end
     end
 
+#    # Does a path need updating, based on given +sources+?
+#    # This compares mtimes of give paths. Returns false
+#    # if the path needs to be updated.
+#    #
+#    # TODO: Put this in FileTest instead?
+#
+#    def out_of_date?(path, *sources)
+#      return true unless File.exist?(path)
+#
+#      sources = sources.collect{ |source| Dir.glob(source) }.flatten
+#      mtimes  = sources.collect{ |file| File.mtime(file) }
+#
+#      return true if mtimes.empty?  # TODO: This the way to go here?
+#
+#      File.mtime(path) < mtimes.max
+#    end
+
     #
     def uptodate?(path, *sources)
       locally do
@@ -554,6 +617,30 @@ module Ratch
     #  old = localize(old_list)
     #  fileutils.uptodate?(new, old, options)
     #end
+
+=begin
+    # TODO: Deprecate these?
+
+    # Assert that a path exists.
+    def exists!(*paths)
+      abort "path not found #{path}" unless paths.any?{|path| exists?(path)}
+    end
+    alias_method :exist!, :exists! #; module_function :exist!
+    alias_method :path!,  :exists! #; module_function :path!
+
+    # Assert that a given path is a file.
+    def file!(*paths)
+      abort "file not found #{path}" unless paths.any?{|path| file?(path)}
+    end
+
+    # Assert that a given path is a directory.
+    def dir!(*paths)
+      paths.each do |path|
+        abort "Directory not found: '#{path}'." unless  dir?(path)
+      end
+    end
+    alias_method :directory!, :dir! #; module_function :directory!
+=end
 
 =begin
   #############
@@ -701,6 +788,36 @@ module Ratch
           Dir.chdir(work, &block)
         end
       end
+    end
+
+    # TODO: Should naming policy be in a utility extension module?
+
+    #
+    #
+    def naming_policy(*policies)
+      if policies.empty?
+        @naming_policy ||= ['down', 'ext']
+      else
+        @naming_policy = policies
+      end
+    end
+
+    #
+    #
+    def apply_naming_policy(name, ext)
+      naming_policy.each do |policy|
+        case policy.to_s
+        when /^low/, /^down/
+          name = name.downcase
+        when /^up/
+          name = name.upcase
+        when /^cap/
+          name = name.capitalize
+        when /^ext/
+          name = name + ".#{ext}"
+        end
+      end
+      name
     end
 
   private

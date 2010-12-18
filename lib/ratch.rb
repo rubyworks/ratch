@@ -1,6 +1,28 @@
 module Ratch
-  VERSION = "1.1.0"
+  # Access to project metadata.
+  def self.metadata
+    @metadata ||= (
+      require 'yaml'
+      YAML.load(File.dirname(__FILE__) + '/ratch.yml')
+    )
+  end
+
+  # Access to project metadata via constants.
+  def self.const_missing(name)
+    metadata[name.to_s.downcase] || super(name)
+  end
+
+  # TODO: Only here b/c of issue with Ruby 1.8.x.
+  VERSION = metadata['version']
 end
 
-#require 'ratch/shell'
+require 'ratch/script'
+
+# Load utility extension modules.
+require 'ratch/utils/cli'
+require 'ratch/utils/ui'
+require 'ratch/utils/platform'
+require 'ratch/utils/pom'
+#require 'ratch/task'  # TODO: really?
+#require 'ratch/log'
 
