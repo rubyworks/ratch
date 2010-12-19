@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+path = ARGV.shift
+
+require 'plugin'
+name = ARGV.shift
+path = Dir['~/.config/rb/#{name}'].first
+path = path || Plugin.find("rb/#{name}").first  # TODO: this is slow!
+loop do
+  abort "command not found -- #{name}" unless path
+  if File.directory?(path)
+    name = File.join(name, ARGV.shift)
+    path = Dir['~/.config/rb/#{name}'].first || Plugin.find("rb/#{name}").first
+  else
+    break
+  end
+end
+$0 = path  # bug in 1.8.7-p246 puts a size limit on $0
+require 'ratch/script'
+script = Ratch::Script.new
+script.instance_eval(File.read(path), path)

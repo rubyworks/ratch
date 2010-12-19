@@ -1,3 +1,5 @@
+# TODO: Use this with Plugin gem (but rebranded gem)?
+
 # = PathList
 #
 # A PathList is an array containing 1..n paths. It is useful to regroup paths and

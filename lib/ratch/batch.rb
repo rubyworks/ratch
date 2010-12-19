@@ -1,7 +1,9 @@
 module Ratch
 
-  # Treat a list of files in batch.
-  class Pathlist < Array
+  # Proccess a list of files in batch.
+  # The Batch interface mimics the Shell class in most respects.
+  class Batch
+    include Enumerable
 
     #
     attr :local
@@ -9,6 +11,12 @@ module Ratch
     #
     def initialize(local, *globs)
       @local = Pathname.new(local)
+      @list  = FileList.new(*globs)
+    end
+
+    #
+    def each(&blk)
+      @list.each(&blk)
     end
 
     #

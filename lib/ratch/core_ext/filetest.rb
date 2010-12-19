@@ -1,5 +1,7 @@
 module FileTest
 
+  # TODO: SEPARATOR_PAT is already defined? See where that is coming from, is it Ruby?
+
   if File::ALT_SEPARATOR
     SEPARATOR_PAT = /[#{Regexp.quote File::ALT_SEPARATOR}#{Regexp.quote File::SEPARATOR}]/
   else
@@ -60,7 +62,7 @@ module FileTest
     true
   end
 
-  # Chop_basename(path) -> [pre-basename, basename] or nil
+  # chop_basename(path) -> [pre-basename, basename] or nil
   def chop_basename(path)
     base = File.basename(path)
     if /\A#{SEPARATOR_PAT}?\z/ =~ base

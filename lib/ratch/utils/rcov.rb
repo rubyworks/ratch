@@ -1,6 +1,7 @@
 module Ratch
 
-  class Shell
+  #
+  module RCov
 
     # rcov command.
     #

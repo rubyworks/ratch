@@ -1,6 +1,7 @@
 module Ratch
 
-  class Shell
+  #
+  module RDoc
 
     # RDoc command.
     #

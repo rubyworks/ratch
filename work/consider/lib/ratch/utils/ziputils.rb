@@ -41,6 +41,21 @@ module ZipUtils
     end
   end
 
+#    # Compress directory.
+#    #
+#    def compress(format, folder, file=nil, options={})
+#      case format.to_s.downcase
+#      when 'zip'
+#        ziputils.zip(folder, file, options)
+#      when 'tgz'
+#        ziputils.tgz(folder, file, options)
+#      when 'tbz', 'bzip'
+#        ziputils.tar_bzip(folder, file, options)
+#      else
+#        raise ArguementError, "unsupported compression format -- #{format}"
+#      end
+#    end
+
   #
   #
   def gzip(file, tofile=nil, option={})

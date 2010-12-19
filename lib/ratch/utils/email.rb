@@ -1,6 +1,7 @@
 module Ratch
 
-  class Shell
+  # Email utility module provides an easy to use +email+ method.
+  module Email
 
     # Email function to easily send out an email.
     #

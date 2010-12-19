@@ -2,6 +2,7 @@ module Ratch
 
   # Ratch Shell Console
   #
+  # NOTE: Console class is still a work in progress.
   class Console
 
 		attr_accessor :suppress_output
