@@ -1,13 +1,7 @@
 require 'thread'
 #require 'rbconfig'
-require 'ratch/ruby/pathname'
-require 'ratch/ruby/filetest'
-require 'ratch/ruby/fileutils'
-#require 'ratch/core_ext'
-#require 'ratch/ziputils'
-#require 'ratch/xdg'
-
-require 'ratch/pathlist'
+require 'ratch/core_ext'
+require 'ratch/batch'
 
 module Ratch
 
@@ -28,9 +22,10 @@ module Ratch
 
       opts.rekey!(&:to_sym)
 
-      @_quiet = opts[:quiet]
-      @_noop  = opts[:noop]
-      @_warn  = opts[:warn]
+      @_quiet   = opts[:quiet]
+      @_noop    = opts[:noop]
+      @_verbose = opts[:verbose]
+
       @_debug = opts[:debug]
       #@_force = opts[:force]
 
@@ -75,13 +70,13 @@ module Ratch
     #end
 
     def quiet?  ; @_quiet ; end
-    def warn?   ; @_warn  ; end
+    def verbose?   ; @_verbose  ; end
     def debug?  ; @_debug ; end
     def noop?   ; @_noop  ; end
     #def force?  ; @_force ; end
 
-    def dryrun?  ; noop?  && warn? ; end
-    def trace?   ; debug? && warn? ; end
+    def dryrun?  ; noop?  && verbose? ; end
+    def trace?   ; debug? && verbose? ; end
 
     # String representation is work directory path.
     def to_s ; work.to_s ; end
@@ -152,13 +147,23 @@ module Ratch
     end
 
     #
-    def [](name)
-      #FileObject[localize(name)]
-      #Pathname.new(localize(path))
-      Pathlist.new(localize(path))
+    #def [](name)
+    #  #FileObject[localize(name)]
+    #  #Pathname.new(localize(path))
+    #  Pathlist.new(localize(path))
+    #end
+
+    # Returns a Batch of file +patterns+.
+    def batch(*patterns)
+      Batch.new patterns.map{|pattern| localize(pattern)}
     end
 
-    # TODO: should #file and this be the same?
+    # Returns a Batch of file +patterns+, without any exclusions.
+    def batch_all(*patterns)
+      Batch.all patterns.map{|pattern| localize(pattern)}
+    end
+
+    #
     def file(path)
       #FileObject[name]
       raise unless File.file?(path)
@@ -169,12 +174,14 @@ module Ratch
     #  Document.new(name)
     #end
 
+    #
     def dir(path)
       #Directory.new(name)
       raise unless File.directory?(path)
       Pathname.new(localize(path))
     end
 
+    #
     def path(path)
       Pathname.new(localize(path))
     end

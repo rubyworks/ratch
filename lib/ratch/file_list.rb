@@ -84,6 +84,13 @@ module Ratch
       new(*args)
     end
 
+    # Same a #new but removes the default exclusions.
+    def self.all(*args)
+      obj = new(*args)
+      obj.clear_exclude
+      obj
+    end
+
     # Create a file list from the globbable patterns given.  If you wish to
     # perform multiple includes or excludes at object build time, use the
     # "yield self" pattern.
@@ -99,7 +106,7 @@ module Ratch
       @pending_add = []
       @pending = false
       @exclude_patterns = DEFAULT_IGNORE_PATTERNS.dup
-      @exclude_procs = DEFAULT_IGNORE_PROCS.dup
+      @exclude_procs    = DEFAULT_IGNORE_PROCS.dup
       @items = []
       patterns.each { |pattern| include(pattern) }
       yield self if block_given?
@@ -161,7 +168,7 @@ module Ratch
     # Clear all the exclude patterns so that we exclude nothing.
     def clear_exclude
       @exclude_patterns = []
-      @exclude_procs = []
+      @exclude_procs    = []
       self
     end
 

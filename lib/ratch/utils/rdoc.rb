@@ -32,6 +32,7 @@ module Ratch
         rdoc = RDoc::RDoc.new
         rdoc.document(options.to_argv + files)
       end
+
     end
 
   end

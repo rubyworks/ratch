@@ -1,3 +1,5 @@
+require 'ratch/file_list'
+
 module Ratch
 
   # Proccess a list of files in batch.
@@ -9,39 +11,44 @@ module Ratch
     attr :local
 
     #
-    def initialize(local, *globs)
-      @local = Pathname.new(local)
-      @list  = FileList.new(*globs)
+    def initialize(local, *patterns)
+      @local   = Pathname.new(local)
+
+      options = Hash === patterns.last ? patterns.pop : {}
+
+      @verbose = options[:verbose] or options[:dryrun]
+      @noop    = options[:noop]    or options[:dryrun]
+
+      @list    = FileList.new
+
+      patterns.each do |pattern|
+        @list.add(local + pattern)
+      end
     end
 
-    #
+    # Iterate over files.
     def each(&blk)
       @list.each(&blk)
     end
 
     #
+    def size
+      @list.size
+    end
+
+    # TODO: I don't like this method b/c it sets something, but #[]
+    # almost always indicates getting.
     def [](*entries)
       entries.each do |entry|
-        case entry
-        when Pathname
-          push(@local + entry)
-        else
-          concat(Dir.glob(@local + entry).map{ |f| Pathname.new(f) })
-        end
+        @list.add(@local + entry)
       end
       return self
     end
 
-    # relative to local
+    # Returns an Array of file paths relative to +local+.
     def entries
       map{ |entry| entry.sub(local+'/','') }
     end
-
-    #def each
-    #  super{
-    #    yield(@local + entry)
-    #  }
-    #end
 
     #############
     # FileTest  #
@@ -248,22 +255,15 @@ module Ratch
     #  end
     #end
 
-    #
+    # Is +path+ out-of-date in comparsion to all files in batch.
     def outofdate?(path)
       fileutils.outofdate?(path, to_a)
     end
 
-    #
+    # Is +path+ up-to-date in comparsion to all files in batch.
     def uptodate?(path)
       fileutils.uptodate?(path, to_a)
     end
-
-    #
-    #def uptodate?(new, old_list, options=nil)
-    #  new = localize(new)
-    #  old = localize(old_list)
-    #  fileutils.uptodate?(new, old, options)
-    #end
 
     #
     #def method_missing(s, *a, &b)
@@ -271,6 +271,18 @@ module Ratch
     #    e.__send__(s, *a, &b)
     #  end
     #end
+
+    def dryrun?
+      @noop && @verbose
+    end
+
+    def noop?
+      @noop
+    end
+
+    def verbose?
+      @verbose
+    end
 
   private
 
