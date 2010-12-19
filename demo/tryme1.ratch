@@ -2,5 +2,12 @@
 
 puts "Hello World"
 
-p cli
+p arguments
+p quiet?
+p debug?
 
+define_method :okay do
+  "okay"
+end
+
+p okay

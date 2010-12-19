@@ -1,37 +1,20 @@
 = Ratch -- Ruby-based Batch Scripts
 
-  http://ratch.rubyforge.org
+* home: http://rubyworks.github.com/ratch
+* work: http://github.com/rubyworks/ratch
 
 
 == Introduction
 
 Ratch is Ruby-based DSL for building batch scripts. It's intent
-is to ease the burdone a batch script writers, by supplementing
-the standard ruby environamet to be more condusive the needs
+is to ease the burden of batch script writers by supplementing
+the standard ruby environment to be more condusive to the needs
 of batch scripting.
 
 In addition to using Ratch to write stand-alone batch scripts,
 it makes a very powerful library for other applications that
 require batch-like functionality. In general any program that
 access the file system extensively could benifit from it's use.
-
-Path is all about paths. It's provides a reimplementation of the Ruby
-standard Pathname library, Path::Name, a superior globbing
-facility, Path::List and an isolated shell-evironment, Path::Shell.
-
-
-== Installation
-
-Standard installation procedure apply.
-
-  $ gem install ratch
-
-or manually
-
-  $ tar -xzf ratch-1.0.0.tgz
-  $ cd ratch-1.0.0
-  $ setup-rb all
-
 
 
 == Usage
@@ -66,6 +49,18 @@ For details on all the functionality Ratch provides, please refer to
 the API documentation.
 
 
+== Installation
+
+Standard installation procedure apply.
+
+  $ gem install ratch
+
+or manually using Setup.rb
+
+  $ tar -xzf ratch-1.0.0.tgz
+  $ cd ratch-1.0.0
+  $ setup.rb
+
 
 == Development
 
@@ -84,7 +79,7 @@ Developers: You can push to the 'ratch' repository using:
 
 == Copying
 
-Copyright (c) 2007, 2008 Tiger Ops & Thomas Sawyer
+Copyright (c) 2008 Thomas Sawyer
 
-Ratch is licensed under the terms of the MIT license.
+Ratch is licensed under the terms of the Apache 2.0 license.
 

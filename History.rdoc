@@ -1,25 +1,28 @@
 = RELEASE HISTORY
 
-== 1.2.0 // 2010-01-07
+== 1.2.0 | 2010-01-07
 
-This release attends to some admin issues and a few
-light improvements. It also removes Path::Store which
-is being move to a new project.
-
-Changes:
-
-* Add Path::Name#first and #last methods.
-* Fix Path::Name#amass method.
-
-
-== 1.1.0 // 2009-10-21
+Ratch has remerged with the Path gem (formerly Folio), and will be taking over
+for its services from here on. In the process the library has been further
+refined.
 
 Changes:
 
-* Added Path::Name#amass which a more flexible #glob like method.
+* ...
 
 
-== 1.0.0 // 2009-09-22
+== 1.1.0 | 2008-11-21
+
+This is the second public release of Ratch. Folio is now used a Ratch's backend.
+Folio handles a great deal of what Ratch requires, so much of Ratch is now just
+a thin wrapper around Folio.
+
+Changes:
+
+* Overhauled system to use Folio on the backend.
+
+
+== 1.0.0 | 2009-09-22
 
 This is the initial stand-alone release of Path, a collection
 of Path-related classes partially spun-off from Ruby Facets
@@ -27,7 +30,5 @@ and briefly called Folio.
 
 Changes:
 
-* 1 Major Enhancement
-
-    * Happy Birthday!
+* Happy Birthday!
 
