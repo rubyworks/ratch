@@ -6,6 +6,34 @@ require 'fileutils'
 #end
 
 
+
+# Could the prompt act as a delegate to file objects?
+# If we did this then the file prompt could actually "cd" into a file.
+#
+=begin :nodoc:
+  def initialize(path)
+    @path = path = ::File.join(*path)
+
+    raise FileNotFound unless ::File.exist?(path)
+
+    if ::File.blockdev?(path) or chardev?(path)
+      @delegate = Device.new(path)
+    elsif ::File.link?(path)
+      @delegate = Link.new(path)
+    elsif ::File.directory?(path)
+      @delegate = Directory.new(path)
+    else
+      @delegate = Document.new(path)
+    end
+  end
+
+  def delete
+    @delegate.delete
+    @delegate = nil
+  end
+=end
+#++
+
 module Folio
 
   # = File Object

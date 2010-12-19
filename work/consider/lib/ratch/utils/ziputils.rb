@@ -515,3 +515,130 @@ end
 #     end
 #
 #   end
+
+=begin
+  #############
+  # ZipUtils  #
+  #############
+
+  # Compress directory to file. Format is determined
+  # by file extension.
+  #def compress(folder, file, options={})
+  #  #folder = localize(file)
+  #  #file   = localize(file)
+  #  locally do
+  #    doc(ziputils.compress(folder, file, options))
+  #  end
+  #end
+
+  #
+  def gzip(file, tofile=nil, options={})
+    #file   = localize(file)
+    #tofile = localize(tofile) if tofile
+    locally do
+      file(ziputils.gzip(file, tofile, options))
+    end
+  end
+
+  #
+  def bzip(file, tofile=nil, options={})
+    #file   = localize(file)
+    #tofile = localize(tofile) if tofile
+    locally do
+      doc(ziputils.bzip(file, tofile, options))
+    end
+  end
+
+  # Create a zip file of a directory.
+  def zip(folder, file=nil, options={})
+    #folder = localize(folder)
+    #file   = localize(file)
+    locally do
+      doc(ziputils.zip(folder, file, options))
+    end
+  end
+
+  #
+  def tar(folder, file=nil, options={})
+    #folder = localize(folder)
+    #file   = localize(file)
+    locally do
+      doc(ziputils.tar_gzip(folder, file, options))
+    end
+  end
+
+  # Create a tgz file of a directory.
+  def tar_gzip(folder, file=nil, options={})
+    #folder = localize(folder)
+    #file   = localize(file)
+    locally do
+      doc(ziputils.tar_gzip(folder, file, options))
+    end
+  end
+  alias_method :tgz, :tar_gzip
+
+  # Create a tar.bz2 file of a directory.
+  def tar_bzip2(folder, file=nil, options={})
+    #folder = localize(folder)
+    #file   = localize(file)
+    locally do
+      doc(ziputils.tar_bzip2(folder, file, options))
+    end
+  end
+
+  def ungzip(file, options)
+    #file   = localize(file)
+    locally do
+      ziputils.ungzip(file, options)
+    end
+  end
+
+  def unbzip2(file, options)
+    #file   = localize(file)
+    locally do
+      ziputils.unbzip2(file, options)
+    end
+  end
+
+  def unzip(file, options)
+    #file   = localize(file)
+    locally do
+      ziputils.unzip(file, options)
+    end
+  end
+
+  def untar(file, options)
+    #file   = localize(file)
+    locally do
+      ziputils.untar(file, options)
+    end
+  end
+
+  def untar_gzip(file, options)
+    #file   = localize(file)
+    locally do
+      ziputils.untar_gzip(file, options)
+    end
+  end
+
+  def untar_bzip2(file, options)
+    #file   = localize(file)
+    locally do
+      ziputils.untar_bzip2(file, options)
+    end
+  end
+
+  # Returns ZipUtils module based on mode.
+  def ziputils
+    if dryrun?
+      ::ZipUtils::DryRun
+    elsif noop?
+      ::ZipUtils::Noop
+    elsif trace?
+      ::ZipUtils::Verbose
+    else
+      ::ZipUtils
+    end
+  end
+=end
+
