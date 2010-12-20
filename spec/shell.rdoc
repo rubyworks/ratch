@@ -17,15 +17,15 @@ When no path argument is provided to the initializer, the present working path
 is used. The path is stored as a Pathname object.
 
   shell = Ratch::Shell.new
-  shell.work == Pathname.new(Dir.pwd)
+  shell.work.assert = Pathname.new(Dir.pwd).expand_path
 
 Otherwise the path given is used.
 
   shell = Ratch::Shell.new('.')
-  shell.work == Pathname.new('.')
+  shell.work.assert = Pathname.new('.').expand_path
 
   shell = Ratch::Shell.new('..')
-  shell.work == Pathname.new('..')
+  shell.work.assert = Pathname.new('..').expand_path
 
 An error is raise if the path does not exist.
 
@@ -91,9 +91,13 @@ locations in the file system, namely #work, #home, #parent and #root.
   shell = Ratch::Shell.new
 
   shell.work.assert == Pathname.new('.').expand_path
+  shell.parent.assert == Pathname.new('..').expand_path
+
+The current user's home directoryis accessible via the #home method.
+
   shell.home.assert == Pathname.new('~').expand_path
 
-  shell.parent.assert == Pathname.new('..').expand_path
+The system's root folder can be accessed via #root method.
 
   shell.root.assert == Pathname.new('/').expand_path
 
@@ -107,12 +111,16 @@ This will work regardless if the path actually exists or not. On the other hand,
 the #file and #dir methods will do the same, but will raise an error if the path
 given is not an existing file or a directory, respectively.
 
-  expect Ratch::FileNotFound do
-    shell.file('foo.txt')
-  end
+  shell.file('foo.txt')
 
   expect Ratch::FileNotFound do
-    shell.dir('lib')
+    shell.file('not.txt')
+  end
+
+  shell.dir('zoo')
+
+  expect Ratch::FileNotFound do
+    shell.dir('not')
   end
 
 == Entries
@@ -167,7 +175,7 @@ Shell can be used to easily read the contents of a file.
 
   shell = Ratch::Shell.new
 
-  shell.read('foo.txt').assert == 'FOO TEXT'
+  shell.read('foo.txt').assert == 'SAMPLE FOO.TXT'
 
 As well as write a new file.
 

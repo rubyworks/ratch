@@ -1,0 +1,34 @@
+= Ratch::Script
+
+The Ratch::Script class is the context used for evaluating Ratch-based
+batch files, aka shell scripts.
+
+  require 'ratch/script'
+
+In most every respect the Script class behaves like Ratch::Shell, except that
+its initializer takes a file name to be evaluated.
+
+Let's say we have a Ratch script called 'foo.ratch':
+
+  #!/usr/bin/env ratch
+
+  @test_message = "Hello World!"
+
+We can load the script via Ratch::Script.new.
+
+  script = Ratch::Script.new('foo.ratch')
+
+The file name can be accessed from the script using #script_file.
+
+  script.script_file.assert == 'foo.ratch'
+
+To execute a script, use the `#execute!` method, or it's alias `#run!`.
+
+  script.execute!
+
+We can see that the script did indeed execute by plubming for the instance
+variable it set.
+
+  msg = script.instance_variable_get('@test_message')
+  msg.assert == "Hello World!"
+

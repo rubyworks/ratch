@@ -1,3 +1,4 @@
+require 'ratch/core_ext'
 require 'ratch/file_list'
 
 module Ratch

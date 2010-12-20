@@ -1,8 +1,6 @@
-#require 'plugin'    # rename to plugin_manager ?
-
 require 'ratch/core_ext'
-require 'ratch/plugin'
 require 'ratch/shell'
+#require 'ratch/plugin'
 
 # CLI extension is required.
 require 'ratch/utils/cli'
@@ -32,8 +30,8 @@ module Ratch
     end
 
     #
-    def initialize(script, *args)
-      @_script = script
+    def initialize(file, *args)
+      @_file = file.to_s
 
       #extend self
 
@@ -45,16 +43,23 @@ module Ratch
     end
 
     # Returns the file name of the script.
-    def script
-      @_script
+    def script_file
+      @_file
     end
 
     # Be cautious about calling this in a script --an infinite loop could
     # easily ensue.
     def execute!
-      $0 = script
-      instance_eval(File.read(script), script, 1)
+      old = $0
+      begin
+        $0 = script_file
+        instance_eval(File.read(script_file), script_file, 1)
+      ensure
+        $0 = old
+      end
     end
+
+    alias_method :run!, :execute!
 
     #
     #def print(str=nil)
@@ -85,15 +90,19 @@ module Ratch
       puts message if trace?
     end
 
-    # If method is missing, try the singleton class. This allows the script
-    # to use methods like +define_method+.
-    #
-    # TODO: Perhaps it would be best to limit the selection of methods?
-    def method_missing(sym, *args, &blk)
-      (class << self; self; end).__send__(sym, *args, &blk)
+    # Pass-thru to singleton class.
+    def define_method(name, &block)
+      (class << self; self; end).__send__(:define_method, &block)
     end
+
+    ## If method is missing, try the singleton class. This allows the script
+    ## to use methods like +define_method+.
+    ##
+    ## TODO: Perhaps it would be best to limit the selection of methods?
+    #def method_missing(sym, *args, &blk)
+    #  (class << self; self; end).__send__(sym, *args, &blk)
+    #end
 
   end
 
 end
-

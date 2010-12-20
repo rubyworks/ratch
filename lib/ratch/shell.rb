@@ -5,6 +5,10 @@ require 'ratch/batch'
 
 module Ratch
 
+  # TODO: Better base class?
+  class FileNotFound < StandardError
+  end
+
   # = Shell Prompt class
   #
   # Ratch Shell object provides a limited file system shell in code.
@@ -22,11 +26,9 @@ module Ratch
 
       opts.rekey!(&:to_sym)
 
-      @_quiet   = opts[:quiet]
-      @_noop    = opts[:noop]
-      @_verbose = opts[:verbose]
-
-      @_debug = opts[:debug]
+      @_quiet = opts[:quiet]
+      @_noop  = opts[:noop]  || opts[:dryrun]
+      @_trace = opts[:trace] || opts[:dryrun]
       #@_force = opts[:force]
 
       if path.empty?
@@ -38,8 +40,10 @@ module Ratch
       raise FileNotFound, "#{path}" unless ::File.exist?(path)
       raise FileNotFound, "#{path}" unless ::File.directory?(path)
 
-      @_work  = dir(path)
+      @_work = Pathname.new(path).expand_path
     end
+
+    private
 
     #
     def parse_arguments(*args)
@@ -51,6 +55,8 @@ module Ratch
     def mutex
       @mutex ||= Mutex.new
     end
+
+    public
 
     # Opertaton mode. This can be :noop, :verbose or :dryrun.
     # The later is the same as the first two combined.
@@ -69,28 +75,34 @@ module Ratch
     #  end
     #end
 
-    def quiet?  ; @_quiet ; end
-    def verbose?   ; @_verbose  ; end
-    def debug?  ; @_debug ; end
-    def noop?   ; @_noop  ; end
+    def quiet?   ; @_quiet ; end
+    def trace?   ; @_trace ; end
+    def noop?    ; @_noop  ; end
+
     #def force?  ; @_force ; end
 
-    def dryrun?  ; noop?  && verbose? ; end
-    def trace?   ; debug? && verbose? ; end
+    def dryrun?  ; noop? && trace? ; end
+
+    #
+    alias_method :verbose?, :trace?
 
     # String representation is work directory path.
     def to_s ; work.to_s ; end
 
-    #
+    # Two Shell's are equal if they have the same working path.
     def ==(other)
-      return false unless self.class===other
-      return true  if     @_work == other.work
-      false
+      return false unless other.is_a?(self.class)
+      return false unless work == other.work
+      true
     end
 
-    # Present working directory.
-    #attr :work
-
+    # Same as #== except that #noop? must also be the same.
+    def eql?(other)
+      return false unless other.is_a?(self.class)
+      return false unless work == other.work
+      return false unless noop?  == other.noop?
+      true
+    end
 
     # Provides convenient starting points in the file system.
     #
@@ -115,9 +127,7 @@ module Ratch
     #  Pathname['.', *args]
     #end
 
-    #alias_method :pwd, :work
-
-  # TODO: Should these take the *args?
+  # TODO: Should these take *args?
 
     # Root location.
     def root(*args)
@@ -126,7 +136,7 @@ module Ratch
 
     # Current home path.
     def home(*args)
-      dir('~', *args)
+      dir(File.expand_path('~'), *args)
     end
 
     # Current working path.
@@ -136,7 +146,7 @@ module Ratch
     end
 
     # Alias for #work.
-    alias_method :pwd, :work
+    #alias_method :pwd, :work
 
     # Return a new prompt with the same location.
     # NOTE: Use #dup or #clone ?
@@ -164,10 +174,17 @@ module Ratch
     end
 
     #
+    def path(path)
+      Pathname.new(localize(path))
+    end
+    alias_method :pathname, :path
+
+    #
     def file(path)
       #FileObject[name]
-      raise unless File.file?(path)
-      Pathname.new(localize(path))
+      path = localize(path)
+      raise FileNotFound unless File.file?(path)
+      Pathname.new(path)
     end
 
     #def doc(name)
@@ -177,40 +194,47 @@ module Ratch
     #
     def dir(path)
       #Directory.new(name)
-      raise unless File.directory?(path)
-      Pathname.new(localize(path))
+      path = localize(path)
+      raise FileNotFound unless File.directory?(path)
+      Pathname.new(path)
     end
-
-    #
-    def path(path)
-      Pathname.new(localize(path))
-    end
-    alias_method :pathname, :path
 
     # Lists all entries.
     def entries
       work.entries
     end
-    alias_method :ls, :entries
+
+    #alias_method :ls, :entries
 
     # Lists directory entries.
     def directory_entries
-      work.entries.select{ |d| d.directory? }
+      entries.select{ |d| d.directory? }
     end
 
-    # Lists directory entries.
+    #
+    alias_method :dir_entries, :directory_entries
+
+    # Lists file entries.
     def file_entries
-      work.entries.select{ |f| f.file? }
+      entries.select{ |f| f.file? }
     end
 
-    # Returns list of files objects.
-    #def files ; work.files ; end
+    # Likes entries but omits '.' and '..' paths.
+    def pathnames
+      work.entries - %w{. ..}.map{|f|Pathname.new(f)}
+    end
 
     # Returns list of directories.
-    #def documents ; work.documents ; end
+    def directories
+      pathnames.select{ |f| f.directory? }
+    end
+    alias_method :dirs, :directories
+    alias_method :folders, :directories
 
-    # Returns list of documents.
-    def directories ; work.directories ; end
+    # Returns list of files.
+    def files
+      pathnames.select{ |f| f.file? }
+    end
 
     # Glob pattern. Returns matches as strings.
     def glob(*patterns, &block)
@@ -240,7 +264,9 @@ module Ratch
       Dir.multiglob_r(*args, &blk)
     end
 
+=begin
     # Match pattern. Like #glob but returns file objects.
+    # TODO: There is no FileObject any more. Should there be?
     def match(*patterns, &block)
       opts = (::Integer===patterns.last ? patterns.pop : 0)
       patterns = localize(patterns)
@@ -252,6 +278,7 @@ module Ratch
         matches
       end
     end
+=end
 
     # Join paths.
     # TODO: Should this return a new directory object? Or should it change directories?
@@ -264,7 +291,7 @@ module Ratch
     # Alias for #/.
     alias_method '+', '/'
 
-    #
+    # TODO: Tie this into the System class.
     def system(cmd)
       locally do
         super(cmd)
@@ -274,7 +301,7 @@ module Ratch
     # Shell runner.
     def sh(cmd)
       #puts "--> system call: #{cmd}" if verbose?
-      puts cmd if verbose?
+      puts cmd if trace?
       return true if noop?
       #locally do
         if quiet?
@@ -321,8 +348,8 @@ module Ratch
       end
     end
 
+    #
     alias_method :chdir, :cd
-
 
     # Bonus FileUtils features.
     #def cd(*a,&b)
@@ -339,13 +366,13 @@ module Ratch
 
     # Write file.
     def write(path, text)
-      puts "write #{path}" if verbose?
+      $stderr.puts "write #{path}" if trace?
       File.open(localize(path), 'w'){ |f| f << text } unless noop?
     end
 
     # Append to file.
     def append(path, text)
-      puts "append #{path}" if verbose?
+      $stderr.puts "append #{path}" if trace?
       File.open(localize(path), 'a'){ |f| f << text } unless noop?
     end
 
@@ -649,119 +676,6 @@ module Ratch
     alias_method :directory!, :dir! #; module_function :directory!
 =end
 
-=begin
-  #############
-  # ZipUtils  #
-  #############
-
-  # Compress directory to file. Format is determined
-  # by file extension.
-  #def compress(folder, file, options={})
-  #  #folder = localize(file)
-  #  #file   = localize(file)
-  #  locally do
-  #    doc(ziputils.compress(folder, file, options))
-  #  end
-  #end
-
-  #
-  def gzip(file, tofile=nil, options={})
-    #file   = localize(file)
-    #tofile = localize(tofile) if tofile
-    locally do
-      file(ziputils.gzip(file, tofile, options))
-    end
-  end
-
-  #
-  def bzip(file, tofile=nil, options={})
-    #file   = localize(file)
-    #tofile = localize(tofile) if tofile
-    locally do
-      doc(ziputils.bzip(file, tofile, options))
-    end
-  end
-
-  # Create a zip file of a directory.
-  def zip(folder, file=nil, options={})
-    #folder = localize(folder)
-    #file   = localize(file)
-    locally do
-      doc(ziputils.zip(folder, file, options))
-    end
-  end
-
-  #
-  def tar(folder, file=nil, options={})
-    #folder = localize(folder)
-    #file   = localize(file)
-    locally do
-      doc(ziputils.tar_gzip(folder, file, options))
-    end
-  end
-
-  # Create a tgz file of a directory.
-  def tar_gzip(folder, file=nil, options={})
-    #folder = localize(folder)
-    #file   = localize(file)
-    locally do
-      doc(ziputils.tar_gzip(folder, file, options))
-    end
-  end
-  alias_method :tgz, :tar_gzip
-
-  # Create a tar.bz2 file of a directory.
-  def tar_bzip2(folder, file=nil, options={})
-    #folder = localize(folder)
-    #file   = localize(file)
-    locally do
-      doc(ziputils.tar_bzip2(folder, file, options))
-    end
-  end
-
-  def ungzip(file, options)
-    #file   = localize(file)
-    locally do
-      ziputils.ungzip(file, options)
-    end
-  end
-
-  def unbzip2(file, options)
-    #file   = localize(file)
-    locally do
-      ziputils.unbzip2(file, options)
-    end
-  end
-
-  def unzip(file, options)
-    #file   = localize(file)
-    locally do
-      ziputils.unzip(file, options)
-    end
-  end
-
-  def untar(file, options)
-    #file   = localize(file)
-    locally do
-      ziputils.untar(file, options)
-    end
-  end
-
-  def untar_gzip(file, options)
-    #file   = localize(file)
-    locally do
-      ziputils.untar_gzip(file, options)
-    end
-  end
-
-  def untar_bzip2(file, options)
-    #file   = localize(file)
-    locally do
-      ziputils.untar_bzip2(file, options)
-    end
-  end
-=end
-
   #private ?
 
     # Returns a path local to the current working path.
@@ -782,10 +696,12 @@ module Ratch
         # do not localize an absolute path
         return local_path if absolute?(local_path)
         File.expand_path(File.join(work.to_s, local_path))
+        #(work + local_path).expand_path.to_s
       end
     end
 
-    #
+    # Change directory to the shell's work directory,
+    # process the +block+ and then return to user directory.
     def locally(&block)
       if work.to_s == Dir.pwd
         block.call
@@ -835,34 +751,19 @@ module Ratch
         ::FileUtils::DryRun
       elsif noop?
         ::FileUtils::Noop
-      elsif verbose?
+      elsif trace?
         ::FileUtils::Verbose
       else
         ::FileUtils
       end
     end
 
-=begin
-    # Returns ZipUtils module based on mode.
-    def ziputils
-      if dryrun?
-        ::ZipUtils::DryRun
-      elsif noop?
-        ::ZipUtils::Noop
-      elsif verbose?
-        ::ZipUtils::Verbose
-      else
-        ::ZipUtils
-      end
-    end
-=end
-
     # This may be used by script commands to allow for per command
-    # noop and verbose options. Global options have precedence.
+    # noop and trace options. Global options have precedence.
     def util_options(options)
-      noop    = noop?    || options[:noop]    || options[:dryrun]
-      verbose = verbose? || options[:verbose] || options[:dryrun]
-      return noop, verbose
+      noop  = noop?  || options[:noop]  || options[:dryrun]
+      trace = trace? || options[:trace] || options[:dryrun]
+      return noop, trace
     end
 
   public#class
@@ -874,32 +775,4 @@ module Ratch
   end
 
 end
-
-
-# Could the prompt act as a delegate to file objects?
-# If we did this then the file prompt could actually "cd" into a file.
-#
-=begin :nodoc:
-  def initialize(path)
-    @path = path = ::File.join(*path)
-
-    raise FileNotFound unless ::File.exist?(path)
-
-    if ::File.blockdev?(path) or chardev?(path)
-      @delegate = Device.new(path)
-    elsif ::File.link?(path)
-      @delegate = Link.new(path)
-    elsif ::File.directory?(path)
-      @delegate = Directory.new(path)
-    else
-      @delegate = Document.new(path)
-    end
-  end
-
-  def delete
-    @delegate.delete
-    @delegate = nil
-  end
-=end
-#++
 
