@@ -1,0 +1,190 @@
+= Ratch::Shell
+
+The Shell class mimics a basic shell command line prompt.
+
+  require 'ratch/shell'
+
+The demonstration sets up sample directory consisting of the following
+entires in the tmp/qed directory:
+
+  foo.txt
+  zoo/
+  zoo/bar.txt
+
+== Initial Path
+
+When no path argument is provided to the initializer, the present working path
+is used. The path is stored as a Pathname object.
+
+  shell = Ratch::Shell.new
+  shell.work == Pathname.new(Dir.pwd)
+
+Otherwise the path given is used.
+
+  shell = Ratch::Shell.new('.')
+  shell.work == Pathname.new('.')
+
+  shell = Ratch::Shell.new('..')
+  shell.work == Pathname.new('..')
+
+An error is raise if the path does not exist.
+
+  expect Ratch::FileNotFound do
+    Ratch::Shell.new('not_a_path')
+  end
+
+== Processing Options
+
+The +initialize+ method accepts a few options. The +quiet+ option supresses
+all output to stdout.
+
+  shell = Ratch::Shell.new(:quiet=>true)
+  shell.assert.quiet?
+  
+The +noop+ option prevents any actual writing to disk --the process will
+simply pretend that it has done so.
+
+  shell = Ratch::Shell.new(:noop=>true)
+  shell.assert.noop? 
+
+The +trace+ option provides step by step feedback on what is taking place.
+
+  shell = Ratch::Shell.new(:trace=>true)
+  shell.assert.trace? 
+
+The +dryrun+ option is simply a compbination of +noop+ and +trace+.
+
+  shell = Ratch::Shell.new(:dryrun=>true)
+  shell.assert.noop?
+  shell.assert.trace?
+  shell.assert.dryrun?
+
+== Equality
+
+For two Shell objects to be considered equal, via #==, they must both
+be instances of Ratch::Shell (or subclass) and have the same working
+path.
+
+  shell1 = Ratch::Shell.new('.')
+  shell2 = Ratch::Shell.new('.')
+  shell1.assert = shell2
+
+  shell1 = Ratch::Shell.new('.')
+  shell2 = Ratch::Shell.new('..')
+  shell1.refute = shell2
+
+The more strict #eql? method also ensures that the +noop+ option is the same.
+
+  shell1 = Ratch::Shell.new('.', :noop=>true)
+  shell2 = Ratch::Shell.new('.', :noop=>true)
+  shell1.assert.eql? shell2
+
+  shell1 = Ratch::Shell.new('.', :noop=>true)
+  shell2 = Ratch::Shell.new('.', :noop=>false)
+  shell1.refute.eql? shell2
+
+== File System Locations
+
+The Shell class provides a few convenient methods for accessing common
+locations in the file system, namely #work, #home, #parent and #root.
+
+  shell = Ratch::Shell.new
+
+  shell.work.assert == Pathname.new('.').expand_path
+  shell.home.assert == Pathname.new('~').expand_path
+
+  shell.parent.assert == Pathname.new('..').expand_path
+
+  shell.root.assert == Pathname.new('/').expand_path
+
+In addition the Shell class provides methods for accessing pathnames
+relative to the current shell directory. The #path (or #pathname) method
+returns a Pathname object with the given path.
+
+  shell.path('foo')
+
+This will work regardless if the path actually exists or not. On the other hand,
+the #file and #dir methods will do the same, but will raise an error if the path
+given is not an existing file or a directory, respectively.
+
+  expect Ratch::FileNotFound do
+    shell.file('foo.txt')
+  end
+
+  expect Ratch::FileNotFound do
+    shell.dir('lib')
+  end
+
+== Entries
+
+Shell#entries works just like Dir.entries except that each path is returned
+as a Pathname object.
+
+  shell = Ratch::Shell.new
+
+  shell.entries.assert == ['foo.txt', '.', '..', 'zoo'].map{|f| Pathname.new(f)}
+
+The #file_entries method limits the list to files only.
+
+  shell.file_entries.assert == ['foo.txt'].map{|f| Pathname.new(f)}
+
+Whereas #directory_entries (or #dir_entries) limits the list to directories.
+
+  shell.directory_entries.assert == ['.', '..', 'zoo'].map{|f| Pathname.new(f)}
+
+Of course, having to deal with the '.' and '..' is annoying most of the time
+so Shell provides more convenient methods. Like #entries, #pathnames 
+provides a list of entries less the dot paths.
+
+  shell.pathnames.assert == ['foo.txt', 'zoo'].map{|f| Pathname.new(f)}
+
+The #directories (also #folders) method limits this list to directories only.
+
+  shell.directories.assert == ['zoo'].map{|f| Pathname.new(f)}
+
+And #files works out to be the same as #file_entires.
+
+  shell.files.assert == ['foo.txt'].map{|f| Pathname.new(f)}
+
+== Globbing
+
+  shell = Ratch::Shell.new
+
+  shell.glob('*').assert == ['foo.txt', 'zoo']
+
+== File Testing
+
+Shell provides an interface to most of FileTest's functions. 
+
+  shell.assert.exist?('foo.txt')
+  shell.assert.file?('foo.txt')
+  shell.refute.directory?('foo.txt')
+  shell.assert.directory?('zoo')
+
+== File IO
+
+Shell can be used to easily read the contents of a file.
+
+  shell = Ratch::Shell.new
+
+  shell.read('foo.txt').assert == 'FOO TEXT'
+
+As well as write a new file.
+
+  shell.write('baz.txt', 'BAZ TEXT')
+  shell.read('baz.txt').assert == 'BAZ TEXT'
+
+Or append to an existing file.
+
+  shell.append('baz.txt', ' 2')
+  shell.read('baz.txt').assert == 'BAZ TEXT 2'
+
+The shell command supports many file methods, including #rm.
+
+  shell.rm('baz.txt')
+
+== System Calls
+
+The Shell class can also call out to system commands. This is handled
+by the Ratch::System class. See the system.rdoc file for details.
+
