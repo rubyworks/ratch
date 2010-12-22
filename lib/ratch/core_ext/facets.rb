@@ -3,13 +3,12 @@
 # the following libs are all that it used.
 
 require 'facets/array/not_empty'
-require 'facets/dir/multiglob'   # DEPRECATE b/c of new #glob.
+require 'facets/dir/multiglob'            # DEPRECATE: when new #glob is working.
 require 'facets/module/basename'
 require 'facets/module/alias_accessor'
-require 'facets/kernel/ask'
-require 'facets/kernel/silence' # FIXME
+require 'facets/kernel/yes'               # pulls in #ask and #no? too.
+require 'facets/kernel/silence'           # FIXME ???
 
 require 'facets/pathname'
 require 'facets/filetest'
 require 'facets/fileutils'
-
