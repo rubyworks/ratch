@@ -57,19 +57,21 @@ class Hash
   # The array is accepted in the format of Ruby
   # method arguments --ie. [arg1, arg2, ..., hash]
   def to_argv
-    flags = map do |f,v|
+    flags = []
+    each do |f,v|
       m = f.to_s.size == 1 ? '-' : '--'
       case v
       when Array
-        v.collect{ |e| "#{m}#{f}='#{e}'" }.join(' ')
+        v.each{ |e| flags << "#{m}#{f}='#{e}'" }
       when true
-        "#{m}#{f}"
+        flags << "#{m}#{f}"
       when false, nil
-        ''
+        # nothing
       else
-        "#{m}#{f}='#{v}'"
+        flags << "#{m}#{f}='#{v}'"
       end
     end
+    flags
   end
 
   # Turn a hash into arguments.
