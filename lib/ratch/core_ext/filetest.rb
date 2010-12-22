@@ -1,31 +1,5 @@
 module FileTest
 
-  # TODO: SEPARATOR_PAT is already defined? See where that is coming from, is it Ruby?
-
-  if File::ALT_SEPARATOR
-    SEPARATOR_PAT = /[#{Regexp.quote File::ALT_SEPARATOR}#{Regexp.quote File::SEPARATOR}]/
-  else
-    SEPARATOR_PAT = /#{Regexp.quote File::SEPARATOR}/
-  end
-
-  ###############
-  module_function
-  ###############
-
-  # Predicate method for testing whether a path is absolute.
-  # It returns +true+ if the pathname begins with a slash.
-  def absolute?(path)
-    !relative?(path)
-  end
-
-  # The opposite of #absolute?
-  def relative?(path)
-    while r = chop_basename(path.to_s)
-      path, basename = r
-    end
-    path == ''
-  end
-
   # Return a cached list of the PATH environment variable.
   # This is a support method used by #bin?
   def command_paths
@@ -50,35 +24,6 @@ module FileTest
   #  task.chomp!('!')
   #  task if FileTest.file?(task) && FileTest.executable?(task)
   #end
-
-  # Is a path considered reasonably "safe"?
-  #
-  # TODO: Make more robust.
-  def safe?(path)
-    case path
-    when *[ '/', '/*', '/**/*' ]
-      return false
-    end
-    true
-  end
-
-  # chop_basename(path) -> [pre-basename, basename] or nil
-  def chop_basename(path)
-    base = File.basename(path)
-    if /\A#{SEPARATOR_PAT}?\z/ =~ base
-      return nil
-    else
-      return path[0, path.rindex(base)], base
-    end
-  end
-  #private :chop_basename
-
-  # Does the +parent+ contain the +child+?
-  def contains?(child, parent=Dir.pwd)
-    parent = File.expand_path(parent)
-    child = File.expand_path(child)
-    child.sub(parent,'') != child
-  end
 
 end
 
