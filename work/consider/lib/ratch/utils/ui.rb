@@ -2,18 +2,6 @@ module Ratch
 
   module UI
 
-    #def ask(question)
-    #end
-
-    # Convenient method to get simple console reply.
-    #def ask(question, answers=nil)
-    #  stdout.print "#{question}"
-    #  stdout.print " [#{answers}] " if answers
-    #  stdout.flush
-    #  until inp = stdin.gets ; sleep 1 ; end
-    #  inp.strip
-    #end
-
     #
     def yes?(question)
       case ask(question).downcase
