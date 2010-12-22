@@ -1,9 +1,15 @@
 module Ratch
 
-  # FIXME: This module needs major work. MEthods #files and
-  # stage_transfer need to either be generalized and moved to
+  # FIXME: This module needs major work. Methods #ftp_files and
+  # ftp_stage_transfer need to either be generalized and moved to
   # Shell or Script, or removed.
-  module FTP
+  #
+  module FTPUtils
+
+    def self.included(base)
+      require 'net/ftp'
+      require 'net/sftp'
+    end
 
     # Use ftp to upload files.
     #
@@ -12,9 +18,9 @@ module Ratch
 
       # set transfer rules
       if keys.stage
-        trans = stage_transfer(keys.stage)
+        trans = ftp_stage_transfer(keys.stage)
       else
-        files(keys.dir, keys.copy).each do |from|
+        ftp_files(keys.dir, keys.copy).each do |from|
           trans << [from,from]
         end
       end
@@ -29,7 +35,6 @@ module Ratch
           puts "ftp put #{f} #{t}"
         end
       else
-        require 'net/ftp'
         Net::FTP.open(keys.host) do |ftp|
           ftp.login(keys.user) #password?
           ftp.chdir(keys.root)
@@ -48,9 +53,9 @@ module Ratch
 
       # set transfer rules
       if keys.stage
-        trans = stage_transfer(keys.stage)
+        trans = ftp_stage_transfer(keys.stage)
       else
-        files(keys.dir, keys.copy).each do |from|
+        ftp_files(keys.dir, keys.copy).each do |from|
           trans << [from,from]
         end
       end
@@ -65,7 +70,6 @@ module Ratch
           puts "sftp put #{f} #{t}"
         end
       else
-        require 'net/sftp'
         Net::SFTP.start(keys.host, keys.user, keys.pass) do |sftp|
           #sftp.login( user )
           sftp.chdir(keys.root)
@@ -78,7 +82,7 @@ module Ratch
     end
 
     # Put together the list of files to copy.
-    def files( dir, copy )
+    def ftp_files( dir, copy )
       Dir.chdir(dir) do
         del, add = copy.partition{ |f| /^[-]/ =~ f }
 
@@ -88,7 +92,7 @@ module Ratch
 
         #del.concat(must_exclude)
 
-        files = []
+        ftp_files = []
         add.each{ |g| files += Dir.glob(g) }
         del.each{ |g| files -= Dir.glob(g) }
 
@@ -108,7 +112,7 @@ module Ratch
     #
     #  fromdir/file todir/file
     #
-    def stage_transfer( list )
+    def ftp_stage_transfer( list )
       trans = []
       list.each do |line|
         trans << Shellwords.shellwords(line)

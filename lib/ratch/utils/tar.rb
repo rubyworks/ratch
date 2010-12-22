@@ -1,25 +1,27 @@
+require 'ratch/utils/zlib'
+
 module Ratch
 
+  # Utility methods for working with tarballs archives.
   #--
   # TODO: Add compress support ?
   # TODO: Add bzip support ?
   #++
-  module Tar
+  module TarUtils
 
-    #
+    # When included include GZipUtils too.
     def self.included(base)
-      require 'zlib'
+      #require 'zlib'
+      include ZLibUtils
       begin
         require 'archive/tar/minitar'
       rescue LoadError
-        #require 'ratch/minitar'
+        require 'ratch/minitar'
       end
     end
 
     # Tar
-    #
     def tar(folder, file=nil, options={})
-      Shell.require_minitar
       noop, verbose = *util_options(options)
       file ||= File.basename(File.expand_path(folder)) + '.tar'
       cmd = "tar -cf #{file} #{folder}"
@@ -34,9 +36,7 @@ module Ratch
     end
 
     # Untar
-    #
     def untar(file, options={})
-      Shell.require_minitar
       noop, verbose = *util_options(options)
       #file ||= File.basename(File.expand_path(folder)) + '.tar'
       cmd = "untar #{file}"
@@ -51,9 +51,7 @@ module Ratch
     end
 
     # Tar Gzip
-    #
     def tar_gzip(folder, file=nil, options={})
-      Shell.require_minitar
       noop, verbose = *util_options(options)
       file ||= File.basename(File.expand_path(folder)) + '.tar.gz' # '.tgz' which ?
       cmd = "tar --gzip -czf #{file} #{folder}"
@@ -73,7 +71,6 @@ module Ratch
     #
     # FIXME: Write unified untar_gzip function.
     def untar_gzip(file, options={})
-      Shell.require_minitar
       untar(ungzip(file, options), options)
     end
 

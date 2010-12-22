@@ -1,7 +1,7 @@
-module Path
+module Ratch
 
   #
-  module GZip
+  module ZlibUtils
 
     #
     def self.included(base)
@@ -9,7 +9,6 @@ module Path
     end
 
     # Create a gzip file.
-    #
     def gzip(file, tofile=nil, options={})
       noop, verbose = *util_options(options)
 
@@ -28,7 +27,6 @@ module Path
     end
 
     # Unpack a gzip file.
-    #
     def ungzip(file, options={})
       noop, verbose = *util_options(options)
 

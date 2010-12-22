@@ -1,7 +1,7 @@
 module Ratch
 
-  # Email utility module provides an easy to use +email+ method.
-  module Email
+  # The Mail utility module provides an easy to use +email+ method.
+  module EmailUtils
 
     # Email function to easily send out an email.
     #

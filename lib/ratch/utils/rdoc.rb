@@ -1,7 +1,7 @@
 module Ratch
 
-  #
-  module RDoc
+  # Provides a pure-Ruby method for generating RDocs.
+  module RDocUtils
 
     # RDoc command.
     #
@@ -32,8 +32,10 @@ module Ratch
         rdoc = RDoc::RDoc.new
         rdoc.document(options.to_argv + files)
       end
-
     end
+
+    #
+    # TODO: Implement ri doc generator.
 
   end
 

@@ -1,23 +1,27 @@
-require 'facets/argvector'
-
 module Ratch
 
-  #
+  # TODO: How best to support CLI interface?
   module CLI
 
-   def initialize(*args)
-     argv = ArgVector.new(ARGV)
+    #
+    def self.included(base)
+      require 'facets/argvector'
+    end
 
-     @arguments, parameters = *argv.parameters
+    #
+    def initialize(*args)
+      argv = ArgVector.new(ARGV)
 
-     args << {} unless Hash === args.last
+      @arguments, parameters = *argv.parameters
 
-     opts = args.last
+      args << {} unless Hash === args.last
 
-     opts.merge!(parameters)
+      opts = args.last
 
-     super(*args)
-   end
+      opts.merge!(parameters)
+
+      super(*args)
+    end
 
     #
     def arguments

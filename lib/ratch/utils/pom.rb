@@ -1,7 +1,7 @@
 class Ratch
 
   # Methods for utilizing Ruby POM.
-  module POM
+  module POMUtils
 
     def self.included(base)
       require 'pom'
