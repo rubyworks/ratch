@@ -11,6 +11,10 @@ module Ratch
       require 'net/sftp'
     end
 
+    def self.extended(base)
+      included(base)
+    end
+
     # Use ftp to upload files.
     #
     def ftp(keys)

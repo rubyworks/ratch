@@ -8,6 +8,10 @@ module Ratch
       require 'zlib'
     end
 
+    def self.extended(base)
+      included(base)
+    end
+
     # Create a gzip file.
     def gzip(file, tofile=nil, options={})
       noop, verbose = *util_options(options)

@@ -11,6 +11,10 @@ module Ratch
       require 'yaml'
     end
 
+    def self.extended(base)
+      included(base)
+    end
+
     # Load configuration data from a file. Results are cached and an empty
     # Hash is returned if the file is not found.
     #

@@ -3,33 +3,36 @@ module Ratch
   # Provides a pure-Ruby method for generating RDocs.
   module RDocUtils
 
+    DEFAULT_RDOC_OPTIONS = {
+      :quiet => true
+    }
+
     # RDoc command.
     #
     # :call-seq:
     #   rdoc(file1, file2, ..., :opt1 => val1, ...)
     #
-    def rdoc(*files_options)
+    def rdoc(*files)
       require 'rdoc/rdoc'
 
-      options = Hash===options.last ? options.pop : {}
+      options = Hash===files.last ? files.pop : {}
       options.rekey!(&:to_s)
-
-      files = files_options
 
       options['title'] ||= options.delete('T')
 
-      options['debug']   = options['debug']   || debug?
-      options['quiet']   = options['quiet']   || quiet?
-      options['verbose'] = options['verbose'] || verbose?
+      options['debug']   = options['debug']   #|| debug?
+      options['quiet']   = options['quiet']   #|| quiet?
+      options['verbose'] = options['verbose'] #|| verbose?
 
-      # apply pom
-      options['title'] ||= metadata.title
+      # apply pom (todo?)
+      #options['title'] ||= metadata.title
 
-      # apply defaults
-      options = defaults.rdoc.to_h.merge(options)
+      options = DEFAULT_RDOC_OPTIONS.merge(options)
 
       locally do
         rdoc = RDoc::RDoc.new
+        opts = options.to_argv + files
+        $stderr.puts("rdoc " + opts.join(' ')) if ($VERBOSE || $DEBUG)
         rdoc.document(options.to_argv + files)
       end
     end

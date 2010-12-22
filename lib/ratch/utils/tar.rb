@@ -20,6 +20,11 @@ module Ratch
       end
     end
 
+    #
+    def self.extended(base)
+      included(base)
+    end
+
     # Tar
     def tar(folder, file=nil, options={})
       noop, verbose = *util_options(options)

@@ -1,4 +1,4 @@
-class Ratch
+module Ratch
 
   # Methods for utilizing Ruby POM.
   module POMUtils
@@ -7,9 +7,13 @@ class Ratch
       require 'pom'
     end
 
+    def self.extended(base)
+      included(base)
+    end
+
     #
     def project
-      @project ||= POM::Project.new
+      @project ||= ::POM::Project.new
     end
 
   end

@@ -9,6 +9,11 @@ module Ratch
     end
 
     #
+    def self.extended(base)
+      require 'facets/argvector'
+    end
+
+    #
     def initialize(*args)
       argv = ArgVector.new(ARGV)
 
