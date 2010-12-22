@@ -4,7 +4,10 @@ require 'ratch/file_list'
 module Ratch
 
   # Proccess a list of files in batch.
+  #
   # The Batch interface mimics the Shell class in most respects.
+  #
+  # TODO: Should FileList use Pathname, or only in Batch?
   class Batch
     include Enumerable
 
@@ -14,27 +17,61 @@ module Ratch
     #
     def initialize(local, *patterns)
       @local   = Pathname.new(local)
+      @options = (Hash === patterns.last ? patterns.pop : {}).rekey(&:to_sym)
 
-      options = Hash === patterns.last ? patterns.pop : {}
-
-      @verbose = options[:verbose] or options[:dryrun]
-      @noop    = options[:noop]    or options[:dryrun]
-
-      @list    = FileList.new
+      @list = FileList.all
 
       patterns.each do |pattern|
-        @list.add(local + pattern)
+        @list.add(File.join(local,pattern))
       end
     end
 
-    # Iterate over files.
-    def each(&blk)
-      @list.each(&blk)
+    # Returns the the underlying FileList.
+    def list
+      @list
+    end
+
+    # Iterate over pathnames.
+    def each(&block)
+      list.each{ |file| block.call(Pathname.new(file)) }
     end
 
     #
     def size
       @list.size
+    end
+
+    # Returns an Array of file paths relative to +local+.
+    def entries
+      map{ |entry| entry.sub(local.to_s+'/','') }
+    end
+
+    #
+    def to_a
+      list.map{ |file| Pathname.new(file) }
+    end
+
+    # A more descriptive name for #to_a.
+    alias_method :pathnames, :to_a
+
+    # Return the list of files as Strings, rather than Pathname objects.
+    def filenames
+      list.to_a
+    end
+
+    # Limit list to files.
+    def file!
+      @list = list.select{ |f| File.file?(f) }
+    end
+
+    # Limit list to directories.
+    def directory!
+      @list = list.select{ |f| File.directory?(f) }
+    end
+
+    # Limit list to directories.
+    def select!(&block)
+      @list = FileList.all(*to_a.select{ |f| block.call(f) })
     end
 
     # TODO: I don't like this method b/c it sets something, but #[]
@@ -46,20 +83,18 @@ module Ratch
       return self
     end
 
-    # Returns an Array of file paths relative to +local+.
-    def entries
-      map{ |entry| entry.sub(local+'/','') }
-    end
-
     #############
     # FileTest  #
     #############
 
-    #
-    def size
+    # This is called #size in FileTest but must be renamed to 
+    # avoid the clash with the Enumerable mixin.
+    def byte_size
       inject(0){ |sum, path| sum + FileTest.size(path) }
     end
-    alias_method :size?, :size
+ 
+    # An alias for #byte_size.
+    alias_method :size?, :byte_size
 
     def directory?  ; all?{ |path| FileTest.directory?(path)  } ; end
     def symlink?    ; all?{ |path| FileTest.symlink?(path)    } ; end
@@ -94,6 +129,8 @@ module Ratch
     def identical?(other)
       all?{ |path| FileTest.identical?(path, other)  }
     end
+
+    # TODO: Really?
     alias_method :compare_file, :identical?
     alias_method :cmp, :identical?
 
@@ -123,126 +160,213 @@ module Ratch
       @local
     end
 
-    #
+    # Make a directory for every entry.
     def mkdir(options={})
-      map{ |dir| fileutils.mkdir(dir, options) }
+      list.map{ |dir| fileutils.mkdir(dir, options) }
     end
 
+    # Make a directory for every entry.
     def mkdir_p(options={})
-      map{ |dir| fileutils.mkdir_p(dir, options) }
+      list.map{ |dir| fileutils.mkdir_p(dir, options) }
     end
     alias_method :mkpath, :mkdir_p
 
+    # Remove every directory.
     def rmdir(options={})
-      map{ |dir| fileutils.rmdir(dir, options) }
+      list.map{ |dir| fileutils.rmdir(dir, options) }
     end
 
     # ln(list, destdir, options={})
-    def ln(new, options={})
-      src = to_a
+    def ln(dir, options={})
+      src = list.to_a
       #new = localize(new)
-      fileutils.ln(src, new, options)
+      fileutils.ln(src, dir, options)
     end
     alias_method :link, :ln
 
     # ln_s(list, destdir, options={})
-    def ln_s(new, options={})
-      src = to_a
+    def ln_s(dir, options={})
+      src = list.to_a
       #new = localize(new)
-      fileutils.ln_s(src, new, options)
+      fileutils.ln_s(src, dir, options)
     end
     alias_method :symlink, :ln_s
 
-    def ln_sf(new, options={})
-      src = to_a
+    def ln_sf(dir, options={})
+      src = list.to_a
       #new = localize(new)
-      fileutils.ln_sf(src, new, options)
+      fileutils.ln_sf(src, dir, options)
     end
 
     # cp(list, dir, options={})
-    def cp(dest, options={})
-      src  = to_a
+    def cp(dir, options={})
+      src  = list.to_a
       #dest = localize(dest)
-      fileutils.cp(src, dest, options)
+      fileutils.cp(src, dir, options)
     end
     alias_method :copy, :cp
 
     # cp_r(list, dir, options={})
-    def cp_r(dest, options={})
-      src  = to_a
+    def cp_r(dir, options={})
+      src  = list.to_a
       #dest = localize(dest)
-      fileutils.cp_r(src, dest, options)
+      fileutils.cp_r(src, dir, options)
     end
 
     # mv(list, dir, options={})
-    def mv(dest, options={})
-      src  = to_a
+    def mv(dir, options={})
+      src  = list.to_a
       #dest = localize(dest)
-      fileutils.mv(src, dest, options)
+      fileutils.mv(src, dir, options)
     end
     alias_method :move, :mv
 
+    #
     def rm(options={})
-      list = to_a
+      list = list.to_a
       fileutils.rm(list, options)
     end
+
+    # Alias for #rm.
     alias_method :remove, :rm
 
+    # Remove, recursively removing the contents of directories.
     def rm_r(options={})
-      list = to_a
+      list = list.to_a
       fileutils.rm_r(list, options)
     end
 
-    def rm_f(list, options={})
-      list = to_a
+    # Remove, with force option.
+    def rm_f(options={})
+      list = list.to_a
       fileutils.rm_f(list, options)
     end
 
-    def rm_rf(list, options={})
-      list = to_a
+    # Remove with force option, recursively removing the contents of directories.
+    def rm_rf(options={})
+      list = list.to_a
       fileutils.rm_rf(list, options)
     end
 
-    def install(src, dest, mode, options={})
-      src  = to_a
+    # Install files to a directory with given mode. Unlike #cp, this will
+    # not copy the file if an up-to-date copy already exists.
+    def install(dir, mode, options={})
+      src = list.to_a
       #dest = localize(dest)
-      fileutils.install(src, dest, mode, options)
+      fileutils.install(src, dir, mode, options)
     end
 
-    def chmod(mode, list, options={})
-      list = to_a
+    # Change mode of files.
+    def chmod(mode, options={})
+      list = list.to_a
       fileutils.chmod(mode, list, options)
     end
 
-    def chmod_r(mode, list, options={})
-      list = to_a
+    # Change mode of files, following directories recursively.
+    def chmod_r(mode, options={})
+      list = list.to_a
       fileutils.chmod_r(mode, list, options)
     end
     #alias_method :chmod_R, :chmod_r
 
-    def chown(user, group, list, options={})
-      list = to_a
+    # Change owner of files.
+    def chown(user, group, options={})
+      list = list.to_a
       fileutils.chown(user, group, list, options)
     end
 
-    def chown_r(user, group, list, options={})
-      list = to_a
+    # Change owner of files, following directories recursively.
+    def chown_r(user, group, options={})
+      list = list.to_a
       fileutils.chown_r(user, group, list, options)
     end
     #alias_method :chown_R, :chown_r
 
-    def touch(list, options={})
-      list = to_a
+    # Touch each file.
+    def touch(options={})
+      list = list.to_a
       fileutils.touch(list, options)
     end
 
-    #
+    # Stage files. This is like #install but uses hardlinks.
     def stage(dir)
       #dir   = localize(directory)
       #files = localize(files)
-      #fileutils.stage(dir, work, entries)
-      fileutils.stage(dir, local, entries)
+      fileutils.stage(dir, local, list.to_a)
     end
+
+    # Convenient alias for #map_mv.
+    def rename(options={}, &block)
+      map_mv(options, &block)
+    end
+
+    # Rename the list of files in batch, using a block to determine the new
+    # names. If the block returns nil, the the file will not be renamed.
+    #
+    # This is similar to #mv, but allows for detailed control over the renaming.
+    #
+    # Unlike the other `map_*` methods, this changes the Batch list in-place,
+    # since the files renamed no loner exist.
+    #
+    # Returns the changed FileList instance.
+    def map_mv(options={}, &block)
+      @list = map_send(:mv, options={}, &block)
+    end
+
+    #
+    def map_ln(options={}, &block)
+      map_send(:ln, options={}, &block)
+    end
+
+    #
+    def map_ln_s(options={}, &block)
+      map_send(:ln_s, options={}, &block)
+    end
+
+    #
+    def map_ln_sf(options={}, &block)
+      map_send(:ln_sf, options={}, &block)
+    end
+
+    #
+    def map_cp(options={}, &block)
+      map_send(:cp, options={}, &block)
+    end
+
+    # Like #cp_r but take a block that provides the new name.
+    def map_cp_r(options={}, &block)
+      map_send(:cp_r, options={}, &block)
+    end
+
+    # Like #cp_r but take a block that provides the new name.
+    def map_cp_rf(options={}, &block)
+      map_send(:cp_rf, options={}, &block)
+    end
+
+  private
+
+    # Generic name mapping procedure which can be used for any
+    # FileUtils method that has a `src, dest` interface.
+    #--
+    # TODO: Make public?
+    #++
+    def map_send(method, options={}, &block)
+      map = {}
+      list.each do |file|
+        if dest = block.call(file)
+          map[file] = dest
+          rev << dest
+        else
+          rev << file
+        end
+      end
+      map.each do |src, dest|
+        fileutils.__send__(method, src, dest, options)
+      end
+      FileList.all(*map.values)
+    end
+
+  public
 
     # An intergrated glob like method that takes a set of include globs,
     # exclude globs and ignore globs to produce a collection of paths.
@@ -267,22 +391,18 @@ module Ratch
     end
 
     #
-    #def method_missing(s, *a, &b)
-    #  entries.map do |e|
-    #    e.__send__(s, *a, &b)
-    #  end
-    #end
-
-    def dryrun?
-      @noop && @verbose
-    end
-
     def noop?
-      @noop
+      @options[:noop] or @options[:dryrun]
     end
 
+    #
     def verbose?
-      @verbose
+      @options[:verbose] or @options[:dryrun]
+    end
+
+    #
+    def dryrun?
+      noop? && verbose?
     end
 
   private

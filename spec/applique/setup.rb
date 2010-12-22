@@ -1,8 +1,8 @@
 require 'fileutils'
 
-#Before :demo do
-#  clear_working_directory!
-#end
+Before :demo do
+  clear_working_directory!
+end
 
 When "consisting of the following entires" do |text|
   text.split(/\s+/).each do |file|

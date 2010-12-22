@@ -1,3 +1,72 @@
 = Ratch::Batch
 
+The Batch class makes makes it possible to work with multiple files
+at once as easily as one would work with a single file.
+
+  require 'ratch/batch'
+
+The demonstration sets up a sample directory consisting of the following
+entires in the temporary working directory:
+
+  foo.txt
+  bar.txt
+  zoo/
+  zoo/one.txt
+  zoo/two.txt
+
+To create a new Batch instance, pass the the base directory and any 
+inclusion patterns to the initializer.
+
+  batch = Ratch::Batch.new('.', '*.txt')
+
+In this example we will get every `.txt` file at the toplevel of the base
+directory.
+
+  batch.to_a.assert = ['./foo.txt', './bar.txt'].to_pathnames
+
+To get a list of files relative to the base directory, use #entries.
+
+  batch.entries.assert = ['foo.txt', 'bar.txt'].to_pathnames
+
+Internally a Batch instance tracks the files selected via a Ratch::FileList
+object. This can be directly accessed via the #list method.
+
+  batch.list.assert.is_a?(Ratch::FileList)
+
+  batch.list.to_a.assert = ['./foo.txt', './bar.txt']
+
+As with the delegated FileTest methods of the Shell class, Batch can test
+the set of files in agregate. For example, to ensure all the entries
+are files we can use the #file? method.
+
+  batch.assert.file?
+
+Likewise to enusre none the entires are directories we can use the #directory?
+method.
+
+  batch.refute.directory?
+
+The Batch list can be reduced to just files or just directories via the #file!
+and #directory! methods.
+
+  batch = Ratch::Batch.new('.', '*')
+  batch.file!
+  batch.filenames.assert = ['./foo.txt', './bar.txt']
+
+  batch = Ratch::Batch.new('.', '*')
+  batch.directory!
+  batch.filenames.assert = ['./zoo']
+
+The Batch class is enumerable, both #each and #size are defined.
+
+  batch = Ratch::Batch.new('.', '*.txt')
+
+  batch.each do |pathname|
+    pathname.assert.is_a?(Pathname)
+  end
+
+  batch.size.assert = 2
+
+Any enumerable method is likewise applicable.
+
 
