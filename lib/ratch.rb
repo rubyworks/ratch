@@ -20,9 +20,9 @@ require 'ratch/script'
 
 # Load utility extension modules.
 require 'ratch/utils/cli'
-require 'ratch/utils/ui'
-require 'ratch/utils/platform'
 require 'ratch/utils/pom'
-#require 'ratch/task'  # TODO: really?
-#require 'ratch/log'
+require 'ratch/utils/rdoc'
+#require 'ratch/utils/email'
+#require 'ratch/utils/tar'
+#require 'ratch/utils/zlib'
 
