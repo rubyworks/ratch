@@ -5,8 +5,9 @@ contact: trans <transfire@gmail.com>
 
 requires:
   - facets 2.9.1+
-  - syckle (build)
-  - qed (test)
+  - ko 1.2.0+ (test)
+  - qed       (test)
+  - syckle    (build)
 
 description:
   Ratch is a Ruby-based batch scripting language.
