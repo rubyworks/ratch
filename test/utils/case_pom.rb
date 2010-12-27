@@ -2,10 +2,8 @@ require 'ratch'
 
 KO.case "Ratch::POMUtils" do
 
-  work_location 'pom_sample'
-
-  before :all do
-    stage 'fixtures/pom_sample'
+  def initialize
+    stage_fixture 'fixtures/pom_sample'
 
     @shell = Ratch::Shell.new
     @shell.extend(Ratch::POMUtils)
