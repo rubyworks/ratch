@@ -12,33 +12,55 @@ module Ratch
     include Enumerable
 
     #
-    attr :local
+    def self.[](*patterns)
+      new('.', *patterns)
+    end
 
     #
     def initialize(local, *patterns)
       @local   = Pathname.new(local)
       @options = (Hash === patterns.last ? patterns.pop : {}).rekey(&:to_sym)
 
-      @list = FileList.all
+      @file_list = FileList.all
 
       patterns.each do |pattern|
-        @list.add(File.join(local,pattern))
+        if @local == Pathname.new('.')
+          @list.add(pattern)
+        else
+          @list.add(File.join(local,pattern))
+        end
       end
     end
 
-    # Returns the the underlying FileList.
-    def list
-      @list
+    #
+    attr :local
+
+    # Returns the the underlying FileList object.
+    def file_list
+      @file_list
     end
 
     # Iterate over pathnames.
     def each(&block)
-      list.each{ |file| block.call(Pathname.new(file)) }
+      @file_list.each{ |file| block.call(Pathname.new(file)) }
     end
 
-    #
+    # Returns the Integer size of the list of files.
     def size
-      @list.size
+      @file_list.size
+    end
+
+    # Return the list of files as Pathname objects.
+    def to_a
+      @file_list.map{ |file| Pathname.new(file) }
+    end
+
+    # Return the list of files as Pathname objects.
+    alias_method :pathnames, :to_a
+
+    # Returns the list of files as Strings, rather than Pathname objects.
+    def list
+      @file_list.to_a
     end
 
     # Returns an Array of file paths relative to +local+.
@@ -46,41 +68,20 @@ module Ratch
       map{ |entry| entry.sub(local.to_s+'/','') }
     end
 
-    #
-    def to_a
-      list.map{ |file| Pathname.new(file) }
-    end
-
-    # A more descriptive name for #to_a.
-    alias_method :pathnames, :to_a
-
-    # Return the list of files as Strings, rather than Pathname objects.
-    def filenames
-      list.to_a
-    end
-
     # Limit list to files.
     def file!
-      @list = list.select{ |f| File.file?(f) }
+      @file_list = @file_list.select{ |f| File.file?(f) }
     end
 
     # Limit list to directories.
     def directory!
-      @list = list.select{ |f| File.directory?(f) }
+      @file_list = @file_list.select{ |f| File.directory?(f) }
     end
 
-    # Limit list to directories.
+    # Limit list to selection block.
     def select!(&block)
-      @list = FileList.all(*to_a.select{ |f| block.call(f) })
-    end
-
-    # TODO: I don't like this method b/c it sets something, but #[]
-    # almost always indicates getting.
-    def [](*entries)
-      entries.each do |entry|
-        @list.add(@local + entry)
-      end
-      return self
+      #@file_list = FileList.all(*to_a.select{ |f| block.call(f) })
+      @file_list = @file_list.select{ |f| block.call(f) })
     end
 
     #############
@@ -116,7 +117,7 @@ module Ratch
     def executable? ; all?{ |path| FileTest.executable?(path) } ; end
     def safe?       ; all?{ |path| FileTest.safe?(path)       } ; end
 
-    # Will these work since all paths are localized?
+    # TODO: Will this work since all paths are localized?
     def relative?   ; all?{ |path| FileTest.relative?(path)   } ; end
     def absolute?   ; all?{ |path| FileTest.absolute?(path)   } ; end
 
@@ -127,7 +128,7 @@ module Ratch
     alias_method :dir?, :directory?
 
     def identical?(other)
-      all?{ |path| FileTest.identical?(path, other)  }
+      all?{ |path| FileTest.identical?(path, other) }
     end
 
     # TODO: Really?
@@ -155,18 +156,29 @@ module Ratch
     # remove_entry_secure
     # compare_stream
 
-    # Present working directory. (?)
+    # Present working directory.
+    # TODO: Does this make sense?
     def pwd
       @local
     end
 
     # Make a directory for every entry.
     def mkdir(options={})
+      list.each do |dir|
+        if File.exist?(dir)
+          raise Errno::EEXIST, "File exists - #{dir}"
+        end
+      end
       list.map{ |dir| fileutils.mkdir(dir, options) }
     end
 
     # Make a directory for every entry.
     def mkdir_p(options={})
+      list.each do |dir|
+        if File.exist?(dir) && !File.directory?(dir)
+          raise Errno::EEXIST, "File exists - #{dir}"
+        end
+      end
       list.map{ |dir| fileutils.mkdir_p(dir, options) }
     end
     alias_method :mkpath, :mkdir_p
@@ -178,46 +190,46 @@ module Ratch
 
     # ln(list, destdir, options={})
     def ln(dir, options={})
-      src = list.to_a
+      #src = list.to_a
       #new = localize(new)
-      fileutils.ln(src, dir, options)
+      fileutils.ln(list, dir, options)
     end
     alias_method :link, :ln
 
     # ln_s(list, destdir, options={})
     def ln_s(dir, options={})
-      src = list.to_a
+      #src = list.to_a
       #new = localize(new)
-      fileutils.ln_s(src, dir, options)
+      fileutils.ln_s(list, dir, options)
     end
     alias_method :symlink, :ln_s
 
     def ln_sf(dir, options={})
-      src = list.to_a
+      #src = list.to_a
       #new = localize(new)
-      fileutils.ln_sf(src, dir, options)
+      fileutils.ln_sf(list, dir, options)
     end
 
     # cp(list, dir, options={})
     def cp(dir, options={})
-      src  = list.to_a
+      #src  = list.to_a
       #dest = localize(dest)
-      fileutils.cp(src, dir, options)
+      fileutils.cp(list, dir, options)
     end
     alias_method :copy, :cp
 
     # cp_r(list, dir, options={})
     def cp_r(dir, options={})
-      src  = list.to_a
+      #src  = list.to_a
       #dest = localize(dest)
-      fileutils.cp_r(src, dir, options)
+      fileutils.cp_r(list, dir, options)
     end
 
     # mv(list, dir, options={})
     def mv(dir, options={})
-      src  = list.to_a
+      #src  = list.to_a
       #dest = localize(dest)
-      fileutils.mv(src, dir, options)
+      fileutils.mv(list, dir, options)
     end
     alias_method :move, :mv
 
@@ -232,59 +244,59 @@ module Ratch
 
     # Remove, recursively removing the contents of directories.
     def rm_r(options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.rm_r(list, options)
     end
 
     # Remove, with force option.
     def rm_f(options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.rm_f(list, options)
     end
 
     # Remove with force option, recursively removing the contents of directories.
     def rm_rf(options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.rm_rf(list, options)
     end
 
     # Install files to a directory with given mode. Unlike #cp, this will
     # not copy the file if an up-to-date copy already exists.
     def install(dir, mode, options={})
-      src = list.to_a
+      #src = list.to_a
       #dest = localize(dest)
-      fileutils.install(src, dir, mode, options)
+      fileutils.install(list, dir, mode, options)
     end
 
     # Change mode of files.
     def chmod(mode, options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.chmod(mode, list, options)
     end
 
     # Change mode of files, following directories recursively.
     def chmod_r(mode, options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.chmod_r(mode, list, options)
     end
     #alias_method :chmod_R, :chmod_r
 
     # Change owner of files.
     def chown(user, group, options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.chown(user, group, list, options)
     end
 
     # Change owner of files, following directories recursively.
     def chown_r(user, group, options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.chown_r(user, group, list, options)
     end
     #alias_method :chown_R, :chown_r
 
     # Touch each file.
     def touch(options={})
-      list = list.to_a
+      #list = list.to_a
       fileutils.touch(list, options)
     end
 
@@ -292,7 +304,8 @@ module Ratch
     def stage(dir)
       #dir   = localize(directory)
       #files = localize(files)
-      fileutils.stage(dir, local, list.to_a)
+      #list = list.to_a
+      fileutils.stage(dir, local, list)
     end
 
     # Convenient alias for #map_mv.
@@ -301,7 +314,7 @@ module Ratch
     end
 
     # Rename the list of files in batch, using a block to determine the new
-    # names. If the block returns nil, the the file will not be renamed.
+    # names. If the block returns nil, the file will not be renamed.
     #
     # This is similar to #mv, but allows for detailed control over the renaming.
     #
@@ -310,40 +323,66 @@ module Ratch
     #
     # Returns the changed FileList instance.
     def map_mv(options={}, &block)
-      @list = map_send(:mv, options={}, &block)
+      @file_list = map_send(:mv, options={}, &block)
     end
 
+    # Hard link the list of files in batch, using a block to determine the new
+    # names. If the block returns nil, the file will not be linked.
     #
+    # This is similar to #ln, but allows for detailed control over the link names.
     def map_ln(options={}, &block)
       map_send(:ln, options={}, &block)
     end
 
+    # Soft link the list of files in batch, using a block to determine the new
+    # names. If the block returns nil, the file will not be linked.
     #
+    # This is similar to #ln_s, but allows for detailed control over the link names.
     def map_ln_s(options={}, &block)
       map_send(:ln_s, options={}, &block)
     end
 
+    # Force soft linking of the list of files in batch, using a block to 
+    # determine the new names. If the block returns nil, the file will not
+    # be linked.
     #
+    # This is similar to #ln_sf, but allows for detailed control over the
+    # link names.
     def map_ln_sf(options={}, &block)
       map_send(:ln_sf, options={}, &block)
     end
 
+    # Copy the list of files in batch, using a block to determine the new
+    # file names. If the block returns nil, the file will not be copied.
     #
+    # This is similar to #cp, but allows for detailed control over the new
+    # file names.
     def map_cp(options={}, &block)
       map_send(:cp, options={}, &block)
     end
 
-    # Like #cp_r but take a block that provides the new name.
+    # Copy the list of files recursively in batch, using a block to determine
+    # the new file names. If the block returns nil, the file will not be copied.
+    #
+    # This is similar to #cp_r, but allows for detailed control over the new
+    # file names.
     def map_cp_r(options={}, &block)
       map_send(:cp_r, options={}, &block)
     end
 
-    # Like #cp_r but take a block that provides the new name.
+    # Force copy the list of files recursively in batch, using a block to
+    # determine the new file names. If the block returns nil, the file will not
+    # be copied.
+    #
+    # This is similar to #cp_rf, but allows for detailed control over the new
+    # file names.
     def map_cp_rf(options={}, &block)
       map_send(:cp_rf, options={}, &block)
     end
 
   private
+
+# TODO: need to do error checking for map methods
 
     # Generic name mapping procedure which can be used for any
     # FileUtils method that has a `src, dest` interface.
