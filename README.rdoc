@@ -19,6 +19,8 @@ access the file system extensively could benifit from it's use.
 
 == Usage
 
+=== Batch Scripting
+
 To use for your own scripts, simply add a bang line.
 
   #!/usr/bin/env ratch
@@ -26,24 +28,32 @@ To use for your own scripts, simply add a bang line.
 On Windows, of course, you will want to associate the .ratch extension
 name to the ratch executable instead.
 
-To use Ratch as a library, simply require 'ratch', and subclass.
+=== As a Library
+
+To use Ratch as a library, require 'ratch' and create an instance of
+Ratch::Shell.
+
+If you wish to extend Ratch::Shell for your application, it is recommend
+that you either subclass Ratch::Shell, e.g.
 
   require 'ratch'
 
-  class MyClass < Ratch::Service
+  class MyClass < Ratch::Shell
 
 
   end
 
-Ratch also provides a delegated service which automatically supplies
-method_missing() to delegate to the given *context*. This is called
-a Ratch Plugin.
+Or delegate to a Ratch::Shell instance, e.g.
 
-  class MyClass < Ratch::Plugin
+  require 'ratch'
+
+  class MyClass
+
+    def initialize(path)
+      @shell = Ratch::Shell.new(path)
+    end
 
   end
-
-  MyClass.new(context)
 
 For details on all the functionality Ratch provides, please refer to
 the API documentation.
