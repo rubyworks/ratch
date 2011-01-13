@@ -25,9 +25,9 @@ module Ratch
 
       patterns.each do |pattern|
         if @local == Pathname.new('.')
-          @list.add(pattern)
+          @file_list.add(pattern)
         else
-          @list.add(File.join(local,pattern))
+          @file_list.add(File.join(local,pattern))
         end
       end
     end
@@ -81,7 +81,7 @@ module Ratch
     # Limit list to selection block.
     def select!(&block)
       #@file_list = FileList.all(*to_a.select{ |f| block.call(f) })
-      @file_list = @file_list.select{ |f| block.call(f) })
+      @file_list = @file_list.select{ |f| block.call(f) }
     end
 
     #############
@@ -370,19 +370,19 @@ module Ratch
       map_send(:cp_r, options={}, &block)
     end
 
-    # Force copy the list of files recursively in batch, using a block to
-    # determine the new file names. If the block returns nil, the file will not
-    # be copied.
-    #
-    # This is similar to #cp_rf, but allows for detailed control over the new
-    # file names.
-    def map_cp_rf(options={}, &block)
-      map_send(:cp_rf, options={}, &block)
-    end
+#    # Force copy the list of files recursively in batch, using a block to
+#    # determine the new file names. If the block returns nil, the file will not
+#    # be copied.
+#    #
+#    # This is similar to #cp_rf, but allows for detailed control over the new
+#    # file names.
+#    def map_cp_rf(options={}, &block)
+#      map_send(:cp_rf, options={}, &block)
+#    end
 
   private
 
-# TODO: need to do error checking for map methods
+    SAFE_METHODS = [:ln]
 
     # Generic name mapping procedure which can be used for any
     # FileUtils method that has a `src, dest` interface.
@@ -390,19 +390,53 @@ module Ratch
     # TODO: Make public?
     #++
     def map_send(method, options={}, &block)
+
       map = {}
       list.each do |file|
         if dest = block.call(file)
           map[file] = dest
-          rev << dest
-        else
-          rev << file
         end
       end
+
+      if options[:safe] or !options[:force] or SAFE_METHODS.include?(method) 
+        ensure_safe(map)
+      end
+
       map.each do |src, dest|
         fileutils.__send__(method, src, dest, options)
       end
       FileList.all(*map.values)
+    end
+
+    # Given a map of source to destination, this method ensures
+    # a FileUtils operation can is "safe" --that the destination does not
+    # yet and exist and/or the source and destination are compatible. 
+    # If nota file rrror is raised.
+    def ensure_safe(map)
+      map.each do |src, dest|
+        raise unless File.exist?(src)
+        if File.directory?(src)
+          if File.directory?(dest)
+            new_map = {}
+            Dir.entries(src).each |e|
+              next if e == '.' or e == '..'
+              new_map[File.join(src, e)] = File.join(dest, e)
+            end
+            ensure_safe_destination(new_map)
+          else
+            raise Errno::EISDIR, "Is a directory - #{src}"
+          end
+        else
+          if File.directory?(dest)
+            check = File.join(dest, src)
+            if File.exist?(check)
+              raise Errno::EEXIST, "File exists - #{check}"
+            end
+          else
+            raise Errno::EEXIST, "File exists - #{dest}" if File.exist?(dest)
+          end
+        end
+      end
     end
 
   public
