@@ -58,6 +58,13 @@ Or delegate to a Ratch::Shell instance, e.g.
 For details on all the functionality Ratch provides, please refer to
 the API documentation.
 
+== Extras
+
+Ratch also includes the `ludo` command, which stands for "lookup and do".
+It will ascend up the directory tree searching for a matching executable 
+script. If it finds one it will execute the script relative the currently
+ascended directory.
+
 
 == Installation
 
