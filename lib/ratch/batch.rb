@@ -418,7 +418,7 @@ module Ratch
         if File.directory?(src)
           if File.directory?(dest)
             new_map = {}
-            Dir.entries(src).each |e|
+            Dir.entries(src).each do |e|
               next if e == '.' or e == '..'
               new_map[File.join(src, e)] = File.join(dest, e)
             end

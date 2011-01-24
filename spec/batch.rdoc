@@ -22,7 +22,7 @@ inclusion patterns to the initializer.
 In this example we will get every `.txt` file at the toplevel of the base
 directory.
 
-  batch.to_a.assert = ['./foo.txt', './bar.txt'].to_pathnames
+  batch.to_a.assert = ['foo.txt', 'bar.txt'].to_pathnames
 
 To get a list of files relative to the base directory, use #entries.
 
@@ -31,9 +31,9 @@ To get a list of files relative to the base directory, use #entries.
 Internally a Batch instance tracks the files selected via a Ratch::FileList
 object. This can be directly accessed via the #list method.
 
-  batch.list.assert.is_a?(Ratch::FileList)
+  batch.file_list.assert.is_a?(Ratch::FileList)
 
-  batch.list.to_a.assert = ['./foo.txt', './bar.txt']
+  batch.file_list.to_a.assert = ['foo.txt', 'bar.txt']
 
 As with the delegated FileTest methods of the Shell class, Batch can test
 the set of files in agregate. For example, to ensure all the entries
@@ -51,11 +51,11 @@ and #directory! methods.
 
   batch = Ratch::Batch.new('.', '*')
   batch.file!
-  batch.filenames.assert = ['./foo.txt', './bar.txt']
+  batch.list.assert = ['foo.txt', 'bar.txt']
 
   batch = Ratch::Batch.new('.', '*')
   batch.directory!
-  batch.filenames.assert = ['./zoo']
+  batch.list.assert = ['zoo']
 
 The Batch class is enumerable, both #each and #size are defined.
 
@@ -68,5 +68,4 @@ The Batch class is enumerable, both #each and #size are defined.
   batch.size.assert = 2
 
 Any enumerable method is likewise applicable.
-
 
