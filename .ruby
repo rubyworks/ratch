@@ -7,79 +7,88 @@ repositories:
   public: git://github.com/rubyworks/ratch.git
 title: Ratch
 contact: trans <transfire@gmail.com>
+pom_verison: 1.0.0
 requires: 
+- group: []
+
+  name: facets
+  version: 2.9.1+
 - group: 
-  - build
-  name: syckle
-  version: 0+
+  - test
+  name: ko
+  version: 1.2.0+
 - group: 
   - test
   name: qed
+  version: 0+
+- group: 
+  - build
+  name: syckle
   version: 0+
 resources: 
   code: http://github.org/rubyworks/ratch
   mail: http://groups.gooogle.com/group/rubyworks-mailinglist
   home: http://rubyworks.github.org/ratch
-pom_verison: 1.0.0
 manifest: 
 - .ruby
-- bin/lt
 - bin/ludo
 - bin/ratch
-- bin/rbat
-- demo/tryme-task.ratch
-- demo/tryme1.ratch
-- lib/plugins/ratch/shell/email.rb
-- lib/plugins/ratch/shell/rcov.rb
-- lib/plugins/ratch/shell/rdoc.rb
-- lib/plugins/rbat/demo
-- lib/plugins/rbat/help
-- lib/ratch/cli.rb
+- lib/ratch/batch.rb
 - lib/ratch/console.rb
-- lib/ratch/core_ext/all.rb
 - lib/ratch/core_ext/facets.rb
 - lib/ratch/core_ext/filetest.rb
-- lib/ratch/core_ext/fileutils.rb
-- lib/ratch/core_ext/multiglob.rb
-- lib/ratch/core_ext/object/to_yamlfrag.rb
-- lib/ratch/core_ext/string/to_actual_filename.rb
-- lib/ratch/core_ext/string/unfold_paragraphs.rb
+- lib/ratch/core_ext/to_actual_filename.rb
 - lib/ratch/core_ext/to_console.rb
 - lib/ratch/core_ext/to_list.rb
-- lib/ratch/help.rb
-- lib/ratch/pathglob.rb
-- lib/ratch/pathlist.rb
-- lib/ratch/plugin.rb
-- lib/ratch/ruby/filetest.rb
-- lib/ratch/ruby/fileutils.rb
-- lib/ratch/ruby/pathname.rb
+- lib/ratch/core_ext/to_yamlfrag.rb
+- lib/ratch/core_ext/unfold_paragraphs.rb
+- lib/ratch/core_ext.rb
+- lib/ratch/file_list.rb
+- lib/ratch/script/help.rb
 - lib/ratch/script.rb
-- lib/ratch/shell/ftp.rb
-- lib/ratch/shell/gzip.rb
-- lib/ratch/shell/tar.rb
-- lib/ratch/shell/xdg.rb
-- lib/ratch/shell/zip.rb
 - lib/ratch/shell.rb
-- lib/ratch/utils/log.rb
-- lib/ratch/utils/platform.rb
+- lib/ratch/system.rb
+- lib/ratch/utils/cli.rb
+- lib/ratch/utils/config.rb
+- lib/ratch/utils/email.rb
+- lib/ratch/utils/ftp.rb
 - lib/ratch/utils/pom.rb
+- lib/ratch/utils/rdoc.rb
+- lib/ratch/utils/tar.rb
+- lib/ratch/utils/zlib.rb
 - lib/ratch.rb
-- test/test_pathlist.rb
-- test/test_pathname.rb
-- test/test_pathshell.rb
-- test/unit/test_helper.rb
-- test/unit/test_task.rb
+- lib/ratch.yml
+- man/ratch.1
+- spec/applique/array.rb
+- spec/applique/setup.rb
+- spec/batch.rdoc
+- spec/script.rdoc
+- spec/shell.rdoc
+- spec/system.rdoc
+- test/case_batch.rb
+- test/case_shell.rb
+- test/core_ext/case_pathname.rb
+- test/helper.rb
+- test/utils/case_cli.rb
+- test/utils/case_config.rb
+- test/utils/case_email.rb
+- test/utils/case_ftp.rb
+- test/utils/case_pom.rb
+- test/utils/case_rdoc.rb
+- test/utils/case_tar.rb
+- test/utils/case_zlib.rb
+- test/utils/fixtures/pom_sample/Profile
+- test/utils/fixtures/rdoc_sample/README.rdoc
+- test/utils/fixtures/rdoc_sample/lib/rdoc_sample/rdoc_sample.rb
 - README.rdoc
-- NOTES.rdoc
 - History.rdoc
 - Version
 - License.txt
-- NEWS
 - COPYING
 version: 1.2.0
-copyright: Copyright (c) 2009 Thomas Sawyer
 licenses: 
 - Apache 2.0
+copyright: Copyright (c) 2009 Thomas Sawyer
 description: |-
   Ratch is a Ruby-based batch scripting language. It's a DSL over regular RUby to make the life of the batch script writter easier.
   Integrated set of a path-related libraries
