@@ -62,6 +62,7 @@ module Ratch
     def list
       @file_list.to_a
     end
+    alias_method :filenames, :list
 
     # Returns an Array of file paths relative to +local+.
     def entries
