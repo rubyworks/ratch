@@ -5,20 +5,15 @@ contact: trans <transfire@gmail.com>
 
 requires:
   - facets 2.9.1+
-  - ko 1.2.0~ (test)
-  - qed       (test)
-  - syckle    (build)
+  - minitar 0.5.3+
+  - ko 1.2.0~      (test)
+  - qed            (test)
+  - syckle         (build)
 
 description:
   Ratch is a Ruby-based batch scripting language.
-  It's a DSL over regular RUby to make the life
+  It's a DSL over regular Ruby to make the life
   of the batch script writter easier.
-
-  Integrated set of a path-related libraries
-
-  Path is all about paths. It's provides a reimplementation of the Ruby
-  standard Pathname library, Path::Name, a superior globbing
-  facility, Path::List and an isolated shell-evironment, Path::Shell.
 
 resources: 
   home: http://rubyworks.github.org/ratch

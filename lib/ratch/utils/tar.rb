@@ -13,11 +13,7 @@ module Ratch
     def self.included(base)
       #require 'zlib'
       include ZLibUtils
-      begin
-        require 'archive/tar/minitar'
-      rescue LoadError
-        require 'ratch/minitar'
-      end
+      require 'archive/tar/minitar'
     end
 
     #
