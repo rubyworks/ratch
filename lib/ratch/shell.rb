@@ -14,6 +14,10 @@ module Ratch
   # Ratch Shell object provides a limited file system shell in code.
   # It is similar to having a shell prompt available to you in Ruby.
   #
+  # NOTE: We have used the term *trace* in place of *verbose* for command
+  # line options. Even though Ruby itself uses the term *verbose* with respect
+  # to FileUtils, the term is commonly used for command specific needs, so we
+  # want to leave it open for such cases.
   class Shell
 
     # New Shell object.
@@ -26,10 +30,7 @@ module Ratch
 
       opts.rekey!(&:to_sym)
 
-      @_quiet = opts[:quiet]
-      @_noop  = opts[:noop]  || opts[:dryrun]
-      @_trace = opts[:trace] || opts[:dryrun]
-      #@_force = opts[:force]
+      set_options(opts)
 
       if path.empty?
         path = Dir.pwd
@@ -49,6 +50,14 @@ module Ratch
     def parse_arguments(*args)
       opts = (Hash===args.last ? args.pop : {})
       return args, opts
+    end
+
+    #
+    def set_options(opts)
+      @_quiet = opts[:quiet]
+      @_noop  = opts[:noop]  || opts[:dryrun]
+      @_trace = opts[:trace] || opts[:dryrun]
+      #@_force = opts[:force]
     end
 
     #
@@ -78,13 +87,9 @@ module Ratch
     def quiet?   ; @_quiet ; end
     def trace?   ; @_trace ; end
     def noop?    ; @_noop  ; end
-
     #def force?  ; @_force ; end
 
     def dryrun?  ; noop? && trace? ; end
-
-    #
-    alias_method :verbose?, :trace?
 
     # String representation is work directory path.
     def to_s ; work.to_s ; end
@@ -300,7 +305,7 @@ module Ratch
 
     # Shell runner.
     def sh(cmd)
-      #puts "--> system call: #{cmd}" if verbose?
+      #puts "--> system call: #{cmd}" if trace?
       puts cmd if trace?
       return true if noop?
       #locally do

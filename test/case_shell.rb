@@ -15,13 +15,13 @@ KO.case 'Shell' do
 
   ok [:quiet, true]
 
-  test :verbose? do |options|
+  test :trace? do |options|
     o = Hash[*options]
     sh = Ratch::Shell.new(o)
-    sh.verbose?
+    sh.trace?
   end
 
-  ok [:verbose, true]
+  ok [:trace, true]
 
   test :noop? do |options|
     o = Hash[*options]
@@ -37,7 +37,7 @@ KO.case 'Shell' do
     sh.dryrun?
   end
 
-  ok [:noop, true, :verbose, true]
+  ok [:noop, true, :trace, true]
   ok [:dryrun, true]
 
   no [:noop, true]
