@@ -1,4 +1,4 @@
-require 'ratch/core_ext/pathname'
+require 'ratch/core_ext'
 
 # Test the Pathname extensions.
 KO.case 'Pathname' do

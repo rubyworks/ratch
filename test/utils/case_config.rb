@@ -2,13 +2,11 @@
 
 KO.case "Ratch::ConfigUtils" do
 
-  test "#configuration" do
+  #test "#configuration" do
+  #end
 
-  end
-
-  test "configuration!" do
-
-  end
+  #test "configuration!" do
+  #end
 
 end
 

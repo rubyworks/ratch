@@ -2,13 +2,13 @@ require 'ratch'
 
 KO.case "Ratch::RDocUtils" do
 
-  before :all do
+  def initialize #before :all do
     @shell = Ratch::Shell.new
     @shell.extend(Ratch::RDocUtils)
   end
 
-  before :each do
-    stage_fixture 'fixtures/rdoc_sample'
+  setup do
+    stage_copy 'fixtures/rdoc_sample'
   end
 
   test "#rdoc" do

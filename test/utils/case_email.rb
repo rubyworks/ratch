@@ -2,7 +2,7 @@
 
 KO.case "Ratch::EMailUtils" do
 
-  before :all do
+  setup do
     #p Dir.pwd
   end
 

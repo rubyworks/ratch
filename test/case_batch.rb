@@ -16,7 +16,11 @@ KO.case Ratch::Batch do
   end
 
   test :list do
-    @batch1.list.is_a?(Ratch::FileList)
+    @batch1.list.is_a?(Array)
+  end
+
+  test :file_list do
+    @batch1.file_list.is_a?(Ratch::FileList)
   end
 
   test :each do
