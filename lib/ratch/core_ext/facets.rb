@@ -8,6 +8,7 @@ require 'facets/module/basename'
 require 'facets/module/alias_accessor'
 require 'facets/kernel/yes'               # pulls in #ask and #no? too.
 require 'facets/kernel/silence'           # FIXME ???
+require 'facets/kernel/disable_warnings'
 
 require 'facets/pathname'
 require 'facets/filetest'

@@ -33,7 +33,9 @@ module Ratch
         rdoc = RDoc::RDoc.new
         opts = options.to_argv + files
         $stderr.puts("rdoc " + opts.join(' ')) if ($VERBOSE || $DEBUG)
-        rdoc.document(options.to_argv + files)
+        disable_warnings do
+          rdoc.document(options.to_argv + files)
+        end
       end
     end
 
