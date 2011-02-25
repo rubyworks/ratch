@@ -24,6 +24,7 @@ lib/ratch/utils/ftp.rb
 lib/ratch/utils/pom.rb
 lib/ratch/utils/rdoc.rb
 lib/ratch/utils/tar.rb
+lib/ratch/utils/xdg.rb
 lib/ratch/utils/zlib.rb
 lib/ratch.rb
 lib/ratch.yml

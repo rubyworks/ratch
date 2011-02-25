@@ -1,22 +1,23 @@
 --- 
 name: ratch
-loadpath: 
-- lib
-- vendor
+spec_version: 1.0.0
 repositories: 
   public: git://github.com/rubyworks/ratch.git
 title: Ratch
 contact: trans <transfire@gmail.com>
-pom_verison: 1.0.0
 requires: 
 - group: []
 
   name: facets
   version: 2.9.1+
+- group: []
+
+  name: minitar
+  version: 0.5.3+
 - group: 
   - test
   name: ko
-  version: 1.2.0+
+  version: 1.2.0~
 - group: 
   - test
   name: qed
@@ -55,6 +56,7 @@ manifest:
 - lib/ratch/utils/pom.rb
 - lib/ratch/utils/rdoc.rb
 - lib/ratch/utils/tar.rb
+- lib/ratch/utils/xdg.rb
 - lib/ratch/utils/zlib.rb
 - lib/ratch.rb
 - lib/ratch.yml
@@ -89,12 +91,9 @@ version: 1.2.0
 licenses: 
 - Apache 2.0
 copyright: Copyright (c) 2009 Thomas Sawyer
-description: |-
-  Ratch is a Ruby-based batch scripting language. It's a DSL over regular RUby to make the life of the batch script writter easier.
-  Integrated set of a path-related libraries
-  Path is all about paths. It's provides a reimplementation of the Ruby standard Pathname library, Path::Name, a superior globbing facility, Path::List and an isolated shell-evironment, Path::Shell.
-organization: RubyWorks
+description: Ratch is a Ruby-based batch scripting language. It's a DSL over regular Ruby to make the life of the batch script writter easier.
 summary: Ruby-based Batch Scripting
+organization: RubyWorks
 authors: 
 - Trans <transfire@gmail.com>
 created: 2009-09-22
