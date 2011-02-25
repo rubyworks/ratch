@@ -31,4 +31,3 @@ organization : RubyWorks
 license      : Apache 2.0
 copyright    : Copyright (c) 2009 Thomas Sawyer
 
-loadpath: [lib, vendor]
