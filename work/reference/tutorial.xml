@@ -20,7 +20,7 @@
 project support and build tasks.</p>
 
 
-<p>The creation of support and build tools for a project enatils the
+<p>The creation of support and build tools for a project entails the
 question of whether to simply use shell scripts or rely on a specialized
 build system. The later is almost always the prefered choice. Why?
 Two reasons in particular stand out. First, and perhaps most importantly,

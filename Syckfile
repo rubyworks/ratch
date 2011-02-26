@@ -28,6 +28,7 @@ ridoc:
 rdoc:
   service : RDoc
   template: newfish
+  output  : site/documentation/api
   include : ~
   exclude : [ Syckfile ]
   active  : true

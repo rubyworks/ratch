@@ -9,6 +9,7 @@ refined.
 Changes:
 
 * Essentially, the Path library has become Ratch.
+* Primary class are now Script and Shell.
 
 
 == 1.1.0 | 2008-11-21

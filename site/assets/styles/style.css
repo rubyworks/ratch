@@ -50,11 +50,11 @@ pre.script { background-color: #DDFFDD; color: black; }
   margin: 5px auto;
   width: 720px;
   padding: 10px;
-  border: 1px solid pink;
+  border: 0px solid pink;
 }
 
 .content {
-  padding: 20px 10px;
+  padding: 10px 10px;
   background: white;
   text-align: left;
 }
@@ -114,14 +114,14 @@ pre.script { background-color: #DDFFDD; color: black; }
 }
 
 .copyright {
-  border-top: 1px solid gray;
+  border-top: 0px solid gray;
   text-align: left;
   color: red;
   margin: 0 auto;
   font-size: 8pt;
   font-weight: normal;
   font-family: sans-serif;
-  padding: 10px;
+  padding: 0 10px;
 }
 
 .copyright a {
