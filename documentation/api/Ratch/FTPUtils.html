@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+  <title>Module: Ratch::FTPUtils</title>
+
+  
+    <link rel="SHORTCUT ICON" href="../assets/icon/module.png">
+  
+
+  <link type="text/css" rel="stylesheet" href="../assets/rdoc.css" media="screen" />
+  <link type="text/css" rel="stylesheet" href="../assets/highlight/styles/github.css" title="GitHub" />
+
+  <script type="text/javascript" charset="utf-8" src="../assets/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/highlight/highlight.pack.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/quicksearch.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/main.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready( function() {
+      $('#documentation pre').wrapInner('<code></code>');
+      hljs.tabReplace = '    ';
+      hljs.initHighlightingOnLoad('ruby');
+
+	    hookSourceViews();
+	    hookDebuggingToggle();
+	    hookQuickSearch();
+	    highlightLocationTarget();
+
+	    $('ul.link-list a').bind( "click", highlightClickTarget );
+    });
+  </script>
+</head>
+<body class="module">
+<div id="main">
+
+  <div class="head">
+    <h1>
+      
+        <img src="../assets/icon/module.png" align="absmiddle">&nbsp;
+      
+      <a href="../index.html">Ratch</a>&nbsp;
+      <a href="/">Ratch::FTPUtils</a>
+    </h1>
+  </div>
+
+  <div id="metadata">
+    <div id="project-metadata">
+
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li class="file"><a href="../lib/ratch/utils/ftp_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/ratch/utils/ftp.rb">lib/ratch/utils/ftp.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      <!-- What about Git info, or Hg info? This seems almost silly, albeit kind of cool. -->
+      <!-- TODO: generalize this for all SCMs -->
+
+      
+    </div>
+
+    <div id="class-metadata">
+
+      <!-- Parent Class -->
+      
+
+      <!-- Namespace Contents -->
+      
+
+      <!-- Method Quickref -->
+      
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+            
+            <li class="singleton">
+              <a href="#method-c-extended">::extended</a>
+            </li>
+          
+            
+            <li class="singleton">
+              <a href="#method-c-included">::included</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-ftp">#ftp</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-ftp_files">#ftp_files</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-ftp_stage_transfer">#ftp_stage_transfer</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-sftp">#sftp</a>
+            </li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Included Modules -->
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Information</h3>
+        <ul>
+        
+          <li class="file"><a href="../Version.html">Version</a></li>
+        
+          <li class="file"><a href="../Profile.html">Profile</a></li>
+        
+          <li class="file"><a href="../COPYING.html">COPYING</a></li>
+        
+          <li class="file"><a href="../History_rdoc.html">History.rdoc</a></li>
+        
+          <li class="file"><a href="../License_txt.html">License.txt</a></li>
+        
+          <li class="file"><a href="../README_rdoc.html">README.rdoc</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="../assets/icon/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <!-- classpage.html : classes -->
+        <ul class="link-list">
+        
+          <li class="module"><a href="../Ratch.html">Ratch</a></li>
+        
+          <li class="class"><a href="../Ratch/Batch.html">Ratch::Batch</a></li>
+        
+          <li class="module"><a href="../Ratch/CLI.html">Ratch::CLI</a></li>
+        
+          <li class="module"><a href="../Ratch/ConfigUtils.html">Ratch::ConfigUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Console.html">Ratch::Console</a></li>
+        
+          <li class="module"><a href="../Ratch/EmailUtils.html">Ratch::EmailUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Emailer.html">Ratch::Emailer</a></li>
+        
+          <li class="module"><a href="../Ratch/FTPUtils.html">Ratch::FTPUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/FileList.html">Ratch::FileList</a></li>
+        
+          <li class="class"><a href="../Ratch/FileNotFound.html">Ratch::FileNotFound</a></li>
+        
+          <li class="class"><a href="../Ratch/Help.html">Ratch::Help</a></li>
+        
+          <li class="module"><a href="../Ratch/POMUtils.html">Ratch::POMUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/RDocUtils.html">Ratch::RDocUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Script.html">Ratch::Script</a></li>
+        
+          <li class="class"><a href="../Ratch/Shell.html">Ratch::Shell</a></li>
+        
+          <li class="class"><a href="../Ratch/System.html">Ratch::System</a></li>
+        
+          <li class="module"><a href="../Ratch/TarUtils.html">Ratch::TarUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/XDGUtils.html">Ratch::XDGUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/ZlibUtils.html">Ratch::ZlibUtils</a></li>
+        
+          <li class="module"><a href="../FileTest.html">FileTest</a></li>
+        
+          <li class="class"><a href="../Hash.html">Hash</a></li>
+        
+          <li class="class"><a href="../NilClass.html">NilClass</a></li>
+        
+          <li class="class"><a href="../Object.html">Object</a></li>
+        
+          <li class="class"><a href="../String.html">String</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+    </div>
+
+    <div id="validator-badges">
+      
+      <div style="float: right; margin-right: 5px;">
+        <a href="http://validator.w3.org/check/referer"><img src="../assets/icon/check.png" alt="[Validate]" height="16" width="16" /></a>
+      </div>
+      Generated with <a href="http://rubyworks.github.com/newfish">Newfish</a> 0.1.0
+      <br/><br/>
+    </div>
+  </div>
+
+  <div id="documentation">
+
+    <div id="description">
+      
+        <h1>FTPUtils</h1>
+      
+
+      <p>
+FIXME: This module needs major work. Methods <a
+href="FTPUtils.html#method-i-ftp_files">ftp_files</a> and <a
+href="FTPUtils.html#method-i-ftp_stage_transfer">ftp_stage_transfer</a>
+need to either be generalized and moved to <a href="Shell.html">Shell</a>
+or <a href="Script.html">Script</a>, or removed.
+</p>
+
+    </div>
+
+    <!-- Constants -->
+    
+
+    <!-- Attributes -->
+    
+
+    <!-- Methods -->
+    
+    <div id="public-class-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="extended-method" class="method-detail ">
+        <a name="method-c-extended"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">extended</span><span
+            class="method-args">(base)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="extended-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/utils/ftp.rb, line 14</span>
+14:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">extended</span>(<span class="ruby-identifier">base</span>)
+15:       <span class="ruby-identifier">included</span>(<span class="ruby-identifier">base</span>)
+16:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="included-method" class="method-detail ">
+        <a name="method-c-included"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">included</span><span
+            class="method-args">(base)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="included-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/utils/ftp.rb, line 9</span>
+ 9:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">base</span>)
+10:       <span class="ruby-identifier">require</span> <span class="ruby-value str">'net/ftp'</span>
+11:       <span class="ruby-identifier">require</span> <span class="ruby-value str">'net/sftp'</span>
+12:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+    <div id="public-instance-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="ftp-method" class="method-detail ">
+        <a name="method-i-ftp"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">ftp</span><span
+            class="method-args">(keys)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Use ftp to upload files.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="ftp-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/utils/ftp.rb, line 20</span>
+20:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ftp</span>(<span class="ruby-identifier">keys</span>)
+21:       <span class="ruby-identifier">keys</span> = <span class="ruby-identifier">upload_parameters</span>(<span class="ruby-identifier">keys</span>)
+22: 
+23:       <span class="ruby-comment cmt"># set transfer rules</span>
+24:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">stage</span>
+25:         <span class="ruby-identifier">trans</span> = <span class="ruby-identifier">ftp_stage_transfer</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">stage</span>)
+26:       <span class="ruby-keyword kw">else</span>
+27:         <span class="ruby-identifier">ftp_files</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">copy</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">from</span><span class="ruby-operator">|</span>
+28:           <span class="ruby-identifier">trans</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">from</span>,<span class="ruby-identifier">from</span>]
+29:         <span class="ruby-keyword kw">end</span>
+30:       <span class="ruby-keyword kw">end</span>
+31: 
+32:       <span class="ruby-comment cmt"># append location of publication dir to from</span>
+33:       <span class="ruby-identifier">dir</span> = <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">dir</span>
+34:       <span class="ruby-identifier">trans</span>.<span class="ruby-identifier">collect!</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">from</span>,<span class="ruby-identifier">to</span><span class="ruby-operator">|</span> [<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>,<span class="ruby-identifier">from</span>), <span class="ruby-identifier">to</span>] }
+35: 
+36:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">dryrun</span>
+37:         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;ftp open #{keys.user}@#{keys.host}:#{keys.root}/&quot;</span>
+38:         <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">trans</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span>, <span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+39:           <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;ftp put #{f} #{t}&quot;</span>
+40:         <span class="ruby-keyword kw">end</span>
+41:       <span class="ruby-keyword kw">else</span>
+42:         <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">FTP</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">host</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ftp</span><span class="ruby-operator">|</span>
+43:           <span class="ruby-identifier">ftp</span>.<span class="ruby-identifier">login</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">user</span>) <span class="ruby-comment cmt">#password?</span>
+44:           <span class="ruby-identifier">ftp</span>.<span class="ruby-identifier">chdir</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">root</span>)
+45:           <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">trans</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span>, <span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+46:             <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;ftp #{f} #{t}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">quiet</span>
+47:             <span class="ruby-identifier">ftp</span>.<span class="ruby-identifier">putbinaryfile</span>( <span class="ruby-identifier">f</span>, <span class="ruby-identifier">t</span>, <span class="ruby-value">1024</span> )
+48:           <span class="ruby-keyword kw">end</span>
+49:         <span class="ruby-keyword kw">end</span>
+50:       <span class="ruby-keyword kw">end</span>
+51:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="ftp-files-method" class="method-detail ">
+        <a name="method-i-ftp_files"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">ftp_files</span><span
+            class="method-args">( dir, copy )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Put together the list of files to copy.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="ftp-files-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/utils/ftp.rb, line 89</span>
+ 89:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ftp_files</span>( <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">copy</span> )
+ 90:       <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">chdir</span>(<span class="ruby-identifier">dir</span>) <span class="ruby-keyword kw">do</span>
+ 91:         <span class="ruby-identifier">del</span>, <span class="ruby-identifier">add</span> = <span class="ruby-identifier">copy</span>.<span class="ruby-identifier">partition</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-regexp re">/^[-]/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">f</span> }
+ 92: 
+ 93:         <span class="ruby-comment cmt"># remove - and + prefixes</span>
+ 94:         <span class="ruby-identifier">del</span>.<span class="ruby-identifier">collect!</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/^[-]/</span>,<span class="ruby-value str">''</span>) }
+ 95:         <span class="ruby-identifier">add</span>.<span class="ruby-identifier">collect!</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/^[+]/</span>,<span class="ruby-value str">''</span>) }
+ 96: 
+ 97:         <span class="ruby-comment cmt">#del.concat(must_exclude)</span>
+ 98: 
+ 99:         <span class="ruby-identifier">ftp_files</span> = []
+100:         <span class="ruby-identifier">add</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">g</span><span class="ruby-operator">|</span> <span class="ruby-identifier">files</span> <span class="ruby-operator">+=</span> <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-identifier">g</span>) }
+101:         <span class="ruby-identifier">del</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">g</span><span class="ruby-operator">|</span> <span class="ruby-identifier">files</span> <span class="ruby-operator">-=</span> <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-identifier">g</span>) }
+102: 
+103:         <span class="ruby-identifier">files</span>.<span class="ruby-identifier">collect!</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/^\//</span>,<span class="ruby-value str">''</span>) }
+104: 
+105:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">files</span>
+106:       <span class="ruby-keyword kw">end</span>
+107:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="ftp-stage-transfer-method" class="method-detail ">
+        <a name="method-i-ftp_stage_transfer"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">ftp_stage_transfer</span><span
+            class="method-args">( list )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Combine three part stage list into a two part from->to list.
+</p>
+<p>
+Using the stage list of three space separated fields.
+</p>
+<pre>
+  fromdir file todir
+</pre>
+<p>
+This is used to generate a from -> to list of the form:
+</p>
+<pre>
+ fromdir/file todir/file</pre>
+          
+
+          
+          <div class="method-source-code"
+            id="ftp-stage-transfer-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/utils/ftp.rb, line 119</span>
+119:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ftp_stage_transfer</span>( <span class="ruby-identifier">list</span> )
+120:       <span class="ruby-identifier">trans</span> = []
+121:       <span class="ruby-identifier">list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+122:         <span class="ruby-identifier">trans</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Shellwords</span>.<span class="ruby-identifier">shellwords</span>(<span class="ruby-identifier">line</span>)
+123:       <span class="ruby-keyword kw">end</span>
+124: 
+125:       <span class="ruby-identifier">trans</span>.<span class="ruby-identifier">collect!</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">from</span>, <span class="ruby-identifier">base</span>, <span class="ruby-identifier">to</span><span class="ruby-operator">|</span>
+126:         <span class="ruby-identifier">file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">from</span>,<span class="ruby-identifier">base</span>)
+127:         <span class="ruby-identifier">to</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">to</span>,<span class="ruby-identifier">base</span>)
+128:         [<span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>]
+129:       <span class="ruby-keyword kw">end</span>
+130:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="sftp-method" class="method-detail ">
+        <a name="method-i-sftp"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">sftp</span><span
+            class="method-args">( keys )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Use sftp to upload files.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="sftp-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/utils/ftp.rb, line 55</span>
+55:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sftp</span>( <span class="ruby-identifier">keys</span> )
+56:       <span class="ruby-identifier">keys</span> = <span class="ruby-identifier">upload_parameters</span>(<span class="ruby-identifier">keys</span>)
+57: 
+58:       <span class="ruby-comment cmt"># set transfer rules</span>
+59:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">stage</span>
+60:         <span class="ruby-identifier">trans</span> = <span class="ruby-identifier">ftp_stage_transfer</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">stage</span>)
+61:       <span class="ruby-keyword kw">else</span>
+62:         <span class="ruby-identifier">ftp_files</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">copy</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">from</span><span class="ruby-operator">|</span>
+63:           <span class="ruby-identifier">trans</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">from</span>,<span class="ruby-identifier">from</span>]
+64:         <span class="ruby-keyword kw">end</span>
+65:       <span class="ruby-keyword kw">end</span>
+66: 
+67:       <span class="ruby-comment cmt"># append location of publication dir to from</span>
+68:       <span class="ruby-identifier">dir</span> = <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">dir</span>
+69:       <span class="ruby-identifier">trans</span>.<span class="ruby-identifier">collect!</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">from</span>,<span class="ruby-identifier">to</span><span class="ruby-operator">|</span> [<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>,<span class="ruby-identifier">from</span>), <span class="ruby-identifier">to</span>] }
+70: 
+71:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">dryrun</span>
+72:         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;sftp open #{keys.user}@#{keys.host}:#{keys.root}/&quot;</span>
+73:         <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">trans</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span>,<span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+74:           <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;sftp put #{f} #{t}&quot;</span>
+75:         <span class="ruby-keyword kw">end</span>
+76:       <span class="ruby-keyword kw">else</span>
+77:         <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SFTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">user</span>, <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">pass</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sftp</span><span class="ruby-operator">|</span>
+78:           <span class="ruby-comment cmt">#sftp.login( user )</span>
+79:           <span class="ruby-identifier">sftp</span>.<span class="ruby-identifier">chdir</span>(<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">root</span>)
+80:           <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">trans</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span>,<span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+81:             <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;sftp #{f} #{t}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">quiet</span>
+82:             <span class="ruby-identifier">sftp</span>.<span class="ruby-identifier">put_file</span>(<span class="ruby-identifier">f</span>,<span class="ruby-identifier">t</span>) <span class="ruby-comment cmt">#, 1024 )</span>
+83:           <span class="ruby-keyword kw">end</span>
+84:         <span class="ruby-keyword kw">end</span>
+85:       <span class="ruby-keyword kw">end</span>
+86:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+
+  </div>
+
+
+  <div id="rdoc-debugging-section-dump" class="debugging-section">
+  
+    <p>Disabled; run with --debug to generate this.</p>
+  
+  </div>
+
+</main>
+</body>
+</html>
+

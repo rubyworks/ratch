@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+  <title>Class: Ratch::Emailer</title>
+
+  
+    <link rel="SHORTCUT ICON" href="../assets/icon/class.png">
+  
+
+  <link type="text/css" rel="stylesheet" href="../assets/rdoc.css" media="screen" />
+  <link type="text/css" rel="stylesheet" href="../assets/highlight/styles/github.css" title="GitHub" />
+
+  <script type="text/javascript" charset="utf-8" src="../assets/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/highlight/highlight.pack.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/quicksearch.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/main.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready( function() {
+      $('#documentation pre').wrapInner('<code></code>');
+      hljs.tabReplace = '    ';
+      hljs.initHighlightingOnLoad('ruby');
+
+	    hookSourceViews();
+	    hookDebuggingToggle();
+	    hookQuickSearch();
+	    highlightLocationTarget();
+
+	    $('ul.link-list a').bind( "click", highlightClickTarget );
+    });
+  </script>
+</head>
+<body class="class">
+<div id="main">
+
+  <div class="head">
+    <h1>
+      
+        <img src="../assets/icon/class.png" align="absmiddle">&nbsp;
+      
+      <a href="../index.html">Ratch</a>&nbsp;
+      <a href="/">Ratch::Emailer</a>
+    </h1>
+  </div>
+
+  <div id="metadata">
+    <div id="project-metadata">
+
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li class="file"><a href="../lib/ratch/utils/email_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/ratch/utils/email.rb">lib/ratch/utils/email.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      <!-- What about Git info, or Hg info? This seems almost silly, albeit kind of cool. -->
+      <!-- TODO: generalize this for all SCMs -->
+
+      
+    </div>
+
+    <div id="class-metadata">
+
+      <!-- Parent Class -->
+      
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        <ul>
+          
+          <!-- why was this class="link" ? -->
+          <li class="class"><a href="../Object.html">Object</a></li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Namespace Contents -->
+      
+
+      <!-- Method Quickref -->
+      
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+            
+            <li class="singleton">
+              <a href="#method-c-environment_options">::environment_options</a>
+            </li>
+          
+            
+            <li class="singleton">
+              <a href="#method-c-new">::new</a>
+            </li>
+          
+            
+            <li class="singleton">
+              <a href="#method-c-new_with_environment">::new_with_environment</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-email">#email</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-password">#password</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-require_smtp">#require_smtp</a>
+            </li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Included Modules -->
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Information</h3>
+        <ul>
+        
+          <li class="file"><a href="../Version.html">Version</a></li>
+        
+          <li class="file"><a href="../Profile.html">Profile</a></li>
+        
+          <li class="file"><a href="../COPYING.html">COPYING</a></li>
+        
+          <li class="file"><a href="../History_rdoc.html">History.rdoc</a></li>
+        
+          <li class="file"><a href="../License_txt.html">License.txt</a></li>
+        
+          <li class="file"><a href="../README_rdoc.html">README.rdoc</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="../assets/icon/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <!-- classpage.html : classes -->
+        <ul class="link-list">
+        
+          <li class="module"><a href="../Ratch.html">Ratch</a></li>
+        
+          <li class="class"><a href="../Ratch/Batch.html">Ratch::Batch</a></li>
+        
+          <li class="module"><a href="../Ratch/CLI.html">Ratch::CLI</a></li>
+        
+          <li class="module"><a href="../Ratch/ConfigUtils.html">Ratch::ConfigUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Console.html">Ratch::Console</a></li>
+        
+          <li class="module"><a href="../Ratch/EmailUtils.html">Ratch::EmailUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Emailer.html">Ratch::Emailer</a></li>
+        
+          <li class="module"><a href="../Ratch/FTPUtils.html">Ratch::FTPUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/FileList.html">Ratch::FileList</a></li>
+        
+          <li class="class"><a href="../Ratch/FileNotFound.html">Ratch::FileNotFound</a></li>
+        
+          <li class="class"><a href="../Ratch/Help.html">Ratch::Help</a></li>
+        
+          <li class="module"><a href="../Ratch/POMUtils.html">Ratch::POMUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/RDocUtils.html">Ratch::RDocUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Script.html">Ratch::Script</a></li>
+        
+          <li class="class"><a href="../Ratch/Shell.html">Ratch::Shell</a></li>
+        
+          <li class="class"><a href="../Ratch/System.html">Ratch::System</a></li>
+        
+          <li class="module"><a href="../Ratch/TarUtils.html">Ratch::TarUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/XDGUtils.html">Ratch::XDGUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/ZlibUtils.html">Ratch::ZlibUtils</a></li>
+        
+          <li class="module"><a href="../FileTest.html">FileTest</a></li>
+        
+          <li class="class"><a href="../Hash.html">Hash</a></li>
+        
+          <li class="class"><a href="../NilClass.html">NilClass</a></li>
+        
+          <li class="class"><a href="../Object.html">Object</a></li>
+        
+          <li class="class"><a href="../String.html">String</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+    </div>
+
+    <div id="validator-badges">
+      
+      <div style="float: right; margin-right: 5px;">
+        <a href="http://validator.w3.org/check/referer"><img src="../assets/icon/check.png" alt="[Validate]" height="16" width="16" /></a>
+      </div>
+      Generated with <a href="http://rubyworks.github.com/newfish">Newfish</a> 0.1.0
+      <br/><br/>
+    </div>
+  </div>
+
+  <div id="documentation">
+
+    <div id="description">
+      
+        <h1>Emailer</h1>
+      
+
+      <p>
+<a href="Emailer.html">Emailer</a> class makes it easy send out an email.
+</p>
+<p>
+Settings:
+</p>
+<pre>
+    subject      Subject of email message.
+    from         Message FROM address [email].
+    to           Email address to send announcemnt.
+    server       Email server to route message.
+    port         Email server's port.
+    port_secure  Email server's port.
+    domain       Email server's domain name.
+    account      Email account name if needed.
+    password     Password for login..
+    login        Login type: plain, cram_md5 or login [plain].
+    secure       Uses TLS security, true or false? [false]
+    message      Mesage to send -or-
+    file         File that contains message.</pre>
+
+    </div>
+
+    <!-- Constants -->
+    
+
+    <!-- Attributes -->
+    
+    <div id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="password-attribute-method" class="method-detail">
+        <a name="password"></a>
+        
+        <a name="password="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">password</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>
+Used for caching password between usages.
+</p>
+        
+        </div>
+      </div>
+      
+      <div id="server-attribute-method" class="method-detail">
+        <a name="server"></a>
+        
+        <a name="server="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">server</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="port-attribute-method" class="method-detail">
+        <a name="port"></a>
+        
+        <a name="port="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">port</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="account-attribute-method" class="method-detail">
+        <a name="account"></a>
+        
+        <a name="account="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">account</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="passwd-attribute-method" class="method-detail">
+        <a name="passwd"></a>
+        
+        <a name="passwd="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">passwd</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="login-attribute-method" class="method-detail">
+        <a name="login"></a>
+        
+        <a name="login="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">login</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="secure-attribute-method" class="method-detail">
+        <a name="secure"></a>
+        
+        <a name="secure="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">secure</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="domain-attribute-method" class="method-detail">
+        <a name="domain"></a>
+        
+        <a name="domain="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">domain</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="from-attribute-method" class="method-detail">
+        <a name="from"></a>
+        
+        <a name="from="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">from</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="mailto-attribute-method" class="method-detail">
+        <a name="mailto"></a>
+        
+        <a name="mailto="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">mailto</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="subject-attribute-method" class="method-detail">
+        <a name="subject"></a>
+        
+        <a name="subject="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">subject</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="message-attribute-method" class="method-detail">
+        <a name="message"></a>
+        
+        <a name="message="></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">message</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- Methods -->
+    
+    <div id="public-class-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="environment-options-method" class="method-detail ">
+        <a name="method-c-environment_options"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">environment_options</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="environment-options-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/utils/email.rb, line 61</span>
+61:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">environment_options</span>
+62:         <span class="ruby-identifier">options</span> = {}
+63:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:server</span>]   = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_SERVER'</span>]
+64:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:from</span>]     = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_FROM'</span>]
+65:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:account</span>]  = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_ACCOUNT'</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_FROM'</span>]
+66:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:password</span>] = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_PASSWORD'</span>]
+67:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:port</span>]     = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_PORT'</span>]
+68:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:domain</span>]   = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_DOMAIN'</span>]
+69:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:login</span>]    = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_LOGIN'</span>]
+70:         <span class="ruby-identifier">options</span>[<span class="ruby-value">:secure</span>]   = <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'EMAIL_SECURE'</span>]
+71:         <span class="ruby-identifier">options</span>
+72:       <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="new-method" class="method-detail ">
+        <a name="method-c-new"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">new</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="new-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/utils/email.rb, line 95</span>
+ 95:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">options</span>={})
+ 96:       <span class="ruby-identifier">require_smtp</span>
+ 97: 
+ 98:       <span class="ruby-identifier">options</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">rekey</span>
+ 99: 
+100:       <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">not</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:server</span>]
+101:         <span class="ruby-identifier">options</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">environment_options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>)
+102:       <span class="ruby-keyword kw">end</span>
+103: 
+104:       <span class="ruby-ivar">@mailto</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-value">:to</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:mailto</span>]
+105: 
+106:       <span class="ruby-ivar">@from</span>      = <span class="ruby-identifier">options</span>[<span class="ruby-value">:from</span>]
+107:       <span class="ruby-ivar">@message</span>   = <span class="ruby-identifier">options</span>[<span class="ruby-value">:message</span>]
+108:       <span class="ruby-ivar">@subject</span>   = <span class="ruby-identifier">options</span>[<span class="ruby-value">:subject</span>]
+109:       <span class="ruby-ivar">@server</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-value">:server</span>]
+110:       <span class="ruby-ivar">@account</span>   = <span class="ruby-identifier">options</span>[<span class="ruby-value">:account</span>]
+111:       <span class="ruby-ivar">@passwd</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-value">:password</span>]
+112:       <span class="ruby-ivar">@login</span>     = <span class="ruby-identifier">options</span>[<span class="ruby-value">:login</span>]
+113:       <span class="ruby-ivar">@secure</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-value">:secure</span>] <span class="ruby-comment cmt">#.to_b</span>
+114:       <span class="ruby-ivar">@domain</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-value">:domain</span>]
+115:       <span class="ruby-ivar">@port</span>      = <span class="ruby-identifier">options</span>[<span class="ruby-value">:port</span>]
+116: 
+117:       <span class="ruby-ivar">@port</span>    <span class="ruby-operator">||=</span> <span class="ruby-identifier">secure</span> <span class="ruby-operator">?</span> <span class="ruby-value">465</span> <span class="ruby-operator">:</span> <span class="ruby-value">25</span>
+118:       <span class="ruby-ivar">@port</span> = <span class="ruby-ivar">@port</span>.<span class="ruby-identifier">to_i</span>
+119: 
+120:       <span class="ruby-ivar">@account</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@from</span>
+121: 
+122:       <span class="ruby-ivar">@login</span>   <span class="ruby-operator">||=</span> <span class="ruby-value">:plain</span>
+123:       <span class="ruby-ivar">@login</span> = <span class="ruby-ivar">@login</span>.<span class="ruby-identifier">to_sym</span>
+124: 
+125:       <span class="ruby-ivar">@passwd</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">password</span>
+126: 
+127:       <span class="ruby-ivar">@domain</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@server</span>
+128: 
+129:       <span class="ruby-comment cmt"># save the password for later use</span>
+130:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">password</span> = <span class="ruby-ivar">@passwd</span>
+131:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="new-with-environment-method" class="method-detail ">
+        <a name="method-c-new_with_environment"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">new_with_environment</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="new-with-environment-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/utils/email.rb, line 74</span>
+74:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new_with_environment</span>(<span class="ruby-identifier">options</span>={})
+75:         <span class="ruby-identifier">environment_options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>.<span class="ruby-identifier">rekey</span>)
+76:         <span class="ruby-identifier">new</span>(<span class="ruby-identifier">options</span>)
+77:       <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+    <div id="public-instance-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="email-method" class="method-detail ">
+        <a name="method-i-email"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">email</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="email-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/utils/email.rb, line 135</span>
+135:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">email</span>(<span class="ruby-identifier">options</span>={})
+136:       <span class="ruby-identifier">options</span>.<span class="ruby-identifier">rekey</span>
+137: 
+138:       <span class="ruby-identifier">message</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:message</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">message</span>
+139:       <span class="ruby-identifier">subject</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:subject</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">subject</span>
+140:       <span class="ruby-identifier">from</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-value">:from</span>]    <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">from</span>
+141:       <span class="ruby-identifier">mailto</span>  = <span class="ruby-identifier">options</span>[<span class="ruby-value">:mailto</span>]  <span class="ruby-operator">||</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:to</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mailto</span>
+142: 
+143:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;missing email field -- server&quot;</span>  <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">server</span>
+144:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;missing email field -- account&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">account</span>
+145: 
+146:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;missing email field -- from&quot;</span>    <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">from</span>
+147:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;missing email field -- mailto&quot;</span>  <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">mailto</span>
+148:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;missing email field -- subject&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">subject</span>
+149: 
+150:       <span class="ruby-identifier">passwd</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">password</span>(<span class="ruby-node">&quot;#{account} password:&quot;</span>)
+151: 
+152:       <span class="ruby-identifier">mailto</span> = [<span class="ruby-identifier">mailto</span>].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">compact</span>
+153: 
+154:       <span class="ruby-identifier">msg</span> = <span class="ruby-value str">&quot;&quot;</span>
+155:       <span class="ruby-identifier">msg</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;From: #{from}\n&quot;</span>
+156:       <span class="ruby-identifier">msg</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;To: #{mailto.join(';')}\n&quot;</span>
+157:       <span class="ruby-identifier">msg</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Subject: #{subject}\n&quot;</span>
+158:       <span class="ruby-identifier">msg</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;&quot;</span>
+159:       <span class="ruby-identifier">msg</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">message</span>
+160: 
+161:       <span class="ruby-comment cmt">#p server, port, domain, account, passwd, login, secure if verbose?</span>
+162: 
+163:       <span class="ruby-keyword kw">begin</span>
+164:         <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTP</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:enable_tls</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">secure</span>
+165:           <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTP</span>.<span class="ruby-identifier">enable_tls</span>
+166:           <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">server</span>, <span class="ruby-identifier">port</span>, <span class="ruby-identifier">domain</span>, <span class="ruby-identifier">account</span>, <span class="ruby-identifier">passwd</span>, <span class="ruby-identifier">login</span>, <span class="ruby-identifier">secure</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">smtp</span><span class="ruby-operator">|</span>
+167:             <span class="ruby-identifier">smtp</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">msg</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">mailto</span>)
+168:           <span class="ruby-keyword kw">end</span>
+169:         <span class="ruby-keyword kw">else</span>
+170:           <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">server</span>, <span class="ruby-identifier">port</span>, <span class="ruby-identifier">domain</span>, <span class="ruby-identifier">account</span>, <span class="ruby-identifier">passwd</span>, <span class="ruby-identifier">login</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">smtp</span><span class="ruby-operator">|</span>
+171:             <span class="ruby-identifier">smtp</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">msg</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">mailto</span>)
+172:           <span class="ruby-keyword kw">end</span>
+173:         <span class="ruby-keyword kw">end</span>
+174:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">mailto</span>
+175:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+176:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">e</span>
+177:       <span class="ruby-keyword kw">end</span>
+178:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="password-method" class="method-detail ">
+        <a name="method-i-password"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">password</span><span
+            class="method-args">(msg=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Ask for a password.
+</p>
+<p>
+FIXME: Does not hide password.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="password-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/utils/email.rb, line 184</span>
+184:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">password</span>(<span class="ruby-identifier">msg</span>=<span class="ruby-keyword kw">nil</span>)
+185:       <span class="ruby-identifier">msg</span> <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;Enter Password: &quot;</span>
+186:       <span class="ruby-identifier">inp</span> = <span class="ruby-value str">''</span>
+187: 
+188:       <span class="ruby-identifier">$stdout</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">msg</span>
+189: 
+190:       <span class="ruby-identifier">inp</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+191: 
+192:       <span class="ruby-comment cmt">#begin</span>
+193:       <span class="ruby-comment cmt">#  system &quot;stty -echo&quot;</span>
+194:       <span class="ruby-comment cmt">#  inp = gets.chomp</span>
+195:       <span class="ruby-comment cmt">#ensure</span>
+196:       <span class="ruby-comment cmt">#  system &quot;stty echo&quot;</span>
+197:       <span class="ruby-comment cmt">#end</span>
+198: 
+199:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">inp</span>
+200:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="require-smtp-method" class="method-detail ">
+        <a name="method-i-require_smtp"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">require_smtp</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="require-smtp-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/utils/email.rb, line 203</span>
+203:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">require_smtp</span>
+204:       <span class="ruby-keyword kw">begin</span>
+205:         <span class="ruby-identifier">require</span> <span class="ruby-value str">'facets/net/smtp_tls'</span>
+206:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">LoadError</span>
+207:         <span class="ruby-identifier">require</span> <span class="ruby-value str">'net/smtp'</span>
+208:       <span class="ruby-keyword kw">end</span>
+209:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+
+  </div>
+
+
+  <div id="rdoc-debugging-section-dump" class="debugging-section">
+  
+    <p>Disabled; run with --debug to generate this.</p>
+  
+  </div>
+
+</main>
+</body>
+</html>
+

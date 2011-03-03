@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+  <title>Class: Ratch::Script</title>
+
+  
+    <link rel="SHORTCUT ICON" href="../assets/icon/class.png">
+  
+
+  <link type="text/css" rel="stylesheet" href="../assets/rdoc.css" media="screen" />
+  <link type="text/css" rel="stylesheet" href="../assets/highlight/styles/github.css" title="GitHub" />
+
+  <script type="text/javascript" charset="utf-8" src="../assets/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/highlight/highlight.pack.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/quicksearch.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/main.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready( function() {
+      $('#documentation pre').wrapInner('<code></code>');
+      hljs.tabReplace = '    ';
+      hljs.initHighlightingOnLoad('ruby');
+
+	    hookSourceViews();
+	    hookDebuggingToggle();
+	    hookQuickSearch();
+	    highlightLocationTarget();
+
+	    $('ul.link-list a').bind( "click", highlightClickTarget );
+    });
+  </script>
+</head>
+<body class="class">
+<div id="main">
+
+  <div class="head">
+    <h1>
+      
+        <img src="../assets/icon/class.png" align="absmiddle">&nbsp;
+      
+      <a href="../index.html">Ratch</a>&nbsp;
+      <a href="/">Ratch::Script</a>
+    </h1>
+  </div>
+
+  <div id="metadata">
+    <div id="project-metadata">
+
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li class="file"><a href="../lib/ratch/script_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/ratch/script.rb">lib/ratch/script.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      <!-- What about Git info, or Hg info? This seems almost silly, albeit kind of cool. -->
+      <!-- TODO: generalize this for all SCMs -->
+
+      
+    </div>
+
+    <div id="class-metadata">
+
+      <!-- Parent Class -->
+      
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        <ul>
+          
+          <!-- why was this class="link" ? -->
+          <li class="class"><a href="Shell.html">Ratch::Shell</a></li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Namespace Contents -->
+      
+
+      <!-- Method Quickref -->
+      
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+            
+            <li class="singleton">
+              <a href="#method-c-execute">::execute</a>
+            </li>
+          
+            
+            <li class="singleton">
+              <a href="#method-c-new">::new</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-define_method">#define_method</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-execute%21">#execute!</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-report">#report</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-run%21">#run!</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-script_file">#script_file</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-status">#status</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-trace">#trace</a>
+            </li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Included Modules -->
+      
+      <div id="includes-section" class="section">
+        <h3 class="section-header">Included Modules</h3>
+        <ul class="link-list">
+        
+        
+          <li class="module"><span class="include">CLI</span></li>
+        
+        
+        </ul>
+      </div>
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Information</h3>
+        <ul>
+        
+          <li class="file"><a href="../Version.html">Version</a></li>
+        
+          <li class="file"><a href="../Profile.html">Profile</a></li>
+        
+          <li class="file"><a href="../COPYING.html">COPYING</a></li>
+        
+          <li class="file"><a href="../History_rdoc.html">History.rdoc</a></li>
+        
+          <li class="file"><a href="../License_txt.html">License.txt</a></li>
+        
+          <li class="file"><a href="../README_rdoc.html">README.rdoc</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="../assets/icon/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <!-- classpage.html : classes -->
+        <ul class="link-list">
+        
+          <li class="module"><a href="../Ratch.html">Ratch</a></li>
+        
+          <li class="class"><a href="../Ratch/Batch.html">Ratch::Batch</a></li>
+        
+          <li class="module"><a href="../Ratch/CLI.html">Ratch::CLI</a></li>
+        
+          <li class="module"><a href="../Ratch/ConfigUtils.html">Ratch::ConfigUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Console.html">Ratch::Console</a></li>
+        
+          <li class="module"><a href="../Ratch/EmailUtils.html">Ratch::EmailUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Emailer.html">Ratch::Emailer</a></li>
+        
+          <li class="module"><a href="../Ratch/FTPUtils.html">Ratch::FTPUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/FileList.html">Ratch::FileList</a></li>
+        
+          <li class="class"><a href="../Ratch/FileNotFound.html">Ratch::FileNotFound</a></li>
+        
+          <li class="class"><a href="../Ratch/Help.html">Ratch::Help</a></li>
+        
+          <li class="module"><a href="../Ratch/POMUtils.html">Ratch::POMUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/RDocUtils.html">Ratch::RDocUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Script.html">Ratch::Script</a></li>
+        
+          <li class="class"><a href="../Ratch/Shell.html">Ratch::Shell</a></li>
+        
+          <li class="class"><a href="../Ratch/System.html">Ratch::System</a></li>
+        
+          <li class="module"><a href="../Ratch/TarUtils.html">Ratch::TarUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/XDGUtils.html">Ratch::XDGUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/ZlibUtils.html">Ratch::ZlibUtils</a></li>
+        
+          <li class="module"><a href="../FileTest.html">FileTest</a></li>
+        
+          <li class="class"><a href="../Hash.html">Hash</a></li>
+        
+          <li class="class"><a href="../NilClass.html">NilClass</a></li>
+        
+          <li class="class"><a href="../Object.html">Object</a></li>
+        
+          <li class="class"><a href="../String.html">String</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+    </div>
+
+    <div id="validator-badges">
+      
+      <div style="float: right; margin-right: 5px;">
+        <a href="http://validator.w3.org/check/referer"><img src="../assets/icon/check.png" alt="[Validate]" height="16" width="16" /></a>
+      </div>
+      Generated with <a href="http://rubyworks.github.com/newfish">Newfish</a> 0.1.0
+      <br/><br/>
+    </div>
+  </div>
+
+  <div id="documentation">
+
+    <div id="description">
+      
+        <h1>Script</h1>
+      
+
+      <p>
+The <a href="../Ratch.html">Ratch</a> <a href="Script.html">Script</a>
+class is used to run stand-alone <a href="../Ratch.html">Ratch</a> scripts.
+Yep, this is actaully a class named exactly for what it is. How rare.
+</p>
+
+    </div>
+
+    <!-- Constants -->
+    
+
+    <!-- Attributes -->
+    
+
+    <!-- Methods -->
+    
+    <div id="public-class-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="execute-method" class="method-detail ">
+        <a name="method-c-execute"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">execute</span><span
+            class="method-args">(script, *args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="execute-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 27</span>
+27:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">script</span>, *<span class="ruby-identifier">args</span>)
+28:       <span class="ruby-identifier">script</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">script</span>, *<span class="ruby-identifier">args</span>)
+29:       <span class="ruby-identifier">script</span>.<span class="ruby-identifier">execute!</span>
+30:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="new-method" class="method-detail ">
+        <a name="method-c-new"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">new</span><span
+            class="method-args">(file, *args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="new-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 33</span>
+33:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">file</span>, *<span class="ruby-identifier">args</span>)
+34:       <span class="ruby-ivar">@_file</span> = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">to_s</span>
+35: 
+36:       <span class="ruby-comment cmt">#extend self</span>
+37: 
+38:       <span class="ruby-keyword kw">super</span>(*<span class="ruby-identifier">args</span>)
+39: 
+40:       <span class="ruby-comment cmt">#@_stdout = options[:stdout] || $stdout</span>
+41:       <span class="ruby-comment cmt">#@_stderr = options[:stderr] || $stderr</span>
+42:       <span class="ruby-comment cmt">#@_stdin  = options[:stdin]  || $stdin</span>
+43:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+    <div id="public-instance-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="define-method-method" class="method-detail ">
+        <a name="method-i-define_method"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">define_method</span><span
+            class="method-args">(name, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Pass-thru to singleton class.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="define-method-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 94</span>
+94:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_method</span>(<span class="ruby-identifier">name</span>, &amp;<span class="ruby-identifier">block</span>)
+95:       (<span class="ruby-keyword kw">class</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword kw">self</span>; <span class="ruby-keyword kw">self</span>; <span class="ruby-keyword kw">end</span>).<span class="ruby-identifier">__send__</span>(<span class="ruby-value">:define_method</span>, &amp;<span class="ruby-identifier">block</span>)
+96:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="execute--method" class="method-detail ">
+        <a name="method-i-execute%21"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">execute!</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Be cautious about calling this in a script &#8212;an infinite loop could
+easily ensue.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="execute--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 52</span>
+52:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute!</span>
+53:       <span class="ruby-identifier">old</span> = <span class="ruby-identifier">$0</span>
+54:       <span class="ruby-keyword kw">begin</span>
+55:         <span class="ruby-identifier">$0</span> = <span class="ruby-identifier">script_file</span>
+56:         <span class="ruby-identifier">instance_eval</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">script_file</span>), <span class="ruby-identifier">script_file</span>, <span class="ruby-value">1</span>)
+57:       <span class="ruby-keyword kw">ensure</span>
+58:         <span class="ruby-identifier">$0</span> = <span class="ruby-identifier">old</span>
+59:       <span class="ruby-keyword kw">end</span>
+60:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Script.html#method-i-run%21">run!</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="report-method" class="method-detail ">
+        <a name="method-i-report"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">report</span><span
+            class="method-args">(message)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+TODO: Deprecate one of the three <a
+href="Script.html#method-i-report">report</a>, <a
+href="Script.html#method-i-status">status</a>, <a
+href="Script.html#method-i-trace">trace</a>.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="report-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 75</span>
+75:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">report</span>(<span class="ruby-identifier">message</span>)
+76:       <span class="ruby-comment cmt">#@_stdout.puts(message) unless quiet?</span>
+77:       <span class="ruby-identifier">puts</span>(<span class="ruby-identifier">message</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">quiet?</span>
+78:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="run--method" class="method-detail method-alias">
+        <a name="method-i-run%21"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">run!</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="script-file-method" class="method-detail ">
+        <a name="method-i-script_file"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">script_file</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Returns the file name of the script.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="script-file-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 46</span>
+46:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">script_file</span>
+47:       <span class="ruby-ivar">@_file</span>
+48:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="status-method" class="method-detail ">
+        <a name="method-i-status"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">status</span><span
+            class="method-args">(message)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="status-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 81</span>
+81:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">status</span>(<span class="ruby-identifier">message</span>)
+82:       <span class="ruby-comment cmt">#@_stdout.puts message unless quiet?</span>
+83:       <span class="ruby-identifier">puts</span> <span class="ruby-identifier">message</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">quiet?</span>  <span class="ruby-comment cmt"># dryrun? or trace?</span>
+84:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="trace-method" class="method-detail ">
+        <a name="method-i-trace"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">trace</span><span
+            class="method-args">(message)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Internal status report. Only output if in trace mode.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="trace-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/script.rb, line 88</span>
+88:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">trace</span>(<span class="ruby-identifier">message</span>)
+89:       <span class="ruby-comment cmt">#@_stdout.puts message if trace?</span>
+90:       <span class="ruby-identifier">puts</span> <span class="ruby-identifier">message</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">trace?</span>
+91:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+
+  </div>
+
+
+  <div id="rdoc-debugging-section-dump" class="debugging-section">
+  
+    <p>Disabled; run with --debug to generate this.</p>
+  
+  </div>
+
+</main>
+</body>
+</html>
+

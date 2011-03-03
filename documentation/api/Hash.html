@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+  <title>Class: Hash</title>
+
+  
+    <link rel="SHORTCUT ICON" href="./assets/icon/class.png">
+  
+
+  <link type="text/css" rel="stylesheet" href="./assets/rdoc.css" media="screen" />
+  <link type="text/css" rel="stylesheet" href="./assets/highlight/styles/github.css" title="GitHub" />
+
+  <script type="text/javascript" charset="utf-8" src="./assets/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="./assets/highlight/highlight.pack.js"></script>
+  <script type="text/javascript" charset="utf-8" src="./assets/quicksearch.js"></script>
+  <script type="text/javascript" charset="utf-8" src="./assets/main.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready( function() {
+      $('#documentation pre').wrapInner('<code></code>');
+      hljs.tabReplace = '    ';
+      hljs.initHighlightingOnLoad('ruby');
+
+	    hookSourceViews();
+	    hookDebuggingToggle();
+	    hookQuickSearch();
+	    highlightLocationTarget();
+
+	    $('ul.link-list a').bind( "click", highlightClickTarget );
+    });
+  </script>
+</head>
+<body class="class">
+<div id="main">
+
+  <div class="head">
+    <h1>
+      
+        <img src="./assets/icon/class.png" align="absmiddle">&nbsp;
+      
+      <a href="./index.html">Ratch</a>&nbsp;
+      <a href="/">Hash</a>
+    </h1>
+  </div>
+
+  <div id="metadata">
+    <div id="project-metadata">
+
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li class="file"><a href="./lib/ratch/core_ext/to_console_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/ratch/core_ext/to_console.rb">lib/ratch/core_ext/to_console.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      <!-- What about Git info, or Hg info? This seems almost silly, albeit kind of cool. -->
+      <!-- TODO: generalize this for all SCMs -->
+
+      
+    </div>
+
+    <div id="class-metadata">
+
+      <!-- Parent Class -->
+      
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        <ul>
+          
+          <!-- why was this class="link" ? -->
+          <li class="class"><a href="Object.html">Object</a></li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Namespace Contents -->
+      
+
+      <!-- Method Quickref -->
+      
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+            
+            <li class="method">
+              <a href="#method-i-argumentize">#argumentize</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-command_vector">#command_vector</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-to_argv">#to_argv</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-to_console">#to_console</a>
+            </li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Included Modules -->
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Information</h3>
+        <ul>
+        
+          <li class="file"><a href="./Version.html">Version</a></li>
+        
+          <li class="file"><a href="./Profile.html">Profile</a></li>
+        
+          <li class="file"><a href="./COPYING.html">COPYING</a></li>
+        
+          <li class="file"><a href="./History_rdoc.html">History.rdoc</a></li>
+        
+          <li class="file"><a href="./License_txt.html">License.txt</a></li>
+        
+          <li class="file"><a href="./README_rdoc.html">README.rdoc</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="./assets/icon/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <!-- classpage.html : classes -->
+        <ul class="link-list">
+        
+          <li class="module"><a href="./Ratch.html">Ratch</a></li>
+        
+          <li class="class"><a href="./Ratch/Batch.html">Ratch::Batch</a></li>
+        
+          <li class="module"><a href="./Ratch/CLI.html">Ratch::CLI</a></li>
+        
+          <li class="module"><a href="./Ratch/ConfigUtils.html">Ratch::ConfigUtils</a></li>
+        
+          <li class="class"><a href="./Ratch/Console.html">Ratch::Console</a></li>
+        
+          <li class="module"><a href="./Ratch/EmailUtils.html">Ratch::EmailUtils</a></li>
+        
+          <li class="class"><a href="./Ratch/Emailer.html">Ratch::Emailer</a></li>
+        
+          <li class="module"><a href="./Ratch/FTPUtils.html">Ratch::FTPUtils</a></li>
+        
+          <li class="class"><a href="./Ratch/FileList.html">Ratch::FileList</a></li>
+        
+          <li class="class"><a href="./Ratch/FileNotFound.html">Ratch::FileNotFound</a></li>
+        
+          <li class="class"><a href="./Ratch/Help.html">Ratch::Help</a></li>
+        
+          <li class="module"><a href="./Ratch/POMUtils.html">Ratch::POMUtils</a></li>
+        
+          <li class="module"><a href="./Ratch/RDocUtils.html">Ratch::RDocUtils</a></li>
+        
+          <li class="class"><a href="./Ratch/Script.html">Ratch::Script</a></li>
+        
+          <li class="class"><a href="./Ratch/Shell.html">Ratch::Shell</a></li>
+        
+          <li class="class"><a href="./Ratch/System.html">Ratch::System</a></li>
+        
+          <li class="module"><a href="./Ratch/TarUtils.html">Ratch::TarUtils</a></li>
+        
+          <li class="module"><a href="./Ratch/XDGUtils.html">Ratch::XDGUtils</a></li>
+        
+          <li class="module"><a href="./Ratch/ZlibUtils.html">Ratch::ZlibUtils</a></li>
+        
+          <li class="module"><a href="./FileTest.html">FileTest</a></li>
+        
+          <li class="class"><a href="./Hash.html">Hash</a></li>
+        
+          <li class="class"><a href="./NilClass.html">NilClass</a></li>
+        
+          <li class="class"><a href="./Object.html">Object</a></li>
+        
+          <li class="class"><a href="./String.html">String</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+    </div>
+
+    <div id="validator-badges">
+      
+      <div style="float: right; margin-right: 5px;">
+        <a href="http://validator.w3.org/check/referer"><img src="./assets/icon/check.png" alt="[Validate]" height="16" width="16" /></a>
+      </div>
+      Generated with <a href="http://rubyworks.github.com/newfish">Newfish</a> 0.1.0
+      <br/><br/>
+    </div>
+  </div>
+
+  <div id="documentation">
+
+    <div id="description">
+      
+        <h1>Hash</h1>
+      
+
+      
+    </div>
+
+    <!-- Constants -->
+    
+
+    <!-- Attributes -->
+    
+
+    <!-- Methods -->
+    
+    <div id="public-instance-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="argumentize-method" class="method-detail ">
+        <a name="method-i-argumentize"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">argumentize</span><span
+            class="method-args">(args_field=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Turn a hash into arguments.
+</p>
+<pre>
+  h = { :list =&gt; [1,2], :base =&gt; &quot;HI&quot; }
+  h.argumentize #=&gt; [ [], { :list =&gt; [1,2], :base =&gt; &quot;HI&quot; } ]
+  h.argumentize(:list) #=&gt; [ [1,2], { :base =&gt; &quot;HI&quot; } ]</pre>
+          
+
+          
+          <div class="method-source-code"
+            id="argumentize-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/core_ext/to_console.rb, line 83</span>
+83:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">argumentize</span>(<span class="ruby-identifier">args_field</span>=<span class="ruby-keyword kw">nil</span>)
+84:     <span class="ruby-identifier">config</span> = <span class="ruby-identifier">dup</span>
+85:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args_field</span>
+86:       <span class="ruby-identifier">args</span> = [<span class="ruby-identifier">config</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">args_field</span>)].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">compact</span>
+87:     <span class="ruby-keyword kw">else</span>
+88:       <span class="ruby-identifier">args</span> = []
+89:     <span class="ruby-keyword kw">end</span>
+90:     <span class="ruby-identifier">args</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">config</span>
+91:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">args</span>
+92:   <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Hash.html#method-i-command_vector">command_vector</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="command-vector-method" class="method-detail method-alias">
+        <a name="method-i-command_vector"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">command_vector</span><span
+            class="method-args">(args_field=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="to-argv-method" class="method-detail ">
+        <a name="method-i-to_argv"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">to_argv</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Convert a <a href="Hash.html">Hash</a> into command line parameters. The
+array is accepted in the format of Ruby method arguments &#8212;ie. [arg1,
+arg2, &#8230;, hash]
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="to-argv-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/core_ext/to_console.rb, line 59</span>
+59:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_argv</span>
+60:     <span class="ruby-identifier">flags</span> = []
+61:     <span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+62:       <span class="ruby-identifier">m</span> = <span class="ruby-identifier">f</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-value str">'-'</span> <span class="ruby-operator">:</span> <span class="ruby-value str">'--'</span>
+63:       <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">v</span>
+64:       <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Array</span>
+65:         <span class="ruby-identifier">v</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">flags</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{m}#{f}='#{e}'&quot;</span> }
+66:       <span class="ruby-keyword kw">when</span> <span class="ruby-keyword kw">true</span>
+67:         <span class="ruby-identifier">flags</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{m}#{f}&quot;</span>
+68:       <span class="ruby-keyword kw">when</span> <span class="ruby-keyword kw">false</span>, <span class="ruby-keyword kw">nil</span>
+69:         <span class="ruby-comment cmt"># nothing</span>
+70:       <span class="ruby-keyword kw">else</span>
+71:         <span class="ruby-identifier">flags</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{m}#{f}='#{v}'&quot;</span>
+72:       <span class="ruby-keyword kw">end</span>
+73:     <span class="ruby-keyword kw">end</span>
+74:     <span class="ruby-identifier">flags</span>
+75:   <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="to-console-method" class="method-detail ">
+        <a name="method-i-to_console"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">to_console</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Convert a <a href="Hash.html">Hash</a> into command line arguments. The
+array is accepted in the format of Ruby method arguments &#8212;ie. [arg1,
+arg2, &#8230;, hash]
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="to-console-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/core_ext/to_console.rb, line 52</span>
+52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_console</span>
+53:     <span class="ruby-identifier">to_argv</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' '</span>)
+54:   <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+
+  </div>
+
+
+  <div id="rdoc-debugging-section-dump" class="debugging-section">
+  
+    <p>Disabled; run with --debug to generate this.</p>
+  
+  </div>
+
+</main>
+</body>
+</html>
+

@@ -1,0 +1,3587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+  <title>Class: Ratch::Batch</title>
+
+  
+    <link rel="SHORTCUT ICON" href="../assets/icon/class.png">
+  
+
+  <link type="text/css" rel="stylesheet" href="../assets/rdoc.css" media="screen" />
+  <link type="text/css" rel="stylesheet" href="../assets/highlight/styles/github.css" title="GitHub" />
+
+  <script type="text/javascript" charset="utf-8" src="../assets/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/highlight/highlight.pack.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/quicksearch.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../assets/main.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready( function() {
+      $('#documentation pre').wrapInner('<code></code>');
+      hljs.tabReplace = '    ';
+      hljs.initHighlightingOnLoad('ruby');
+
+	    hookSourceViews();
+	    hookDebuggingToggle();
+	    hookQuickSearch();
+	    highlightLocationTarget();
+
+	    $('ul.link-list a').bind( "click", highlightClickTarget );
+    });
+  </script>
+</head>
+<body class="class">
+<div id="main">
+
+  <div class="head">
+    <h1>
+      
+        <img src="../assets/icon/class.png" align="absmiddle">&nbsp;
+      
+      <a href="../index.html">Ratch</a>&nbsp;
+      <a href="/">Ratch::Batch</a>
+    </h1>
+  </div>
+
+  <div id="metadata">
+    <div id="project-metadata">
+
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li class="file"><a href="../lib/ratch/batch_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/ratch/batch.rb">lib/ratch/batch.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      <!-- What about Git info, or Hg info? This seems almost silly, albeit kind of cool. -->
+      <!-- TODO: generalize this for all SCMs -->
+
+      
+    </div>
+
+    <div id="class-metadata">
+
+      <!-- Parent Class -->
+      
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        <ul>
+          
+          <!-- why was this class="link" ? -->
+          <li class="class"><a href="../Object.html">Object</a></li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Namespace Contents -->
+      
+
+      <!-- Method Quickref -->
+      
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+            
+            <li class="singleton">
+              <a href="#method-c-%5B%5D">::[]</a>
+            </li>
+          
+            
+            <li class="singleton">
+              <a href="#method-c-new">::new</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-absolute%3F">#absolute?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-blockdev%3F">#blockdev?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-byte_size">#byte_size</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-chardev%3F">#chardev?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-chmod">#chmod</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-chmod_r">#chmod_r</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-chown">#chown</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-chown_r">#chown_r</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-cmp">#cmp</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-compare_file">#compare_file</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-copy">#copy</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-cp">#cp</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-cp_r">#cp_r</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-dir%3F">#dir?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-directory%21">#directory!</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-directory%3F">#directory?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-dryrun%3F">#dryrun?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-each">#each</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-ensure_safe">#ensure_safe</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-entries">#entries</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-executable%3F">#executable?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-executable_real%3F">#executable_real?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-exist%3F">#exist?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-exists%3F">#exists?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-file%21">#file!</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-file%3F">#file?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-file_list">#file_list</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-filenames">#filenames</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-fileutils">#fileutils</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-grpowned%3F">#grpowned?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-identical%3F">#identical?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-install">#install</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-link">#link</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-list">#list</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-ln">#ln</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-ln_s">#ln_s</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-ln_sf">#ln_sf</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-map_cp">#map_cp</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-map_cp_r">#map_cp_r</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-map_ln">#map_ln</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-map_ln_s">#map_ln_s</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-map_ln_sf">#map_ln_sf</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-map_mv">#map_mv</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-map_send">#map_send</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-mkdir">#mkdir</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-mkdir_p">#mkdir_p</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-mkpath">#mkpath</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-move">#move</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-mv">#mv</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-noop%3F">#noop?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-outofdate%3F">#outofdate?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-owned%3F">#owned?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-pathnames">#pathnames</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-pipe%3F">#pipe?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-pwd">#pwd</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-readable%3F">#readable?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-readable_real%3F">#readable_real?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-relative%3F">#relative?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-remove">#remove</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-rename">#rename</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-rm">#rm</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-rm_f">#rm_f</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-rm_r">#rm_r</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-rm_rf">#rm_rf</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-rmdir">#rmdir</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-safe%3F">#safe?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-select%21">#select!</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-setgid%3F">#setgid?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-setuid%3F">#setuid?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-size">#size</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-size%3F">#size?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-socket%3F">#socket?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-stage">#stage</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-sticky%3F">#sticky?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-symlink">#symlink</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-symlink%3F">#symlink?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-to_a">#to_a</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-touch">#touch</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-uptodate%3F">#uptodate?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-verbose%3F">#verbose?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-writable%3F">#writable?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-writable_real%3F">#writable_real?</a>
+            </li>
+          
+            
+            <li class="method">
+              <a href="#method-i-zero%3F">#zero?</a>
+            </li>
+          
+        </ul>
+      </div>
+      
+
+      <!-- Included Modules -->
+      
+      <div id="includes-section" class="section">
+        <h3 class="section-header">Included Modules</h3>
+        <ul class="link-list">
+        
+        
+          <li class="module"><span class="include">Enumerable</span></li>
+        
+        
+        </ul>
+      </div>
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Information</h3>
+        <ul>
+        
+          <li class="file"><a href="../Version.html">Version</a></li>
+        
+          <li class="file"><a href="../Profile.html">Profile</a></li>
+        
+          <li class="file"><a href="../COPYING.html">COPYING</a></li>
+        
+          <li class="file"><a href="../History_rdoc.html">History.rdoc</a></li>
+        
+          <li class="file"><a href="../License_txt.html">License.txt</a></li>
+        
+          <li class="file"><a href="../README_rdoc.html">README.rdoc</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="../assets/icon/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <!-- classpage.html : classes -->
+        <ul class="link-list">
+        
+          <li class="module"><a href="../Ratch.html">Ratch</a></li>
+        
+          <li class="class"><a href="../Ratch/Batch.html">Ratch::Batch</a></li>
+        
+          <li class="module"><a href="../Ratch/CLI.html">Ratch::CLI</a></li>
+        
+          <li class="module"><a href="../Ratch/ConfigUtils.html">Ratch::ConfigUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Console.html">Ratch::Console</a></li>
+        
+          <li class="module"><a href="../Ratch/EmailUtils.html">Ratch::EmailUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Emailer.html">Ratch::Emailer</a></li>
+        
+          <li class="module"><a href="../Ratch/FTPUtils.html">Ratch::FTPUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/FileList.html">Ratch::FileList</a></li>
+        
+          <li class="class"><a href="../Ratch/FileNotFound.html">Ratch::FileNotFound</a></li>
+        
+          <li class="class"><a href="../Ratch/Help.html">Ratch::Help</a></li>
+        
+          <li class="module"><a href="../Ratch/POMUtils.html">Ratch::POMUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/RDocUtils.html">Ratch::RDocUtils</a></li>
+        
+          <li class="class"><a href="../Ratch/Script.html">Ratch::Script</a></li>
+        
+          <li class="class"><a href="../Ratch/Shell.html">Ratch::Shell</a></li>
+        
+          <li class="class"><a href="../Ratch/System.html">Ratch::System</a></li>
+        
+          <li class="module"><a href="../Ratch/TarUtils.html">Ratch::TarUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/XDGUtils.html">Ratch::XDGUtils</a></li>
+        
+          <li class="module"><a href="../Ratch/ZlibUtils.html">Ratch::ZlibUtils</a></li>
+        
+          <li class="module"><a href="../FileTest.html">FileTest</a></li>
+        
+          <li class="class"><a href="../Hash.html">Hash</a></li>
+        
+          <li class="class"><a href="../NilClass.html">NilClass</a></li>
+        
+          <li class="class"><a href="../Object.html">Object</a></li>
+        
+          <li class="class"><a href="../String.html">String</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+    </div>
+
+    <div id="validator-badges">
+      
+      <div style="float: right; margin-right: 5px;">
+        <a href="http://validator.w3.org/check/referer"><img src="../assets/icon/check.png" alt="[Validate]" height="16" width="16" /></a>
+      </div>
+      Generated with <a href="http://rubyworks.github.com/newfish">Newfish</a> 0.1.0
+      <br/><br/>
+    </div>
+  </div>
+
+  <div id="documentation">
+
+    <div id="description">
+      
+        <h1>Batch</h1>
+      
+
+      <p>
+Proccess a list of files in batch.
+</p>
+<p>
+The <a href="Batch.html">Batch</a> interface mimics the <a
+href="Shell.html">Shell</a> class in most respects.
+</p>
+<p>
+TODO: Should <a href="FileList.html">FileList</a> use Pathname, or only in
+<a href="Batch.html">Batch</a>?
+</p>
+
+    </div>
+
+    <!-- Constants -->
+    
+    <div id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt><a name="SAFE_METHODS">SAFE_METHODS</a></dt>
+        
+        <dd class="description"><p>
+# Force copy the list of files recursively in batch, using a block to #
+determine the new file names. If the block returns nil, the file will not #
+be copied. # # This is similar to cp_rf, but allows for detailed control
+over the new # file names. def map_cp_rf(options={}, &amp;block)
+</p>
+<pre>
+  map_send(:cp_rf, options={}, &amp;block)
+</pre>
+<p>
+end
+</p></dd>
+        
+      
+      </dl>
+    </div>
+    
+
+    <!-- Attributes -->
+    
+    <div id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="local-attribute-method" class="method-detail">
+        <a name="local"></a>
+        
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">local</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- Methods -->
+    
+    <div id="public-class-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="--method" class="method-detail ">
+        <a name="method-c-%5B%5D"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">[]</span><span
+            class="method-args">(*patterns)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 15</span>
+15:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-operator">[]</span>(*<span class="ruby-identifier">patterns</span>)
+16:       <span class="ruby-identifier">new</span>(<span class="ruby-value str">'.'</span>, *<span class="ruby-identifier">patterns</span>)
+17:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="new-method" class="method-detail ">
+        <a name="method-c-new"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">new</span><span
+            class="method-args">(local, *patterns)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="new-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 20</span>
+20:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">local</span>, *<span class="ruby-identifier">patterns</span>)
+21:       <span class="ruby-ivar">@local</span>   = <span class="ruby-constant">Pathname</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">local</span>)
+22:       <span class="ruby-ivar">@options</span> = (<span class="ruby-constant">Hash</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">patterns</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">patterns</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> {}).<span class="ruby-identifier">rekey</span>(&amp;<span class="ruby-value">:to_sym</span>)
+23: 
+24:       <span class="ruby-ivar">@file_list</span> = <span class="ruby-constant">FileList</span>.<span class="ruby-identifier">all</span>
+25: 
+26:       <span class="ruby-identifier">patterns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pattern</span><span class="ruby-operator">|</span>
+27:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@local</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Pathname</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'.'</span>)
+28:           <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">pattern</span>)
+29:         <span class="ruby-keyword kw">else</span>
+30:           <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">add</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">local</span>,<span class="ruby-identifier">pattern</span>))
+31:         <span class="ruby-keyword kw">end</span>
+32:       <span class="ruby-keyword kw">end</span>
+33:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+    <div id="public-instance-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="absolute--method" class="method-detail ">
+        <a name="method-i-absolute%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">absolute?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="absolute--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 123</span>
+123:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">absolute?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">absolute?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="blockdev--method" class="method-detail ">
+        <a name="method-i-blockdev%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">blockdev?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="blockdev--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 111</span>
+111:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">blockdev?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">blockdev?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="byte-size-method" class="method-detail ">
+        <a name="method-i-byte_size"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">byte_size</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+This is called <a href="Batch.html#method-i-size">size</a> in <a
+href="../FileTest.html">FileTest</a> but must be renamed to  avoid the
+clash with the Enumerable mixin.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="byte-size-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 94</span>
+94:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">byte_size</span>
+95:       <span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">sum</span>, <span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-identifier">sum</span> <span class="ruby-operator">+</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">size</span>(<span class="ruby-identifier">path</span>) }
+96:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-size%3F">size?</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="chardev--method" class="method-detail ">
+        <a name="method-i-chardev%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">chardev?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="chardev--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 104</span>
+104:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chardev?</span>    ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">chardev?</span>(<span class="ruby-identifier">path</span>)    } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="chmod-method" class="method-detail ">
+        <a name="method-i-chmod"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">chmod</span><span
+            class="method-args">(mode, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Change mode of files.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="chmod-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 273</span>
+273:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chmod</span>(<span class="ruby-identifier">mode</span>, <span class="ruby-identifier">options</span>={})
+274:       <span class="ruby-comment cmt">#list = list.to_a</span>
+275:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">chmod</span>(<span class="ruby-identifier">mode</span>, <span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+276:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="chmod-r-method" class="method-detail ">
+        <a name="method-i-chmod_r"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">chmod_r</span><span
+            class="method-args">(mode, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Change mode of files, following directories recursively.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="chmod-r-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 279</span>
+279:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chmod_r</span>(<span class="ruby-identifier">mode</span>, <span class="ruby-identifier">options</span>={})
+280:       <span class="ruby-comment cmt">#list = list.to_a</span>
+281:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">chmod_r</span>(<span class="ruby-identifier">mode</span>, <span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+282:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="chown-method" class="method-detail ">
+        <a name="method-i-chown"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">chown</span><span
+            class="method-args">(user, group, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Change owner of files.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="chown-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 286</span>
+286:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chown</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">group</span>, <span class="ruby-identifier">options</span>={})
+287:       <span class="ruby-comment cmt">#list = list.to_a</span>
+288:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">chown</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">group</span>, <span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+289:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="chown-r-method" class="method-detail ">
+        <a name="method-i-chown_r"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">chown_r</span><span
+            class="method-args">(user, group, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Change owner of files, following directories recursively.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="chown-r-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 292</span>
+292:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chown_r</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">group</span>, <span class="ruby-identifier">options</span>={})
+293:       <span class="ruby-comment cmt">#list = list.to_a</span>
+294:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">chown_r</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">group</span>, <span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+295:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="cmp-method" class="method-detail method-alias">
+        <a name="method-i-cmp"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">cmp</span><span
+            class="method-args">(other)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="compare-file-method" class="method-detail method-alias">
+        <a name="method-i-compare_file"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">compare_file</span><span
+            class="method-args">(other)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+TODO: Really?
+</p>
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="copy-method" class="method-detail method-alias">
+        <a name="method-i-copy"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">copy</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="cp-method" class="method-detail ">
+        <a name="method-i-cp"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">cp</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+cp(list, dir, options={})
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="cp-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 215</span>
+215:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cp</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>={})
+216:       <span class="ruby-comment cmt">#src  = list.to_a</span>
+217:       <span class="ruby-comment cmt">#dest = localize(dest)</span>
+218:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">cp</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>)
+219:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-copy">copy</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="cp-r-method" class="method-detail ">
+        <a name="method-i-cp_r"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">cp_r</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+<a href="Batch.html#method-i-cp_r">cp_r</a>(list, dir, options={})
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="cp-r-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 223</span>
+223:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cp_r</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>={})
+224:       <span class="ruby-comment cmt">#src  = list.to_a</span>
+225:       <span class="ruby-comment cmt">#dest = localize(dest)</span>
+226:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">cp_r</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>)
+227:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="dir--method" class="method-detail method-alias">
+        <a name="method-i-dir%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">dir?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="directory--method" class="method-detail ">
+        <a name="method-i-directory%21"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">directory!</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Limit list to directories.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="directory--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 78</span>
+78:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">directory!</span>
+79:       <span class="ruby-ivar">@file_list</span> = <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">f</span>) }
+80:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="directory--method" class="method-detail ">
+        <a name="method-i-directory%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">directory?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="directory--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 101</span>
+101:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">directory?</span>  ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">path</span>)  } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-dir%3F">dir?</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="dryrun--method" class="method-detail ">
+        <a name="method-i-dryrun%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">dryrun?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="dryrun--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 478</span>
+478:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dryrun?</span>
+479:       <span class="ruby-identifier">noop?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">verbose?</span>
+480:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="each-method" class="method-detail ">
+        <a name="method-i-each"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">each</span><span
+            class="method-args">(&block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Iterate over pathnames.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="each-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 44</span>
+44:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">each</span>(&amp;<span class="ruby-identifier">block</span>)
+45:       <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-constant">Pathname</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">file</span>)) }
+46:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="entries-method" class="method-detail ">
+        <a name="method-i-entries"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">entries</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Returns an Array of file paths relative to <tt>local</tt>.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="entries-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 68</span>
+68:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">entries</span>
+69:       <span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">entry</span><span class="ruby-operator">|</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-identifier">local</span>.<span class="ruby-identifier">to_s</span><span class="ruby-operator">+</span><span class="ruby-value str">'/'</span>,<span class="ruby-value str">''</span>) }
+70:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="executable--method" class="method-detail ">
+        <a name="method-i-executable%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">executable?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="executable--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 118</span>
+118:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">executable?</span> ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">executable?</span>(<span class="ruby-identifier">path</span>) } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="executable-real--method" class="method-detail ">
+        <a name="method-i-executable_real%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">executable_real?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="executable-real--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 126</span>
+126:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">executable_real?</span> ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">executable_real?</span>(<span class="ruby-identifier">path</span>) } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="exist--method" class="method-detail ">
+        <a name="method-i-exist%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">exist?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="exist--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 105</span>
+105:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">exist?</span>      ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">path</span>)      } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="exists--method" class="method-detail ">
+        <a name="method-i-exists%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">exists?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="exists--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 106</span>
+106:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">exists?</span>     ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">path</span>)     } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="file--method" class="method-detail ">
+        <a name="method-i-file%21"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">file!</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Limit list to files.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="file--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 73</span>
+73:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file!</span>
+74:       <span class="ruby-ivar">@file_list</span> = <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">f</span>) }
+75:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="file--method" class="method-detail ">
+        <a name="method-i-file%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">file?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="file--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 109</span>
+109:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file?</span>       ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">path</span>)       } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="file-list-method" class="method-detail ">
+        <a name="method-i-file_list"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">file_list</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Returns the the underlying <a href="FileList.html">FileList</a> object.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="file-list-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 39</span>
+39:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file_list</span>
+40:       <span class="ruby-ivar">@file_list</span>
+41:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="filenames-method" class="method-detail method-alias">
+        <a name="method-i-filenames"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">filenames</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="grpowned--method" class="method-detail ">
+        <a name="method-i-grpowned%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">grpowned?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="grpowned--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 112</span>
+112:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">grpowned?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">grpowned?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="identical--method" class="method-detail ">
+        <a name="method-i-identical%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">identical?</span><span
+            class="method-args">(other)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="identical--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 131</span>
+131:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">identical?</span>(<span class="ruby-identifier">other</span>)
+132:       <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">identical?</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">other</span>) }
+133:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-compare_file">compare_file</a>, <a href="Batch.html#method-i-cmp">cmp</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="install-method" class="method-detail ">
+        <a name="method-i-install"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">install</span><span
+            class="method-args">(dir, mode, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Install files to a directory with given mode. Unlike <a
+href="Batch.html#method-i-cp">cp</a>, this will not copy the file if an
+up-to-date copy already exists.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="install-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 266</span>
+266:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">install</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">mode</span>, <span class="ruby-identifier">options</span>={})
+267:       <span class="ruby-comment cmt">#src = list.to_a</span>
+268:       <span class="ruby-comment cmt">#dest = localize(dest)</span>
+269:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">install</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">mode</span>, <span class="ruby-identifier">options</span>)
+270:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="link-method" class="method-detail method-alias">
+        <a name="method-i-link"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">link</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="list-method" class="method-detail ">
+        <a name="method-i-list"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">list</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Returns the list of files as Strings, rather than Pathname objects.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="list-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 62</span>
+62:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
+63:       <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">to_a</span>
+64:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-filenames">filenames</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="ln-method" class="method-detail ">
+        <a name="method-i-ln"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">ln</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+ln(list, destdir, options={})
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="ln-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 193</span>
+193:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ln</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>={})
+194:       <span class="ruby-comment cmt">#src = list.to_a</span>
+195:       <span class="ruby-comment cmt">#new = localize(new)</span>
+196:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">ln</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>)
+197:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-link">link</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="ln-s-method" class="method-detail ">
+        <a name="method-i-ln_s"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">ln_s</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+<a href="Batch.html#method-i-ln_s">ln_s</a>(list, destdir, options={})
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="ln-s-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 201</span>
+201:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ln_s</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>={})
+202:       <span class="ruby-comment cmt">#src = list.to_a</span>
+203:       <span class="ruby-comment cmt">#new = localize(new)</span>
+204:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">ln_s</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>)
+205:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-symlink">symlink</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="ln-sf-method" class="method-detail ">
+        <a name="method-i-ln_sf"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">ln_sf</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="ln-sf-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 208</span>
+208:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ln_sf</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>={})
+209:       <span class="ruby-comment cmt">#src = list.to_a</span>
+210:       <span class="ruby-comment cmt">#new = localize(new)</span>
+211:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">ln_sf</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>)
+212:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="map-cp-method" class="method-detail ">
+        <a name="method-i-map_cp"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">map_cp</span><span
+            class="method-args">(options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Copy the list of files in batch, using a block to determine the new file
+names. If the block returns nil, the file will not be copied.
+</p>
+<p>
+This is similar to <a href="Batch.html#method-i-cp">cp</a>, but allows for
+detailed control over the new file names.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="map-cp-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 361</span>
+361:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_cp</span>(<span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+362:       <span class="ruby-identifier">map_send</span>(<span class="ruby-value">:cp</span>, <span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+363:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="map-cp-r-method" class="method-detail ">
+        <a name="method-i-map_cp_r"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">map_cp_r</span><span
+            class="method-args">(options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Copy the list of files recursively in batch, using a block to determine the
+new file names. If the block returns nil, the file will not be copied.
+</p>
+<p>
+This is similar to <a href="Batch.html#method-i-cp_r">cp_r</a>, but allows
+for detailed control over the new file names.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="map-cp-r-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 370</span>
+370:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_cp_r</span>(<span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+371:       <span class="ruby-identifier">map_send</span>(<span class="ruby-value">:cp_r</span>, <span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+372:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="map-ln-method" class="method-detail ">
+        <a name="method-i-map_ln"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">map_ln</span><span
+            class="method-args">(options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Hard link the list of files in batch, using a block to determine the new
+names. If the block returns nil, the file will not be linked.
+</p>
+<p>
+This is similar to <a href="Batch.html#method-i-ln">ln</a>, but allows for
+detailed control over the link names.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="map-ln-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 334</span>
+334:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_ln</span>(<span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+335:       <span class="ruby-identifier">map_send</span>(<span class="ruby-value">:ln</span>, <span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+336:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="map-ln-s-method" class="method-detail ">
+        <a name="method-i-map_ln_s"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">map_ln_s</span><span
+            class="method-args">(options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Soft link the list of files in batch, using a block to determine the new
+names. If the block returns nil, the file will not be linked.
+</p>
+<p>
+This is similar to <a href="Batch.html#method-i-ln_s">ln_s</a>, but allows
+for detailed control over the link names.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="map-ln-s-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 342</span>
+342:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_ln_s</span>(<span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+343:       <span class="ruby-identifier">map_send</span>(<span class="ruby-value">:ln_s</span>, <span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+344:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="map-ln-sf-method" class="method-detail ">
+        <a name="method-i-map_ln_sf"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">map_ln_sf</span><span
+            class="method-args">(options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Force soft linking of the list of files in batch, using a block to 
+determine the new names. If the block returns nil, the file will not be
+linked.
+</p>
+<p>
+This is similar to <a href="Batch.html#method-i-ln_sf">ln_sf</a>, but
+allows for detailed control over the link names.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="map-ln-sf-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 352</span>
+352:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_ln_sf</span>(<span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+353:       <span class="ruby-identifier">map_send</span>(<span class="ruby-value">:ln_sf</span>, <span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+354:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="map-mv-method" class="method-detail ">
+        <a name="method-i-map_mv"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">map_mv</span><span
+            class="method-args">(options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Rename the list of files in batch, using a block to determine the new
+names. If the block returns nil, the file will not be renamed.
+</p>
+<p>
+This is similar to <a href="Batch.html#method-i-mv">mv</a>, but allows for
+detailed control over the renaming.
+</p>
+<p>
+Unlike the other `map_*` methods, this changes the <a
+href="Batch.html">Batch</a> list in-place, since the files renamed no loner
+exist.
+</p>
+<p>
+Returns the changed <a href="FileList.html">FileList</a> instance.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="map-mv-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 326</span>
+326:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_mv</span>(<span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+327:       <span class="ruby-ivar">@file_list</span> = <span class="ruby-identifier">map_send</span>(<span class="ruby-value">:mv</span>, <span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+328:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="mkdir-method" class="method-detail ">
+        <a name="method-i-mkdir"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">mkdir</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Make a directory for every entry.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="mkdir-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 167</span>
+167:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">options</span>={})
+168:       <span class="ruby-identifier">list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span>
+169:         <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">dir</span>)
+170:           <span class="ruby-identifier">raise</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">EEXIST</span>, <span class="ruby-node">&quot;File exists - #{dir}&quot;</span>
+171:         <span class="ruby-keyword kw">end</span>
+172:       <span class="ruby-keyword kw">end</span>
+173:       <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span> <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>) }
+174:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="mkdir-p-method" class="method-detail ">
+        <a name="method-i-mkdir_p"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">mkdir_p</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Make a directory for every entry.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="mkdir-p-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 177</span>
+177:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mkdir_p</span>(<span class="ruby-identifier">options</span>={})
+178:       <span class="ruby-identifier">list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span>
+179:         <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">dir</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">dir</span>)
+180:           <span class="ruby-identifier">raise</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">EEXIST</span>, <span class="ruby-node">&quot;File exists - #{dir}&quot;</span>
+181:         <span class="ruby-keyword kw">end</span>
+182:       <span class="ruby-keyword kw">end</span>
+183:       <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span> <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">mkdir_p</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>) }
+184:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-mkpath">mkpath</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="mkpath-method" class="method-detail method-alias">
+        <a name="method-i-mkpath"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">mkpath</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="move-method" class="method-detail method-alias">
+        <a name="method-i-move"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">move</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="mv-method" class="method-detail ">
+        <a name="method-i-mv"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">mv</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+mv(list, dir, options={})
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="mv-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 230</span>
+230:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mv</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>={})
+231:       <span class="ruby-comment cmt">#src  = list.to_a</span>
+232:       <span class="ruby-comment cmt">#dest = localize(dest)</span>
+233:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">mv</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>)
+234:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-move">move</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="noop--method" class="method-detail ">
+        <a name="method-i-noop%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">noop?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="noop--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 468</span>
+468:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">noop?</span>
+469:       <span class="ruby-ivar">@options</span>[<span class="ruby-value">:noop</span>] <span class="ruby-keyword kw">or</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:dryrun</span>]
+470:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="outofdate--method" class="method-detail ">
+        <a name="method-i-outofdate%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">outofdate?</span><span
+            class="method-args">(path)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Is <tt>path</tt> out-of-date in comparsion to all files in batch.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="outofdate--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 458</span>
+458:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">outofdate?</span>(<span class="ruby-identifier">path</span>)
+459:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">outofdate?</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">to_a</span>)
+460:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="owned--method" class="method-detail ">
+        <a name="method-i-owned%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">owned?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="owned--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 116</span>
+116:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">owned?</span>      ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">owned?</span>(<span class="ruby-identifier">path</span>)      } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="pathnames-method" class="method-detail method-alias">
+        <a name="method-i-pathnames"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">pathnames</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Return the list of files as Pathname objects.
+</p>
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="pipe--method" class="method-detail ">
+        <a name="method-i-pipe%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">pipe?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="pipe--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 108</span>
+108:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pipe?</span>       ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">pipe?</span>(<span class="ruby-identifier">path</span>)       } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="pwd-method" class="method-detail ">
+        <a name="method-i-pwd"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">pwd</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Present working directory. TODO: Does this make sense?
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="pwd-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 162</span>
+162:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pwd</span>
+163:       <span class="ruby-ivar">@local</span>
+164:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="readable--method" class="method-detail ">
+        <a name="method-i-readable%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">readable?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="readable--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 103</span>
+103:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">readable?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">readable?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="readable-real--method" class="method-detail ">
+        <a name="method-i-readable_real%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">readable_real?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="readable-real--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 127</span>
+127:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">readable_real?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">readable_real?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="relative--method" class="method-detail ">
+        <a name="method-i-relative%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">relative?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+TODO: Will this work since all paths are localized?
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="relative--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 122</span>
+122:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">relative?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">relative?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="remove-method" class="method-detail method-alias">
+        <a name="method-i-remove"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">remove</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Alias for <a href="Batch.html#method-i-rm">rm</a>.
+</p>
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="rename-method" class="method-detail ">
+        <a name="method-i-rename"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">rename</span><span
+            class="method-args">(options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Convenient alias for <a href="Batch.html#method-i-map_mv">map_mv</a>.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="rename-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 313</span>
+313:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rename</span>(<span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+314:       <span class="ruby-identifier">map_mv</span>(<span class="ruby-identifier">options</span>, &amp;<span class="ruby-identifier">block</span>)
+315:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="rm-method" class="method-detail ">
+        <a name="method-i-rm"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">rm</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="rm-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 238</span>
+238:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rm</span>(<span class="ruby-identifier">options</span>={})
+239:       <span class="ruby-identifier">list</span> = <span class="ruby-identifier">list</span>.<span class="ruby-identifier">to_a</span>
+240:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">rm</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+241:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-remove">remove</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="rm-f-method" class="method-detail ">
+        <a name="method-i-rm_f"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">rm_f</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Remove, with force option.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="rm-f-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 253</span>
+253:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rm_f</span>(<span class="ruby-identifier">options</span>={})
+254:       <span class="ruby-comment cmt">#list = list.to_a</span>
+255:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">rm_f</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+256:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="rm-r-method" class="method-detail ">
+        <a name="method-i-rm_r"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">rm_r</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Remove, recursively removing the contents of directories.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="rm-r-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 247</span>
+247:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rm_r</span>(<span class="ruby-identifier">options</span>={})
+248:       <span class="ruby-comment cmt">#list = list.to_a</span>
+249:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">rm_r</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+250:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="rm-rf-method" class="method-detail ">
+        <a name="method-i-rm_rf"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">rm_rf</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Remove with force option, recursively removing the contents of directories.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="rm-rf-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 259</span>
+259:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rm_rf</span>(<span class="ruby-identifier">options</span>={})
+260:       <span class="ruby-comment cmt">#list = list.to_a</span>
+261:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">rm_rf</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+262:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="rmdir-method" class="method-detail ">
+        <a name="method-i-rmdir"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">rmdir</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Remove every directory.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="rmdir-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 188</span>
+188:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rmdir</span>(<span class="ruby-identifier">options</span>={})
+189:       <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span> <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">rmdir</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>) }
+190:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="safe--method" class="method-detail ">
+        <a name="method-i-safe%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">safe?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="safe--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 119</span>
+119:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">safe?</span>       ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-identifier">path</span>)       } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="select--method" class="method-detail ">
+        <a name="method-i-select%21"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">select!</span><span
+            class="method-args">(&block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Limit list to selection block.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="select--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 83</span>
+83:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select!</span>(&amp;<span class="ruby-identifier">block</span>)
+84:       <span class="ruby-comment cmt">#@file_list = FileList.all(*to_a.select{ |f| block.call(f) })</span>
+85:       <span class="ruby-ivar">@file_list</span> = <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">select</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">f</span>) }
+86:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="setgid--method" class="method-detail ">
+        <a name="method-i-setgid%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">setgid?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="setgid--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 113</span>
+113:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setgid?</span>     ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">setgid?</span>(<span class="ruby-identifier">path</span>)     } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="setuid--method" class="method-detail ">
+        <a name="method-i-setuid%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">setuid?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="setuid--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 114</span>
+114:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setuid?</span>     ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">setuid?</span>(<span class="ruby-identifier">path</span>)     } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="size-method" class="method-detail ">
+        <a name="method-i-size"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">size</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Returns the Integer size of the list of files.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="size-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 49</span>
+49:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">size</span>
+50:       <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">size</span>
+51:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="size--method" class="method-detail method-alias">
+        <a name="method-i-size%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">size?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+An alias for <a href="Batch.html#method-i-byte_size">byte_size</a>.
+</p>
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="socket--method" class="method-detail ">
+        <a name="method-i-socket%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">socket?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="socket--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 115</span>
+115:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">socket?</span>     ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">socket?</span>(<span class="ruby-identifier">path</span>)     } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="stage-method" class="method-detail ">
+        <a name="method-i-stage"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">stage</span><span
+            class="method-args">(dir)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Stage files. This is like <a href="Batch.html#method-i-install">install</a>
+but uses hardlinks.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="stage-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 305</span>
+305:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">stage</span>(<span class="ruby-identifier">dir</span>)
+306:       <span class="ruby-comment cmt">#dir   = localize(directory)</span>
+307:       <span class="ruby-comment cmt">#files = localize(files)</span>
+308:       <span class="ruby-comment cmt">#list = list.to_a</span>
+309:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">stage</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">local</span>, <span class="ruby-identifier">list</span>)
+310:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="sticky--method" class="method-detail ">
+        <a name="method-i-sticky%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">sticky?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="sticky--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 110</span>
+110:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sticky?</span>     ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">sticky?</span>(<span class="ruby-identifier">path</span>)     } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="symlink-method" class="method-detail method-alias">
+        <a name="method-i-symlink"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">symlink</span><span
+            class="method-args">(dir, options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="symlink--method" class="method-detail ">
+        <a name="method-i-symlink%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">symlink?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="symlink--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 102</span>
+102:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">symlink?</span>    ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">symlink?</span>(<span class="ruby-identifier">path</span>)    } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="to-a-method" class="method-detail ">
+        <a name="method-i-to_a"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">to_a</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Return the list of files as Pathname objects.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="to-a-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 54</span>
+54:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_a</span>
+55:       <span class="ruby-ivar">@file_list</span>.<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span> <span class="ruby-constant">Pathname</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">file</span>) }
+56:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Batch.html#method-i-pathnames">pathnames</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="touch-method" class="method-detail ">
+        <a name="method-i-touch"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">touch</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Touch each file.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="touch-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 299</span>
+299:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">touch</span>(<span class="ruby-identifier">options</span>={})
+300:       <span class="ruby-comment cmt">#list = list.to_a</span>
+301:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">touch</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">options</span>)
+302:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="uptodate--method" class="method-detail ">
+        <a name="method-i-uptodate%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">uptodate?</span><span
+            class="method-args">(path)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Is <tt>path</tt> up-to-date in comparsion to all files in batch.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="uptodate--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 463</span>
+463:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">uptodate?</span>(<span class="ruby-identifier">path</span>)
+464:       <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">uptodate?</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">to_a</span>)
+465:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="verbose--method" class="method-detail ">
+        <a name="method-i-verbose%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">verbose?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="verbose--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 473</span>
+473:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">verbose?</span>
+474:       <span class="ruby-ivar">@options</span>[<span class="ruby-value">:verbose</span>] <span class="ruby-keyword kw">or</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:dryrun</span>]
+475:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="writable--method" class="method-detail ">
+        <a name="method-i-writable%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">writable?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="writable--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 117</span>
+117:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">writable?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">writable?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="writable-real--method" class="method-detail ">
+        <a name="method-i-writable_real%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">writable_real?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="writable-real--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 125</span>
+125:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">writable_real?</span>   ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">writable_real?</span>(<span class="ruby-identifier">path</span>)   } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="zero--method" class="method-detail ">
+        <a name="method-i-zero%3F"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">zero?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code"
+            id="zero--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 107</span>
+107:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">zero?</span>       ; <span class="ruby-identifier">all?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">zero?</span>(<span class="ruby-identifier">path</span>)       } ; <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+    <div id="private-instance-method-details" class="method-section section">
+      <h3 class="section-header">Private Instance Methods</h3>
+
+    
+      <div id="ensure-safe-method" class="method-detail ">
+        <a name="method-i-ensure_safe"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">ensure_safe</span><span
+            class="method-args">(map)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Given a map of source to destination, this method ensures a FileUtils
+operation can is &#8220;safe&#8221; &#8212;that the destination does not
+yet and exist and/or the source and destination are compatible.  If nota
+file rrror is raised.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="ensure-safe-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 416</span>
+416:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ensure_safe</span>(<span class="ruby-identifier">map</span>)
+417:       <span class="ruby-identifier">map</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">src</span>, <span class="ruby-identifier">dest</span><span class="ruby-operator">|</span>
+418:         <span class="ruby-identifier">raise</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">src</span>)
+419:         <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">src</span>)
+420:           <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">dest</span>)
+421:             <span class="ruby-identifier">new_map</span> = {}
+422:             <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">entries</span>(<span class="ruby-identifier">src</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>
+423:               <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">e</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'.'</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">e</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'..'</span>
+424:               <span class="ruby-identifier">new_map</span>[<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">src</span>, <span class="ruby-identifier">e</span>)] = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dest</span>, <span class="ruby-identifier">e</span>)
+425:             <span class="ruby-keyword kw">end</span>
+426:             <span class="ruby-identifier">ensure_safe_destination</span>(<span class="ruby-identifier">new_map</span>)
+427:           <span class="ruby-keyword kw">else</span>
+428:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">EISDIR</span>, <span class="ruby-node">&quot;Is a directory - #{src}&quot;</span>
+429:           <span class="ruby-keyword kw">end</span>
+430:         <span class="ruby-keyword kw">else</span>
+431:           <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">dest</span>)
+432:             <span class="ruby-identifier">check</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dest</span>, <span class="ruby-identifier">src</span>)
+433:             <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">check</span>)
+434:               <span class="ruby-identifier">raise</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">EEXIST</span>, <span class="ruby-node">&quot;File exists - #{check}&quot;</span>
+435:             <span class="ruby-keyword kw">end</span>
+436:           <span class="ruby-keyword kw">else</span>
+437:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">EEXIST</span>, <span class="ruby-node">&quot;File exists - #{dest}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">dest</span>)
+438:           <span class="ruby-keyword kw">end</span>
+439:         <span class="ruby-keyword kw">end</span>
+440:       <span class="ruby-keyword kw">end</span>
+441:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="fileutils-method" class="method-detail ">
+        <a name="method-i-fileutils"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">fileutils</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Returns FileUtils module based on mode.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="fileutils-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 485</span>
+485:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">fileutils</span>
+486:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">dryrun?</span>
+487:         <span class="ruby-operator">::</span><span class="ruby-constant">FileUtils</span><span class="ruby-operator">::</span><span class="ruby-constant">DryRun</span>
+488:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">noop?</span>
+489:         <span class="ruby-operator">::</span><span class="ruby-constant">FileUtils</span><span class="ruby-operator">::</span><span class="ruby-constant">Noop</span>
+490:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">verbose?</span>
+491:         <span class="ruby-operator">::</span><span class="ruby-constant">FileUtils</span><span class="ruby-operator">::</span><span class="ruby-constant">Verbose</span>
+492:       <span class="ruby-keyword kw">else</span>
+493:         <span class="ruby-operator">::</span><span class="ruby-constant">FileUtils</span>
+494:       <span class="ruby-keyword kw">end</span>
+495:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+      <div id="map-send-method" class="method-detail ">
+        <a name="method-i-map_send"></a>
+
+        <div class="method-heading">
+        
+          <span class="method-name">map_send</span><span
+            class="method-args">(method, options={}, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        
+        </div>
+
+        <div class="method-description">
+          
+          <p>
+Generic name mapping procedure which can be used for any FileUtils method
+that has a `src, dest` interface.
+</p>
+          
+
+          
+          <div class="method-source-code"
+            id="map-send-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/ratch/batch.rb, line 393</span>
+393:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_send</span>(<span class="ruby-identifier">method</span>, <span class="ruby-identifier">options</span>={}, &amp;<span class="ruby-identifier">block</span>)
+394: 
+395:       <span class="ruby-identifier">map</span> = {}
+396:       <span class="ruby-identifier">list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+397:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">dest</span> = <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">file</span>)
+398:           <span class="ruby-identifier">map</span>[<span class="ruby-identifier">file</span>] = <span class="ruby-identifier">dest</span>
+399:         <span class="ruby-keyword kw">end</span>
+400:       <span class="ruby-keyword kw">end</span>
+401: 
+402:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:safe</span>] <span class="ruby-keyword kw">or</span> <span class="ruby-operator">!</span><span class="ruby-identifier">options</span>[<span class="ruby-value">:force</span>] <span class="ruby-keyword kw">or</span> <span class="ruby-constant">SAFE_METHODS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">method</span>) 
+403:         <span class="ruby-identifier">ensure_safe</span>(<span class="ruby-identifier">map</span>)
+404:       <span class="ruby-keyword kw">end</span>
+405: 
+406:       <span class="ruby-identifier">map</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">src</span>, <span class="ruby-identifier">dest</span><span class="ruby-operator">|</span>
+407:         <span class="ruby-identifier">fileutils</span>.<span class="ruby-identifier">__send__</span>(<span class="ruby-identifier">method</span>, <span class="ruby-identifier">src</span>, <span class="ruby-identifier">dest</span>, <span class="ruby-identifier">options</span>)
+408:       <span class="ruby-keyword kw">end</span>
+409:       <span class="ruby-constant">FileList</span>.<span class="ruby-identifier">all</span>(*<span class="ruby-identifier">map</span>.<span class="ruby-identifier">values</span>)
+410:     <span class="ruby-keyword kw">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+      </div>
+
+    
+    </div>
+  
+
+  </div>
+
+
+  <div id="rdoc-debugging-section-dump" class="debugging-section">
+  
+    <p>Disabled; run with --debug to generate this.</p>
+  
+  </div>
+
+</main>
+</body>
+</html>
+

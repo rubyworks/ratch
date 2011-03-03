@@ -1,0 +1,140 @@
+<HTML>
+<HEAD>
+  <TITLE>Ratch</TITLE>
+
+  <link REL="SHORTCUT ICON" HREF="assets/images/icon.png"/>
+  <link href="assets/styles/style.css" rel="stylesheet" type="text/css"/>
+
+  <style>
+    #header { margin-top: 50px; }
+    #header h1 { font-size: 72pt; margin: 20px 0 0 0; font-family: sans-serif; }
+    #header h2 { font-size: 18pt; margin-top: 0px; padding: 0; font-family: sans-serif; }
+    #nav { margin: 50px 0 20px 0; }
+    #nav a { font-family: sans-serif; font-size: 1.9em; }
+  </style>
+
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+    });
+  </script>
+</HEAD>
+<BODY>
+
+<div class="container">
+
+  <div id="header">
+    <img src="assets/images/logo.png"/><br/>
+
+    <h1>RATCH</h1>
+
+    <h2>Ruby-based Batch Scripting</h2>
+  </div>
+
+  <div id="nav">
+    <a href="documentation/api/index.html">API</a> &nbsp; &nbsp;
+    <a href="documentation/qed/index.html">QED</a> &nbsp; &nbsp;
+    <a href="http://github.com/rubyworks/ratch">GIT</a>
+  </div>
+
+  <div class="content">
+<!--
+    <h1 class="top">What's New</h1>
+
+    <h3 class="date">2008-08-17</h3>
+
+    <h2>Path gem is now Ratch</h2>
+
+    <p>The first release of Ratch is hitting the streets. I still consider beta ware, but is quite
+    usable nonetheless. There are still some important polishings left to do, and some major features
+    left to add (better support for command line options, task support, etc.). Even so, the system
+    is goog enough that I <a href="http://reap.rubyforge.org">Reap</a> is using it as a very instrumental 
+    dependency.</p>
+
+    <h3 class="date">2008-07-23</h3>
+
+    <h2>Wild Road</h2>
+
+    <p>Ratch was born out of a long process to create a better build tool. Initially that process began with the
+    original version of <a href="http://reap.rubyforge.org">Reap</a>. Reap went through a number of revisions, and ultimately evolved into
+    a new project called Ratchets. Ratchets however was a monster, and the more I worked on it the more it became
+    clear that it would not suffice. I simplified the design a relabeled the result Ratch. This new system was
+    based on the design of tasks as stand-alone scripts that could easily depend on each other, much like rake
+    tasks. It's was a very interesting system, and in some ways extremely appealing, most noteably for it's
+    unix-esque approach. However, this design too ultimately proved too unwieldy. So I took a step back and
+    reconsider everything I has learned during the development process, took some time to read up on other
+    build tools, and reappled myself to the task afresh. The end result became three separate prjoects, 
+    each simpler, more focused and well designed than anything that has come before: Ratch, Sow and the
+    all new Reap. Ratch provides the backbone to Reap's services. </p>
+-->
+<!--
+    <h1 id="whatisit" class="top">What Is It?</h1>
+
+    <p>Ratch is a Ruby-based batch file system specially designed for handling
+    project support and build tasks.</p>
+
+    <p>Ratch is a Domain Specific Language for writing Ruby-based batch scripts.
+    Ratch has a plethora of functionality for building any kind of script,
+    making it easier and more intuitive.</p>
+
+    <p>Ratch provides a cross-platform shell scripting
+    <span class="caps">DSL</span> based on Ruby. Ratch scripts are really just Ruby scripts. What sets them
+    apart from plain Ruby is the convenient Domain Specific Language (DSL) that
+    Ratch provides geared specifically toward the needs of project task and
+    build task scripting. With Ratch, scripting becomes a viable option again.</p>
+
+    <pre style="margin: 20px 0 20px 0; font-size: 8pt;">
+    #!/usr/bin/env ratch
+
+    # Get a list of entries from
+    # the present working directory.
+
+    entries = work.entries
+
+    entries.each do |entry|
+      if entry.directory?
+        report "#{entry} is a directory"
+      else
+        report "#{entry} is a file"
+      end
+    end
+    </pre>
+
+-->
+
+<!--
+    <p>Ratch provides support for dependency-oriented programming too.</p>
+
+    <pre style="margin: 20px 0 20px 0; font-size: 8pt;">
+    #!/usr/bin/env ratch
+
+    task :document => [:rdoc, :ri]
+
+    task :rdoc do
+      shell 'rdoc -o doc/roc'
+    end
+
+    task :ri do
+      shell 'rdoc --ri -o doc/ri'
+    end
+    </pre>
+-->
+
+<!--
+    <p>Ratch is still fairly early in development, so some parts of the API continue to change.
+    However the main parts of ratch are stable and Ratch is already quite usable.</p>
+-->
+    </div>
+
+  </div>
+
+  <div class="copyright" style="clear: both; text-align: center;">
+    <b>Ratch</b>, Copyright &#x00A9; 2011 Thomas Sawyer
+  </div>
+
+</div>
+
+</div>
+</BODY>
+</HTML>
+
