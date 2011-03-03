@@ -61,12 +61,12 @@ manifest:
 - lib/ratch.rb
 - lib/ratch.yml
 - man/ratch.1
+- spec/01_shell.rdoc
+- spec/02_script.rdoc
+- spec/03_batch.rdoc
+- spec/04_system.rdoc
 - spec/applique/array.rb
 - spec/applique/setup.rb
-- spec/batch.rdoc
-- spec/script.rdoc
-- spec/shell.rdoc
-- spec/system.rdoc
 - test/case_batch.rb
 - test/case_shell.rb
 - test/core_ext/case_pathname.rb
