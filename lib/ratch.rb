@@ -22,7 +22,7 @@ require 'ratch/script'
 require 'ratch/utils/cli'
 require 'ratch/utils/pom'
 require 'ratch/utils/rdoc'
-#require 'ratch/utils/email'
+require 'ratch/utils/email'
 #require 'ratch/utils/tar'
 #require 'ratch/utils/zlib'
 
