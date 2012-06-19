@@ -20,6 +20,11 @@ module Ratch
   # want to leave it open for such cases.
   class Shell
 
+    #
+    def self.[](path)
+      new(path)
+    end
+
     # New Shell object.
     #
     #   Shell.new(:noop=>true)
@@ -54,9 +59,9 @@ module Ratch
 
     #
     def set_options(opts)
-      @_quiet = opts[:quiet]
-      @_noop  = opts[:noop]  || opts[:dryrun]
-      @_trace = opts[:trace] || opts[:dryrun]
+      @_quiet   = opts[:quiet]   || options[:silent]
+      @_nowrite = opts[:nowrite] || options[:noop]    || opts[:dryrun]
+      @_trace   = opts[:trace]   || options[:verbose] || opts[:dryrun]
       #@_force = opts[:force]
     end
 
@@ -84,12 +89,15 @@ module Ratch
     #  end
     #end
 
-    def quiet?   ; @_quiet ; end
-    def trace?   ; @_trace ; end
-    def noop?    ; @_noop  ; end
+    def quiet?   ; @_quiet   ; end
+    def trace?   ; @_trace   ; end
+    def nowrite? ; @_nowrite ; end
     #def force?  ; @_force ; end
 
-    def dryrun?  ; noop? && trace? ; end
+    def dryrun?  ; nowrite? && trace? ; end
+
+    alias verbose? trace?
+    alias noop? nowrite
 
     # String representation is work directory path.
     def to_s ; work.to_s ; end
@@ -115,7 +123,6 @@ module Ratch
     #   home   #=> #<Pathname:/home/jimmy>
     #   work   #=> #<Pathname:/home/jimmy/Documents>
     #
-    # TODO: Replace these with Folio when Folio's is as capable.
 
     # Current root path.
     #def root(*args)
@@ -241,52 +248,11 @@ module Ratch
       pathnames.select{ |f| f.file? }
     end
 
-    # Glob pattern. Returns matches as strings.
-    def glob(*patterns, &block)
-      opts = (::Integer===patterns.last ? patterns.pop : 0)
-      matches = []
-      locally do
-        matches = patterns.map{ |pattern| ::Dir.glob(pattern, opts) }.flatten
-      end
-      if block_given?
-        matches.each(&block)
-      else
-        matches
-      end
-    end
-
-    # Glob files.
-    #def glob(*args, &blk)
-    #  Dir.glob(*args, &blk)
-    #end
-
-    # TODO: Ultimately merge #glob and #multiglob.
-    def multiglob(*args, &blk)
-      Dir.multiglob(*args, &blk)
-    end
-
-    def multiglob_r(*args, &blk)
-      Dir.multiglob_r(*args, &blk)
-    end
-
-=begin
-    # Match pattern. Like #glob but returns file objects.
-    # TODO: There is no FileObject any more. Should there be?
-    def match(*patterns, &block)
-      opts = (::Integer===patterns.last ? patterns.pop : 0)
-      patterns = localize(patterns)
-      matches  = patterns.map{ |pattern| ::Dir.glob(pattern, opts) }.flatten
-      matches  = matches.map{ |f| FileObject[f] }
-      if block_given?
-        matches.each(&block)
-      else
-        matches
-      end
-    end
-=end
-
     # Join paths.
-    # TODO: Should this return a new directory object? Or should it change directories?
+    #--
+    # TODO: Should this return a new directory object?
+    # Or should it change directories?
+    #++
     def /(path)
       #@_work += dir   # did not work, why?
       @_work = dir(localize(path))
@@ -296,7 +262,9 @@ module Ratch
     # Alias for #/.
     alias_method '+', '/'
 
-    # TODO: Tie this into the System class.
+    #--
+    # TODO: Tie system into the System class (?)
+    #++
     def system(cmd)
       locally do
         super(cmd)
@@ -362,236 +330,76 @@ module Ratch
     #  fileutils.chdir(*a,&b)
     #end
 
-    # -- File IO Shortcuts -----------------------------------------------
+    # Methods that can simply be localized via their first argument.
 
-    # Read file.
-    def read(path)
-      File.read(localize(path))
+    LOCALIZABLE_METHODS = %w{
+      size size? directory? dir? readable? symlink? chardev? exist? exists?
+      zero? pipe? file? stticky? blockdev? grpowned? setgid? setuid?
+      socket? owned? writable? executable? safe? readable_real?
+      writeable_real? executable_real? 
+    }
+
+    LOCALIZABLE_METHODS.each do |name|
+      module_eval %{
+        def #{name}(path)
+          shellutils.#{name}(localize(path))
+        end
+      }
     end
 
-    # Write file.
-    def write(path, text)
-      $stderr.puts "write #{path}" if trace?
-      File.open(localize(path), 'w'){ |f| f << text } unless noop?
-    end
-
-    # Append to file.
-    def append(path, text)
-      $stderr.puts "append #{path}" if trace?
-      File.open(localize(path), 'a'){ |f| f << text } unless noop?
-    end
-
-
-    #############
-    # FileTest  #
-    #############
-
-    #
-    def size(path)        ; FileTest.size(localize(path))       ; end
-    def size?(path)       ; FileTest.size?(localize(path))      ; end
-    def directory?(path)  ; FileTest.directory?(localize(path)) ; end
-    def symlink?(path)    ; FileTest.symlink?(localize(path))   ; end
-    def readable?(path)   ; FileTest.readable?(localize(path))  ; end
-    def chardev?(path)    ; FileTest.chardev?(localize(path))   ; end
-    def exist?(path)      ; FileTest.exist?(localize(path))     ; end
-    def exists?(path)     ; FileTest.exists?(localize(path))    ; end
-    def zero?(path)       ; FileTest.zero?(localize(path))      ; end
-    def pipe?(path)       ; FileTest.pipe?(localize(path))      ; end
-    def file?(path)       ; FileTest.file?(localize(path))      ; end
-    def sticky?(path)     ; FileTest.sticky?(localize(path))    ; end
-    def blockdev?(path)   ; FileTest.blockdev?(localize(path))  ; end
-    def grpowned?(path)   ; FileTest.grpowned?(localize(path))  ; end
-    def setgid?(path)     ; FileTest.setgid?(localize(path))    ; end
-    def setuid?(path)     ; FileTest.setuid?(localize(path))    ; end
-    def socket?(path)     ; FileTest.socket?(localize(path))    ; end
-    def owned?(path)      ; FileTest.owned?(localize(path))     ; end
-    def writable?(path)   ; FileTest.writable?(localize(path))  ; end
-    def executable?(path) ; FileTest.executable?(localize(path))  ; end
-
-    def safe?(path)       ; FileTest.safe?(localize(path)) ; end
-
-    def relative?(path)   ; FileTest.relative?(path)       ; end
-    def absolute?(path)   ; FileTest.absolute?(path)       ; end
-
-    def writable_real?(path)   ; FileTest.writable_real?(localize(path))   ; end
-    def executable_real?(path) ; FileTest.executable_real?(localize(path)) ; end
-    def readable_real?(path)   ; FileTest.readable_real?(localize(path))   ; end
+    def relative?(path); shellutils.relative?(path); end
+    def absolute?(path); shellutils.absolute?(path); end
 
     def identical?(path, other)
-      FileTest.identical?(localize(path), localize(other))
+      shellutils.indentical?(localize(path), localize(other))
     end
-    alias_method :compare_file, :identical?
 
-    # Assert that a path exists.
-    #def exists?(path)
-    #  paths = Dir.glob(path)
-    #  paths.not_empty?
-    #end
-    #alias_method :exist?, :exists? #; module_function :exist?
-    #alias_method :path?,  :exists? #; module_function :path?
+    alias_method :cmp, :identical?
 
-    # Is a given path a regular file? If +path+ is a glob
-    # then checks to see if all matches are regular files.
-    #def file?(path)
-    #  paths = Dir.glob(path)
-    #  paths.not_empty? && paths.all?{ |f| FileTest.file?(f) }
-    #end
-
-    # Is a given path a directory? If +path+ is a glob
-    # checks to see if all matches are directories.
-    #def dir?(path)
-    #  paths = Dir.glob(path)
-    #  paths.not_empty? && paths.all?{ |f| FileTest.directory?(f) }
-    #end
     #alias_method :directory?, :dir? #; module_function :directory?
 
 
-    #############
-    # FileUtils #
-    #############
+    # Methods that are wrapped in a locally chdir block.
 
-    # Low-level Methods Omitted
-    # -------------------------
-    # getwd           -> pwd
-    # compare_file    -> cmp
-    # remove_file     -> rm
-    # copy_file       -> cp
-    # remove_dir      -> rmdir
-    # safe_unlink     -> rm_f
-    # makedirs        -> mkdir_p
-    # rmtree          -> rm_rf
-    # copy_stream
-    # remove_entry
-    # copy_entry
-    # remove_entry_secure
-    # compare_stream
+    LOCALLY_METHODS = %w{
+      mkdir mkdir_p mkpath rmdir ln ln_s ln_sf link symlink 
+      cp cp_r copy mv move rm rm_r rm_f rm_rf remove
+      install chmod chmod_r chmod_R chown chown_r chown_R touch
+      stage amass uptodate? outofdate?
+      ctime atime mtime utime
+      read write append glob
+      multiglob multiglob_r
+    }
+
+    LOCALLY_METHODS.each do |name|
+      module_eval %{
+        def #{name}(*args)
+          locally do
+            super(*args)
+          end
+        end
+      }
+    end
+
+    # These low-level Fileutils methods have omitted.
+    #
+    # * getwd           -> pwd
+    # * compare_file    -> cmp
+    # * remove_file     -> rm
+    # * copy_file       -> cp
+    # * remove_dir      -> rmdir
+    # * safe_unlink     -> rm_f
+    # * makedirs        -> mkdir_p
+    # * rmtree          -> rm_rf
+    # * copy_stream
+    # * remove_entry
+    # * copy_entry
+    # * remove_entry_secure
+    # * compare_stream
 
     # Present working directory.
     def pwd
       work.to_s
-    end
-
-    # Same as #identical?
-    def cmp(a,b)
-      fileutils.compare_file(a,b)
-    end
-
-    #
-    def mkdir(dir, options={})
-      dir = localize(dir)
-      fileutils.mkdir(dir, options)
-    end
-
-    def mkdir_p(dir, options={})
-      dir = localize(dir)
-      unless File.directory?(dir)
-        fileutils.mkdir_p(dir, options)
-      end
-    end
-    alias_method :mkpath, :mkdir_p
-
-    def rmdir(dir, options={})
-      dir = localize(dir)
-      fileutils.rmdir(dir, options)
-    end
-
-    # ln(list, destdir, options={})
-    def ln(old, new, options={})
-      old = localize(old)
-      new = localize(new)
-      fileutils.ln(old, new, options)
-    end
-    alias_method :link, :ln
-
-    # ln_s(list, destdir, options={})
-    def ln_s(old, new, options={})
-      old = localize(old)
-      new = localize(new)
-      fileutils.ln_s(old, new, options)
-    end
-    alias_method :symlink, :ln_s
-
-    def ln_sf(old, new, options={})
-      old = localize(old)
-      new = localize(new)
-      fileutils.ln_sf(old, new, options)
-    end
-
-    # cp(list, dir, options={})
-    def cp(src, dest, options={})
-      src  = localize(src)
-      dest = localize(dest)
-      fileutils.cp(src, dest, options)
-    end
-    alias_method :copy, :cp
-
-    # cp_r(list, dir, options={})
-    def cp_r(src, dest, options={})
-      src  = localize(src)
-      dest = localize(dest)
-      fileutils.cp_r(src, dest, options)
-    end
-
-    # mv(list, dir, options={})
-    def mv(src, dest, options={})
-      src  = localize(src)
-      dest = localize(dest)
-      fileutils.mv(src, dest, options)
-    end
-    alias_method :move, :mv
-
-    def rm(list, options={})
-      list = localize(list)
-      fileutils.rm(list, options)
-    end
-    alias_method :remove, :rm
-
-    def rm_r(list, options={})
-      list = localize(list)
-      fileutils.rm_r(list, options)
-    end
-
-    def rm_f(list, options={})
-      list = localize(list)
-      fileutils.rm_f(list, options)
-    end
-
-    def rm_rf(list, options={})
-      list = localize(list)
-      fileutils.rm_rf(list, options)
-    end
-
-    def install(src, dest, mode, options={})
-      src  = localize(src)
-      dest = localize(dest)
-      fileutils.install(src, dest, mode, options)
-    end
-
-    def chmod(mode, list, options={})
-      list = localize(list)
-      fileutils.chmod(mode, list, options)
-    end
-
-    def chmod_r(mode, list, options={})
-      list = localize(list)
-      fileutils.chmod_r(mode, list, options)
-    end
-    #alias_method :chmod_R, :chmod_r
-
-    def chown(user, group, list, options={})
-      list = localize(list)
-      fileutils.chown(user, group, list, options)
-    end
-
-    def chown_r(user, group, list, options={})
-      list = localize(list)
-      fileutils.chown_r(user, group, list, options)
-    end
-    #alias_method :chown_R, :chown_r
-
-    def touch(list, options={})
-      list = localize(list)
-      fileutils.touch(list, options)
     end
 
     #
@@ -606,82 +414,7 @@ module Ratch
       end
     end
 
-    # An intergrated glob like method that takes a set of include globs,
-    # exclude globs and ignore globs to produce a collection of paths.
-    #
-    # Ignore_globs differ from exclude_globs in that they match by
-    # the basename of the path rather than the whole pathname.
-    #
-    def amass(include_globs, exclude_globs=[], ignore_globs=[])
-      locally do
-        fileutils.amass(include_globs, exclude_globs, ignore_globs)
-      end
-    end
-
-    #
-    def outofdate?(path, *sources)
-      #fileutils.outofdate?(localize(path), localize(sources))  # DIDN'T WORK, why?
-      locally do
-        fileutils.outofdate?(path, sources.flatten)
-      end
-    end
-
-#    # Does a path need updating, based on given +sources+?
-#    # This compares mtimes of give paths. Returns false
-#    # if the path needs to be updated.
-#    #
-#    # TODO: Put this in FileTest instead?
-#
-#    def out_of_date?(path, *sources)
-#      return true unless File.exist?(path)
-#
-#      sources = sources.collect{ |source| Dir.glob(source) }.flatten
-#      mtimes  = sources.collect{ |file| File.mtime(file) }
-#
-#      return true if mtimes.empty?  # TODO: This the way to go here?
-#
-#      File.mtime(path) < mtimes.max
-#    end
-
-    #
-    def uptodate?(path, *sources)
-      locally do
-        fileutils.uptodate?(path, sources.flatten)
-      end
-    end
-
-    #
-    #def uptodate?(new, old_list, options=nil)
-    #  new = localize(new)
-    #  old = localize(old_list)
-    #  fileutils.uptodate?(new, old, options)
-    #end
-
-=begin
-    # TODO: Deprecate these?
-
-    # Assert that a path exists.
-    def exists!(*paths)
-      abort "path not found #{path}" unless paths.any?{|path| exists?(path)}
-    end
-    alias_method :exist!, :exists! #; module_function :exist!
-    alias_method :path!,  :exists! #; module_function :path!
-
-    # Assert that a given path is a file.
-    def file!(*paths)
-      abort "file not found #{path}" unless paths.any?{|path| file?(path)}
-    end
-
-    # Assert that a given path is a directory.
-    def dir!(*paths)
-      paths.each do |path|
-        abort "Directory not found: '#{path}'." unless  dir?(path)
-      end
-    end
-    alias_method :directory!, :dir! #; module_function :directory!
-=end
-
-  #private ?
+  private
 
     # Returns a path local to the current working path.
     def localize(local_path)
@@ -750,18 +483,20 @@ module Ratch
 
   private
 
-    # Returns FileUtils module based on mode.
-    def fileutils
+    # The ShellUtils module based on current mode.
+    def shellutils
       if dryrun?
-        ::FileUtils::DryRun
-      elsif noop?
-        ::FileUtils::Noop
+        ShellUtils::DryRun
+      elsif nowrite?
+        ShellUtils::NoWrite
       elsif trace?
-        ::FileUtils::Verbose
+        ShellUtils::Verbose
       else
-        ::FileUtils
+        ShellUtils
       end
     end
+
+    # TODO: What's #util_options for?
 
     # This may be used by script commands to allow for per command
     # noop and trace options. Global options have precedence.
@@ -771,11 +506,35 @@ module Ratch
       return noop, trace
     end
 
-  public#class
+#    # Returns FileUtils module based on mode.
+#    def fileutils
+#      if dryrun?
+#        ::FileUtils::DryRun
+#      elsif noop?
+#        ::FileUtils::NoWrite
+#      elsif trace?
+#        ::FileUtils::Verbose
+#      else
+#        ::FileUtils
+#      end
+#    end
 
-    def self.[](path)
-      new(path)
-    end
+#    # Does a path need updating, based on given +sources+?
+#    # This compares mtimes of give paths. Returns false
+#    # if the path needs to be updated.
+#    #
+#    # TODO: Put this in FileTest instead?
+#
+#    def out_of_date?(path, *sources)
+#      return true unless File.exist?(path)
+#
+#      sources = sources.collect{ |source| Dir.glob(source) }.flatten
+#      mtimes  = sources.collect{ |file| File.mtime(file) }
+#
+#      return true if mtimes.empty?  # TODO: This the way to go here?
+#
+#      File.mtime(path) < mtimes.max
+#    end
 
   end
 
