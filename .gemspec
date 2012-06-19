@@ -1,201 +1,187 @@
---- !ruby/object:Gem::Specification 
-name: ratch
-version: !ruby/object:Gem::Version 
-  hash: 31
-  prerelease: false
-  segments: 
-  - 1
-  - 2
-  - 0
-  version: 1.2.0
-platform: ruby
-authors: 
-- Trans <transfire@gmail.com>
-autorequire: 
-bindir: bin
-cert_chain: []
+# encoding: utf-8
 
-date: 2011-03-03 00:00:00 -05:00
-default_executable: 
-dependencies: 
-- !ruby/object:Gem::Dependency 
-  name: facets
-  prerelease: false
-  requirement: &id001 !ruby/object:Gem::Requirement 
-    none: false
-    requirements: 
-    - - ">="
-      - !ruby/object:Gem::Version 
-        hash: 41
-        segments: 
-        - 2
-        - 9
-        - 1
-        version: 2.9.1
-  type: :runtime
-  version_requirements: *id001
-- !ruby/object:Gem::Dependency 
-  name: minitar
-  prerelease: false
-  requirement: &id002 !ruby/object:Gem::Requirement 
-    none: false
-    requirements: 
-    - - ">="
-      - !ruby/object:Gem::Version 
-        hash: 13
-        segments: 
-        - 0
-        - 5
-        - 3
-        version: 0.5.3
-  type: :runtime
-  version_requirements: *id002
-- !ruby/object:Gem::Dependency 
-  name: ko
-  prerelease: false
-  requirement: &id003 !ruby/object:Gem::Requirement 
-    none: false
-    requirements: 
-    - - ~>
-      - !ruby/object:Gem::Version 
-        hash: 31
-        segments: 
-        - 1
-        - 2
-        - 0
-        version: 1.2.0
-  type: :development
-  version_requirements: *id003
-- !ruby/object:Gem::Dependency 
-  name: qed
-  prerelease: false
-  requirement: &id004 !ruby/object:Gem::Requirement 
-    none: false
-    requirements: 
-    - - ">="
-      - !ruby/object:Gem::Version 
-        hash: 3
-        segments: 
-        - 0
-        version: "0"
-  type: :development
-  version_requirements: *id004
-- !ruby/object:Gem::Dependency 
-  name: syckle
-  prerelease: false
-  requirement: &id005 !ruby/object:Gem::Requirement 
-    none: false
-    requirements: 
-    - - ">="
-      - !ruby/object:Gem::Version 
-        hash: 3
-        segments: 
-        - 0
-        version: "0"
-  type: :development
-  version_requirements: *id005
-description: Ratch is a Ruby-based batch scripting language. It's a DSL over regular Ruby to make the life of the batch script writter easier.
-email: transfire@gmail.com
-executables: 
-- ratch
-- ludo
-extensions: []
+require 'yaml'
 
-extra_rdoc_files: 
-- README.rdoc
-files: 
-- .ruby
-- bin/ludo
-- bin/ratch
-- lib/ratch/batch.rb
-- lib/ratch/console.rb
-- lib/ratch/core_ext/facets.rb
-- lib/ratch/core_ext/filetest.rb
-- lib/ratch/core_ext/to_actual_filename.rb
-- lib/ratch/core_ext/to_console.rb
-- lib/ratch/core_ext/to_list.rb
-- lib/ratch/core_ext/to_yamlfrag.rb
-- lib/ratch/core_ext/unfold_paragraphs.rb
-- lib/ratch/core_ext.rb
-- lib/ratch/file_list.rb
-- lib/ratch/script/help.rb
-- lib/ratch/script.rb
-- lib/ratch/shell.rb
-- lib/ratch/system.rb
-- lib/ratch/utils/cli.rb
-- lib/ratch/utils/config.rb
-- lib/ratch/utils/email.rb
-- lib/ratch/utils/ftp.rb
-- lib/ratch/utils/pom.rb
-- lib/ratch/utils/rdoc.rb
-- lib/ratch/utils/tar.rb
-- lib/ratch/utils/xdg.rb
-- lib/ratch/utils/zlib.rb
-- lib/ratch.rb
-- lib/ratch.yml
-- man/ratch.1
-- spec/01_shell.rdoc
-- spec/02_script.rdoc
-- spec/03_batch.rdoc
-- spec/04_system.rdoc
-- spec/applique/array.rb
-- spec/applique/setup.rb
-- test/case_batch.rb
-- test/case_shell.rb
-- test/core_ext/case_pathname.rb
-- test/helper.rb
-- test/utils/case_cli.rb
-- test/utils/case_config.rb
-- test/utils/case_email.rb
-- test/utils/case_ftp.rb
-- test/utils/case_pom.rb
-- test/utils/case_rdoc.rb
-- test/utils/case_tar.rb
-- test/utils/case_zlib.rb
-- test/utils/fixtures/pom_sample/Profile
-- test/utils/fixtures/rdoc_sample/README.rdoc
-- test/utils/fixtures/rdoc_sample/lib/rdoc_sample/rdoc_sample.rb
-- README.rdoc
-- History.rdoc
-- Version
-- License.txt
-- COPYING
-has_rdoc: true
-homepage: http://rubyworks.github.org/ratch
-licenses: 
-- Apache 2.0
-post_install_message: 
-rdoc_options: 
-- --title
-- Ratch API
-- --main
-- README.rdoc
-require_paths: 
-- lib
-required_ruby_version: !ruby/object:Gem::Requirement 
-  none: false
-  requirements: 
-  - - ">="
-    - !ruby/object:Gem::Version 
-      hash: 3
-      segments: 
-      - 0
-      version: "0"
-required_rubygems_version: !ruby/object:Gem::Requirement 
-  none: false
-  requirements: 
-  - - ">="
-    - !ruby/object:Gem::Version 
-      hash: 3
-      segments: 
-      - 0
-      version: "0"
-requirements: []
+module DotRuby
 
-rubyforge_project: ratch
-rubygems_version: 1.3.7
-signing_key: 
-specification_version: 3
-summary: Ruby-based Batch Scripting
-test_files: 
-- lib/ratch/core_ext/filetest.rb
+  #
+  class GemSpec
+
+    # For which revision of .ruby is this gemspec intended?
+    REVISION = 0
+
+    #
+    PATTERNS = {
+      :bin_files  => 'bin/*',
+      :lib_files  => 'lib/{**/}*.rb',
+      :ext_files  => 'ext/{**/}extconf.rb',
+      :doc_files  => '*.{txt,rdoc,md,markdown,tt,textile}',
+      :test_files => '{test/{**/}*_test.rb,spec/{**/}*_spec.rb}'
+    }
+
+    #
+    def self.instance
+      new.to_gemspec
+    end
+
+    attr :metadata
+
+    attr :manifest
+
+    #
+    def initialize
+      @metadata = YAML.load_file('.ruby')
+      @manifest = Dir.glob('manifest{,.txt}', File::FNM_CASEFOLD).first
+
+      if @metadata['revision'].to_i != REVISION
+        warn "You have the wrong revision. Trying anyway..."
+      end
+    end
+
+    #
+    def scm
+      @scm ||= \
+        case
+        when File.directory?('.git')
+          :git
+        end
+    end
+
+    #
+    def files
+      @files ||= \
+        #glob_files[patterns[:files]]
+        case
+        when manifest
+          File.readlines(manifest).
+            map{ |line| line.strip }.
+            reject{ |line| line.empty? || line[0,1] == '#' }
+        when scm == :git
+         `git ls-files -z`.split("\0")
+        else
+          Dir.glob('{**/}{.*,*}')  # TODO: be more specific using standard locations ?
+        end.select{ |path| File.file?(path) }
+    end
+
+    #
+    def glob_files(pattern)
+      Dir.glob(pattern).select { |path|
+        File.file?(path) && files.include?(path)
+      }
+    end
+
+    #
+    def patterns
+      PATTERNS
+    end
+
+    #
+    def executables
+      @executables ||= \
+        glob_files(patterns[:bin_files]).map do |path|
+          File.basename(path)
+        end
+    end
+
+    def extensions
+      @extensions ||= \
+        glob_files(patterns[:ext_files]).map do |path|
+          File.basename(path)
+        end
+    end
+
+    #
+    def name
+      metadata['name'] || metadata['title'].downcase.gsub(/\W+/,'_')
+    end
+
+    #
+    def to_gemspec
+      Gem::Specification.new do |gemspec|
+        gemspec.name        = name
+        gemspec.version     = metadata['version']
+        gemspec.summary     = metadata['summary']
+        gemspec.description = metadata['description']
+
+        metadata['authors'].each do |author|
+          gemspec.authors << author['name']
+
+          if author.has_key?('email')
+            if gemspec.email
+              gemspec.email << author['email']
+            else
+              gemspec.email = [author['email']]
+            end
+          end
+        end
+
+        gemspec.licenses = metadata['copyrights'].map{ |c| c['license'] }.compact
+
+        metadata['requirements'].each do |req|
+          name    = req['name']
+          version = req['version']
+          groups  = req['groups'] || []
+
+          case version
+          when /^(.*?)\+$/
+            version = ">= #{$1}"
+          when /^(.*?)\-$/
+            version = "< #{$1}"
+          when /^(.*?)\~$/
+            version = "~> #{$1}"
+          end
+
+          if groups.empty? or groups.include?('runtime')
+            # populate runtime dependencies  
+            if gemspec.respond_to?(:add_runtime_dependency)
+              gemspec.add_runtime_dependency(name,*version)
+            else
+              gemspec.add_dependency(name,*version)
+            end
+          else
+            # populate development dependencies
+            if gemspec.respond_to?(:add_development_dependency)
+              gemspec.add_development_dependency(name,*version)
+            else
+              gemspec.add_dependency(name,*version)
+            end
+          end
+        end
+
+        # convert external dependencies into a requirements
+        if metadata['external_dependencies']
+          ##gemspec.requirements = [] unless metadata['external_dependencies'].empty?
+          metadata['external_dependencies'].each do |req|
+            gemspec.requirements << req.to_s
+          end
+        end
+
+        # determine homepage from resources
+        homepage = metadata['resources'].find{ |key, url| key =~ /^home/ }
+        gemspec.homepage = homepage.last if homepage
+
+        gemspec.require_paths        = metadata['load_path'] || ['lib']
+        gemspec.post_install_message = metadata['install_message']
+
+        # RubyGems specific metadata
+        gemspec.files       = files
+        gemspec.extensions  = extensions
+        gemspec.executables = executables
+
+        if Gem::VERSION < '1.7.'
+          gemspec.default_executable = gemspec.executables.first
+        end
+
+        gemspec.test_files = glob_files(patterns[:test_files])
+
+        unless gemspec.files.include?('.document')
+          gemspec.extra_rdoc_files = glob_files(patterns[:doc_files])
+        end
+      end
+    end
+
+  end #class GemSpec
+
+end
+
+DotRuby::GemSpec.instance
