@@ -409,7 +409,9 @@ testcase Ratch::Shell do
         out = IO.popen([RbConfig.ruby, '-Ilib', '-rratch/shell', '-e',
           "Ratch::Shell.new(#{dir.inspect}, :quiet=>true).sh('echo LOUD; echo LOUDER >&2')",
           :err=>[:child, :out]]){ |io| io.read }
-        out.assert == ''
+        # RubyGems may warn about its own setup here, so look only for
+        # the command's output.
+        out.refute.include?('LOUD')
         shell.assert.quiet?
       end
     end

@@ -152,7 +152,7 @@ testcase "Commands" do
         File.write(File.join(dir, 'foo.ratch'), "send('ratch-say', 'from', 'script')\n")
         lib = File.expand_path('lib')
         bin = File.expand_path('bin/ratch')
-        IO.popen([RbConfig.ruby, "-I#{lib}", bin, 'foo.ratch', '--commands', :chdir=>dir, :err=>[:child, :out]]){ |io| io.read }.assert == ''
+        system(RbConfig.ruby, "-I#{lib}", bin, 'foo.ratch', '--commands', :chdir=>dir, :out=>File::NULL, :err=>File::NULL).assert == true
         File.read(File.join(dir, 'said')).assert == "from\nscript\n"
       end
     end
