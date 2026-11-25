@@ -57,7 +57,40 @@ The first three can also be given to a single command:
 
   shell.rm('old.txt', :dryrun=>true)
 
+The paths a shell gives out (+path+, +file+, +dir+, +work+, +parent+) are
+Pathnames that keep to its mode too:
+
+  shell.path('tmp').rmtree            # prints "rmtree /.../project/tmp", in a dry run
+
 To build on it, subclass Ratch::Shell, or keep one and delegate to it.
+
+
+== Commands
+
+Besides +sh+, there is +ruby+, which runs the Ruby that is running now,
+and +cmd+, which runs any method called on it as a command:
+
+  shell.ruby '-Ilib', 'script/build.rb'
+
+  shell.cmd.git 'status'
+  shell.cmd.rdoc 'lib', :op=>'doc', :q=>true      # rdoc --op=doc -q lib
+  shell.cmd.ls '-l *.rb'                          # one string is a command line
+
+If you would rather call commands on the shell itself, ask for it:
+
+  shell = Ratch::Shell.new('project', :commands=>true)
+
+  shell.git 'status'
+
+This is optional because it changes what a mistake does. To keep that
+small, only a program found on the PATH is taken as a command; any other
+unknown method is still a NoMethodError. The shell's own methods, and
+Ruby's (+test+, +sleep+, +exit+), come first. A Shell subclass gets the
+same by including Ratch::Commands, and a script by <tt>--commands</tt>:
+
+  $ ratch publish.ratch --commands
+
+All of these run from the shell's directory and follow its mode.
 
 
 == Batches
