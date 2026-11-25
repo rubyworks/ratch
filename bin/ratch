@@ -1,3 +1,13 @@
 #!/usr/bin/env ruby
 require 'ratch/script'
-Ratch::Script.execute(ARGV.shift)
+
+# The script is the first argument that isn't an option, so options can
+# be given before it or after it.
+index = ARGV.index{ |arg| !arg.start_with?('-') }
+
+unless index
+  $stderr.puts "Usage: ratch [OPTIONS] SCRIPT [ARGUMENTS]"
+  exit 1
+end
+
+Ratch::Script.execute(ARGV.delete_at(index))

@@ -2,6 +2,8 @@ require 'pathname'
 require 'fileutils'
 require 'ratch/core_ext'
 require 'ratch/batch'
+require 'ratch/path'
+require 'ratch/commands'
 
 module Ratch
 
@@ -55,6 +57,8 @@ module Ratch
     #   :trace   report each step (also :verbose)
     #   :dryrun  both :noop and :trace
     #
+    # And :commands, to have system commands as methods (see Commands).
+    #
     def initialize(*path)
       opts = (Hash === path.last ? path.pop : {})
       opts = opts.each_with_object({}){ |(k, v), h| h[k.to_sym] = v }
@@ -66,6 +70,8 @@ module Ratch
       raise FileNotFound, "#{path}" unless ::File.directory?(path)
 
       @_work = Pathname.new(path).expand_path
+
+      extend Commands if opts[:commands]
     end
 
   private
@@ -79,7 +85,7 @@ module Ratch
 
     # The options a new shell needs to be in the same mode as this one.
     def mode_options
-      {:quiet=>quiet?, :noop=>noop?, :trace=>trace?}
+      {:quiet=>quiet?, :noop=>noop?, :trace=>trace?, :commands=>Commands === self}
     end
 
   public
@@ -141,7 +147,7 @@ module Ratch
 
     # Current working path.
     def work(*parts)
-      return @_work if parts.empty?
+      return Path.new(@_work, self) if parts.empty?
       dir(File.join(*parts.map{ |part| part.to_s }))
     end
 
@@ -165,24 +171,25 @@ module Ratch
       Batch.all(work, *patterns, mode_options)
     end
 
-    # A Pathname for a path, which need not exist.
+    # A Path for a path, which need not exist. A Path is a Pathname that
+    # keeps to the shell's mode.
     def path(path)
-      Pathname.new(localize(path))
+      Path.new(localize(path), self)
     end
     alias_method :pathname, :path
 
-    # A Pathname for a file, which must exist.
+    # A Path for a file, which must exist.
     def file(path)
       path = localize(path)
       raise FileNotFound, path unless File.file?(path)
-      Pathname.new(path)
+      Path.new(path, self)
     end
 
-    # A Pathname for a directory, which must exist.
+    # A Path for a directory, which must exist.
     def dir(path)
       path = localize(path)
       raise FileNotFound, path unless File.directory?(path)
-      Pathname.new(path)
+      Path.new(path, self)
     end
 
     # Lists all entries, as Dir.entries does, but as Pathnames.
@@ -254,6 +261,34 @@ module Ratch
       else
         system(*cmd)
       end
+    end
+
+    # Run a command with the Ruby that is running now, as #sh would.
+    #
+    #   shell.ruby '-Ilib', 'script/build.rb'
+    #   shell.ruby '-Ilib script/build.rb'
+    #
+    def ruby(*args)
+      require 'rbconfig'
+      run_command(RbConfig.ruby, *args)
+    end
+
+    # An object that runs any method called on it as a command, from the
+    # working directory and in the shell's mode, as #sh would.
+    #
+    #   shell.cmd.git 'status'
+    #   shell.cmd.rdoc 'lib', :op=>'doc', :q=>true
+    #
+    # Several arguments are passed to the command as they are, and a
+    # final Hash becomes options (--op=doc -q). A single String is taken
+    # as the rest of a command line, and goes through the system shell:
+    #
+    #   shell.cmd.ls '-l *.rb'
+    #
+    # Include the Commands module, or make the shell with the :commands
+    # option, to call commands on the shell itself.
+    def cmd
+      Commander.new(self)
     end
 
     # Change working directory.
@@ -533,6 +568,17 @@ module Ratch
         local_path = local_path.to_s
         return local_path if absolute?(local_path)
         File.expand_path(File.join(work.to_s, local_path))
+      end
+    end
+
+    # Run a program with arguments given as they are to a method: see #cmd.
+    def run_command(name, *args)
+      name = name.to_s
+      if args.size == 1 && String === args.first
+        require 'shellwords'
+        sh("#{Shellwords.escape(name)} #{args.first}")
+      else
+        sh(name, *args.to_argv)
       end
     end
 

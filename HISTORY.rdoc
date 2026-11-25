@@ -1,5 +1,36 @@
 = RELEASE HISTORY
 
+== Unreleased (2.1.0)
+
+This release takes in what was worth keeping from ProUtils, a later
+reworking of Ratch's utilities, which is now retired.
+
+Changes:
+
+* Add Ratch::Path, a Pathname that keeps to its shell's mode. Shell#path,
+  #file, #dir, #work, #parent, #home and #root return one, so that
+  <tt>shell.path('tmp').rmtree</tt> removes nothing in noop mode, and is
+  reported when tracing. Before, these were plain Pathnames, which took
+  no notice of the mode.
+* Add Shell#ruby, to run a command with the present Ruby.
+* Add Shell#cmd, which runs any method called on it as a command:
+  <tt>shell.cmd.git 'status'</tt>.
+* Add Ratch::Commands, which is optional, to call commands on the shell
+  itself: <tt>shell.git 'status'</tt>. A shell has it when made with the
+  +commands+ option (<tt>--commands</tt> for the +ratch+ command) or
+  when the module is included. Only a program found on the PATH is taken
+  as a command, so a misspelt method is still an error.
+* The +ratch+ command takes options before the script's name as well as
+  after it.
+* Array#to_list drops nil elements.
+* Object#to_yamlfrag handles tagged documents and the end mark of a
+  plain value.
+
+Fixes:
+
+* FileTest.bin? raised if there was no PATH.
+
+
 == 2.0.0 | 2026-11-25
 
 Ratch is revived, for Ruby 3.1 and up. Neither 1.2.0 nor the unreleased

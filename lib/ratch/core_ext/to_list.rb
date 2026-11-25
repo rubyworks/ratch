@@ -1,7 +1,7 @@
 class Array
 
   def to_list
-    self
+    compact
   end
 
 end
