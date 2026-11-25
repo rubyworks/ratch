@@ -1,6 +1,6 @@
 = RELEASE HISTORY
 
-== Unreleased (2.1.0)
+== 2.1.0 | 2026-11-25
 
 This release takes in what was worth keeping from ProUtils, a later
 reworking of Ratch's utilities, which is now retired.
