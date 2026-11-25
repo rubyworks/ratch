@@ -35,6 +35,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'facets', '>= 4.0'
 
+  # For EmailUtils; a bundled gem, not a default one, since Ruby 3.1.
+  s.add_development_dependency 'net-smtp'
+
   s.add_development_dependency 'rake', '>= 13'
   s.add_development_dependency 'rubytest', '>= 0.11.1'
   s.add_development_dependency 'spectrum', '>= 0.2'

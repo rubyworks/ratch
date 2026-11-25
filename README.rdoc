@@ -102,7 +102,7 @@ Ratch::ZlibUtils::   +gzip+ and +ungzip+
 Ratch::TarUtils::    +tar+, +untar+, +tar_gzip+ and +untar_gzip+
 Ratch::ConfigUtils:: +configuration+, to load a YAML file
 Ratch::RDocUtils::   +rdoc+, to generate documentation
-Ratch::EmailUtils::  +email+, to send a message by SMTP
+Ratch::EmailUtils::  +email+, to send a message by SMTP (needs the +net-smtp+ gem)
 Ratch::XDGUtils::    +xdg+ (needs the +xdg+ gem)
 Ratch::CLI::         takes options and +arguments+ from the command line
 

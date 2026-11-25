@@ -202,6 +202,8 @@ module Ratch
     #
     def require_smtp
       require 'net/smtp'
+    rescue LoadError
+      raise LoadError, "the `net-smtp` gem is needed to send email"
     end
 
   end
