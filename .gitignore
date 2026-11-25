@@ -5,3 +5,6 @@ log
 pkg
 tmp
 site/documentation
+
+Gemfile.lock
+*.gem

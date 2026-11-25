@@ -11,23 +11,35 @@ module Ratch
   class Batch
     include Enumerable
 
-    #
+    # A batch of the files matching +patterns+ under the present
+    # directory.
     def self.[](*patterns)
       new('.', *patterns)
     end
 
-    #
+    # Like #new, but without the usual exclusions (version control
+    # directories, backup and core files).
+    def self.all(local, *patterns)
+      options = (Hash === patterns.last ? patterns.pop.dup : {})
+      new(local, *patterns, options.merge(:all=>true))
+    end
+
+    # New batch of the files matching +patterns+, which are relative to
+    # the directory +local+. A final Hash gives options: :noop, :verbose
+    # (or :trace) and :dryrun, as for Shell, and :all to leave nothing out.
     def initialize(local, *patterns)
-      @local   = Pathname.new(local)
-      @options = (Hash === patterns.last ? patterns.pop : {}).rekey(&:to_sym)
+      @local   = Pathname.new(local.to_s)
+      @options = {}
+      (Hash === patterns.last ? patterns.pop : {}).each{ |k, v| @options[k.to_sym] = v }
 
-      @file_list = FileList.all
+      @file_list = @options[:all] ? FileList.all : FileList.new
 
-      patterns.each do |pattern|
-        if @local == Pathname.new('.')
+      patterns.flatten.each do |pattern|
+        pattern = pattern.to_s
+        if @local == Pathname.new('.') || FileTest.absolute?(pattern)
           @file_list.add(pattern)
         else
-          @file_list.add(File.join(local,pattern))
+          @file_list.add(File.join(@local.to_s, pattern))
         end
       end
     end
@@ -103,7 +115,7 @@ module Ratch
     def readable?   ; all?{ |path| FileTest.readable?(path)   } ; end
     def chardev?    ; all?{ |path| FileTest.chardev?(path)    } ; end
     def exist?      ; all?{ |path| FileTest.exist?(path)      } ; end
-    def exists?     ; all?{ |path| FileTest.exists?(path)     } ; end
+    def exists?     ; all?{ |path| FileTest.exist?(path)      } ; end
     def zero?       ; all?{ |path| FileTest.zero?(path)       } ; end
     def pipe?       ; all?{ |path| FileTest.pipe?(path)       } ; end
     def file?       ; all?{ |path| FileTest.file?(path)       } ; end
@@ -170,7 +182,7 @@ module Ratch
           raise Errno::EEXIST, "File exists - #{dir}"
         end
       end
-      list.map{ |dir| fileutils.mkdir(dir, options) }
+      list.map{ |dir| fu(:mkdir, options, dir){ |opts| ::FileUtils.mkdir(dir, **opts) } }
     end
 
     # Make a directory for every entry.
@@ -180,42 +192,36 @@ module Ratch
           raise Errno::EEXIST, "File exists - #{dir}"
         end
       end
-      list.map{ |dir| fileutils.mkdir_p(dir, options) }
+      list.map{ |dir| fu(:mkdir_p, options, dir){ |opts| ::FileUtils.mkdir_p(dir, **opts) } }
     end
     alias_method :mkpath, :mkdir_p
 
     # Remove every directory.
     def rmdir(options={})
-      list.map{ |dir| fileutils.rmdir(dir, options) }
+      list.map{ |dir| fu(:rmdir, options, dir){ |opts| ::FileUtils.rmdir(dir, **opts) } }
     end
 
     # ln(list, destdir, options={})
     def ln(dir, options={})
-      #src = list.to_a
-      #new = localize(new)
-      fileutils.ln(list, dir, options)
+      fu(:ln, options, list, dir){ |opts| ::FileUtils.ln(list, localize(dir), **opts) }
     end
     alias_method :link, :ln
 
     # ln_s(list, destdir, options={})
     def ln_s(dir, options={})
-      #src = list.to_a
-      #new = localize(new)
-      fileutils.ln_s(list, dir, options)
+      fu(:ln_s, options, list, dir){ |opts| ::FileUtils.ln_s(list, localize(dir), **opts) }
     end
     alias_method :symlink, :ln_s
 
     def ln_sf(dir, options={})
-      #src = list.to_a
-      #new = localize(new)
-      fileutils.ln_sf(list, dir, options)
+      fu(:ln_sf, options, list, dir){ |opts| ::FileUtils.ln_sf(list, localize(dir), **opts) }
     end
 
     # cp(list, dir, options={})
     def cp(dir, options={})
       #src  = list.to_a
       #dest = localize(dest)
-      fileutils.cp(list, dir, options)
+      fu(:cp, options, list, dir){ |opts| ::FileUtils.cp(list, localize(dir), **opts) }
     end
     alias_method :copy, :cp
 
@@ -223,21 +229,20 @@ module Ratch
     def cp_r(dir, options={})
       #src  = list.to_a
       #dest = localize(dest)
-      fileutils.cp_r(list, dir, options)
+      fu(:cp_r, options, list, dir){ |opts| ::FileUtils.cp_r(list, localize(dir), **opts) }
     end
 
     # mv(list, dir, options={})
     def mv(dir, options={})
       #src  = list.to_a
       #dest = localize(dest)
-      fileutils.mv(list, dir, options)
+      fu(:mv, options, list, dir){ |opts| ::FileUtils.mv(list, localize(dir), **opts) }
     end
     alias_method :move, :mv
 
     #
     def rm(options={})
-      list = list.to_a
-      fileutils.rm(list, options)
+      fu(:rm, options, list){ |opts| ::FileUtils.rm(list, **opts) }
     end
 
     # Alias for #rm.
@@ -245,68 +250,68 @@ module Ratch
 
     # Remove, recursively removing the contents of directories.
     def rm_r(options={})
-      #list = list.to_a
-      fileutils.rm_r(list, options)
+      fu(:rm_r, options, list){ |opts| ::FileUtils.rm_r(list, **opts) }
     end
 
     # Remove, with force option.
     def rm_f(options={})
-      #list = list.to_a
-      fileutils.rm_f(list, options)
+      fu(:rm_f, options, list){ |opts| ::FileUtils.rm_f(list, **opts) }
     end
 
     # Remove with force option, recursively removing the contents of directories.
     def rm_rf(options={})
-      #list = list.to_a
-      fileutils.rm_rf(list, options)
+      fu(:rm_rf, options, list){ |opts| ::FileUtils.rm_rf(list, **opts) }
     end
 
     # Install files to a directory with given mode. Unlike #cp, this will
     # not copy the file if an up-to-date copy already exists.
     def install(dir, mode, options={})
-      #src = list.to_a
       #dest = localize(dest)
-      fileutils.install(list, dir, mode, options)
+      fu(:install, options.merge(:mode=>mode), list, dir){ |opts| ::FileUtils.install(list, localize(dir), **opts) }
     end
 
     # Change mode of files.
     def chmod(mode, options={})
-      #list = list.to_a
-      fileutils.chmod(mode, list, options)
+      fu(:chmod, options, mode, list){ |opts| ::FileUtils.chmod(mode, list, **opts) }
     end
 
     # Change mode of files, following directories recursively.
     def chmod_r(mode, options={})
-      #list = list.to_a
-      fileutils.chmod_r(mode, list, options)
+      fu(:chmod_R, options, mode, list){ |opts| ::FileUtils.chmod_R(mode, list, **opts) }
     end
     #alias_method :chmod_R, :chmod_r
 
     # Change owner of files.
     def chown(user, group, options={})
-      #list = list.to_a
-      fileutils.chown(user, group, list, options)
+      fu(:chown, options, user, group, list){ |opts| ::FileUtils.chown(user, group, list, **opts) }
     end
 
     # Change owner of files, following directories recursively.
     def chown_r(user, group, options={})
-      #list = list.to_a
-      fileutils.chown_r(user, group, list, options)
+      fu(:chown_R, options, user, group, list){ |opts| ::FileUtils.chown_R(user, group, list, **opts) }
     end
     #alias_method :chown_R, :chown_r
 
     # Touch each file.
     def touch(options={})
-      #list = list.to_a
-      fileutils.touch(list, options)
+      fu(:touch, options, list){ |opts| ::FileUtils.touch(list, **opts) }
     end
 
-    # Stage files. This is like #install but uses hardlinks.
-    def stage(dir)
-      #dir   = localize(directory)
-      #files = localize(files)
-      #list = list.to_a
-      fileutils.stage(dir, local, list)
+    # Stage files: hard link each into +dir+, at its path relative to
+    # the batch's own directory. This is like #install but uses hardlinks.
+    def stage(dir, options={})
+      stage = localize(dir)
+      entries.each do |entry|
+        src  = localize(entry)
+        dest = File.join(stage, entry.to_s)
+        if File.directory?(src)
+          fu(:mkdir_p, options, dest){ |opts| ::FileUtils.mkdir_p(dest, **opts) }
+        else
+          fu(:mkdir_p, options, File.dirname(dest)){ |opts| ::FileUtils.mkdir_p(File.dirname(dest), **opts) }
+          fu(:ln, options, src, dest){ |opts| ::FileUtils.ln(src, dest, **opts) }
+        end
+      end
+      dir
     end
 
     # Convenient alias for #map_mv.
@@ -324,7 +329,7 @@ module Ratch
     #
     # Returns the changed FileList instance.
     def map_mv(options={}, &block)
-      @file_list = map_send(:mv, options={}, &block)
+      @file_list = map_send(:mv, options, &block)
     end
 
     # Hard link the list of files in batch, using a block to determine the new
@@ -332,7 +337,7 @@ module Ratch
     #
     # This is similar to #ln, but allows for detailed control over the link names.
     def map_ln(options={}, &block)
-      map_send(:ln, options={}, &block)
+      map_send(:ln, options, &block)
     end
 
     # Soft link the list of files in batch, using a block to determine the new
@@ -340,7 +345,7 @@ module Ratch
     #
     # This is similar to #ln_s, but allows for detailed control over the link names.
     def map_ln_s(options={}, &block)
-      map_send(:ln_s, options={}, &block)
+      map_send(:ln_s, options, &block)
     end
 
     # Force soft linking of the list of files in batch, using a block to 
@@ -350,7 +355,7 @@ module Ratch
     # This is similar to #ln_sf, but allows for detailed control over the
     # link names.
     def map_ln_sf(options={}, &block)
-      map_send(:ln_sf, options={}, &block)
+      map_send(:ln_sf, options, &block)
     end
 
     # Copy the list of files in batch, using a block to determine the new
@@ -359,7 +364,7 @@ module Ratch
     # This is similar to #cp, but allows for detailed control over the new
     # file names.
     def map_cp(options={}, &block)
-      map_send(:cp, options={}, &block)
+      map_send(:cp, options, &block)
     end
 
     # Copy the list of files recursively in batch, using a block to determine
@@ -368,7 +373,7 @@ module Ratch
     # This is similar to #cp_r, but allows for detailed control over the new
     # file names.
     def map_cp_r(options={}, &block)
-      map_send(:cp_r, options={}, &block)
+      map_send(:cp_r, options, &block)
     end
 
 #    # Force copy the list of files recursively in batch, using a block to
@@ -378,7 +383,7 @@ module Ratch
 #    # This is similar to #cp_rf, but allows for detailed control over the new
 #    # file names.
 #    def map_cp_rf(options={}, &block)
-#      map_send(:cp_rf, options={}, &block)
+#      map_send(:cp_rf, options, &block)
 #    end
 
   private
@@ -404,7 +409,12 @@ module Ratch
       end
 
       map.each do |src, dest|
-        fileutils.__send__(method, src, dest, options)
+        fu(method, options, src, dest) do |opts|
+          takes = ::FileUtils.method(method).parameters.map{ |_, name| name }
+          opts.delete(:force) unless takes.include?(:force)
+          ::FileUtils.rm_f(dest) if options[:force] && !takes.include?(:force) && File.file?(dest)
+          ::FileUtils.__send__(method, src, dest, **opts)
+        end
       end
       FileList.all(*map.values)
     end
@@ -415,7 +425,7 @@ module Ratch
     # If nota file rrror is raised.
     def ensure_safe(map)
       map.each do |src, dest|
-        raise unless File.exist?(src)
+        raise Errno::ENOENT, src.to_s unless File.exist?(src)
         if File.directory?(src)
           if File.directory?(dest)
             new_map = {}
@@ -423,7 +433,7 @@ module Ratch
               next if e == '.' or e == '..'
               new_map[File.join(src, e)] = File.join(dest, e)
             end
-            ensure_safe_destination(new_map)
+            ensure_safe(new_map)
           else
             raise Errno::EISDIR, "Is a directory - #{src}"
           end
@@ -456,23 +466,27 @@ module Ratch
 
     # Is +path+ out-of-date in comparsion to all files in batch.
     def outofdate?(path)
-      fileutils.outofdate?(path, to_a)
+      path = localize(path)
+      return true unless File.exist?(path)
+      return true if list.empty?
+      File.mtime(path) < list.map{ |f| File.mtime(f) }.max
     end
 
     # Is +path+ up-to-date in comparsion to all files in batch.
     def uptodate?(path)
-      fileutils.uptodate?(path, to_a)
+      ::FileUtils.uptodate?(localize(path), list)
     end
 
     #
     def noop?
-      @options[:noop] or @options[:dryrun]
+      !!(@options[:noop] or @options[:nowrite] or @options[:dryrun])
     end
 
     #
     def verbose?
-      @options[:verbose] or @options[:dryrun]
+      !!(@options[:verbose] or @options[:trace] or @options[:dryrun])
     end
+    alias_method :trace?, :verbose?
 
     #
     def dryrun?
@@ -481,17 +495,44 @@ module Ratch
 
   private
 
-    # Returns FileUtils module based on mode.
-    def fileutils
-      if dryrun?
-        ::FileUtils::DryRun
-      elsif noop?
-        ::FileUtils::Noop
-      elsif verbose?
-        ::FileUtils::Verbose
-      else
-        ::FileUtils
+    # A path taken from the batch's own directory, unless it is absolute.
+    def localize(path)
+      path = path.to_s
+      return path if FileTest.absolute?(path) || local.to_s == '.'
+      File.join(local.to_s, path)
+    end
+
+    # How each file operation reads in a trace.
+    FU_COMMANDS = {
+      :mkdir_p=>'mkdir -p', :rm_r=>'rm -r', :rm_f=>'rm -f', :rm_rf=>'rm -rf',
+      :ln_s=>'ln -s', :ln_sf=>'ln -sf', :cp_r=>'cp -r',
+      :chmod_R=>'chmod -R', :chown_R=>'chown -R'
+    }
+
+    # Carry out a file operation in the batch's mode: report it if
+    # tracing, with the paths as they were given, and yield the options
+    # for FileUtils unless this is a noop.
+    def fu(name, options, *args)
+      opts    = fu_options(options)
+      noop    = opts.delete(:noop)
+      verbose = opts.delete(:verbose)
+      if verbose
+        $stderr.puts [FU_COMMANDS[name] || name.to_s, *args.flatten].join(' ')
       end
+      yield(opts) unless noop
+    end
+
+    # The options given for one command, with :noop and :verbose turned
+    # on if the batch's mode says so.
+    def fu_options(options)
+      opts = {}
+      (options || {}).each{ |k, v| opts[k.to_sym] = v }
+      given   = [:dryrun, :nowrite, :noop, :trace, :verbose].select{ |k| opts.delete(k) }
+      dryrun  = given.include?(:dryrun)
+      opts[:noop]    = true if noop?    || dryrun || given.include?(:nowrite) || given.include?(:noop)
+      opts[:verbose] = true if verbose? || dryrun || given.include?(:trace)   || given.include?(:verbose)
+      opts.delete(:safe)
+      opts
     end
 
   end

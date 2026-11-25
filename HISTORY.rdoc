@@ -1,5 +1,57 @@
 = RELEASE HISTORY
 
+== Unreleased (2.0.0)
+
+Ratch is revived, for Ruby 3.1 and up. Neither 1.2.0 nor the unreleased
+code after it ran on Ruby 3: file operations failed on their options, and
+the development line didn't load.
+
+Changes:
+
+* Shell no longer changes the process's working directory to do its work.
+  Paths are resolved against the shell's own directory, so shells at
+  different directories can be used side by side and from threads. Only
+  +cd+ with a block changes the process's directory, for the block.
+* Shell does its own tracing, to standard error, with paths as they were
+  given.
+* Shell#/ gives a new shell at the sub-directory, in the same mode.
+* Shell#sh takes a command in parts as well as a string, returns whether
+  it succeeded, and drops the command's output in quiet mode.
+* Shell#glob gives paths relative to the shell's directory.
+* Shell#batch gives a Batch in the shell's mode.
+* Modes can be given for one command (:noop, :trace, :dryrun).
+* Batch.new takes options as its last argument; a destination is taken
+  from the batch's directory.
+* TarUtils uses the tar reader and writer that come with RubyGems, so
+  minitar is no longer needed. Unpacking refuses entries that would land
+  outside the directory.
+* EmailUtils uses the current Net::SMTP interface.
+* Array#to_argv and Hash#to_argv give plain arguments, without quotes;
+  #to_console quotes for the shell.
+* ludo is rewritten: it passes arguments on, runs the script from the
+  directory it was found in, reports a script it can't find, and returns
+  the script's exit status.
+* Tests run on Spectrum.
+
+Fixes:
+
+* Batch#rm removed nothing.
+* Batch#exists? and Shell#exists? used a method Ruby has dropped.
+* Batch's map methods (#rename and so on) ignored their options.
+* Script#define_method lost the method's name.
+* FileList#ext needed Rake to be loaded.
+* TarUtils failed on being included, and #untar emptied the archive.
+* XDGUtils didn't report a missing xdg gem.
+
+Removed:
+
+* FTPUtils, which was unfinished and could not run.
+* POMUtils, as the POM project is gone.
+* Ratch::System and Ratch::Console, a stub and an unfinished console.
+* FileList#pathmap, which needed Rake.
+* The ShellUtils module, an unfinished refactoring.
+
+
 == 1.2.0 | 2011-01-24
 
 Ratch has remerged with the Path gem (formerly Folio), and will be taking over

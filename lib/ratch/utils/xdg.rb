@@ -15,9 +15,8 @@ module Ratch
     def self.included(base)
       begin
         require 'xdg'
-      rescue
-        $stderr << "The `xdg` gem is needed to use the XDGUtils module."
-        exit -1
+      rescue LoadError
+        raise LoadError, "the `xdg` gem is needed to use the XDGUtils module"
       end
     end
 

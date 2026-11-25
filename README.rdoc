@@ -1,113 +1,133 @@
-= Ratch 
+= Ratch
 
-Ruby-based Batch Scripts
+{Source Code}[https://github.com/rubyworks/ratch] /
+{Report Issue}[https://github.com/rubyworks/ratch/issues]
+{<img src="https://github.com/rubyworks/ratch/actions/workflows/ci.yml/badge.svg" alt="CI" />}[https://github.com/rubyworks/ratch/actions/workflows/ci.yml]
 
+<b>A file system shell in code, and batch scripts in Ruby.</b>
 
-== Introduction
-
-Ratch is Ruby-based DSL for building batch scripts. It's intent
-is to ease the burden of batch script writers by supplementing
-the standard ruby environment to be more conducive to the needs
-of batch scripting.
-
-In addition to using Ratch to write stand-alone batch scripts,
-it makes a very powerful library for other applications that
-require batch-like functionality. In general any program that
-access the file system extensively could benefit from it's use.
+Ratch needs Ruby 3.1 or newer.
 
 
-== Resources
+== The Shell
 
-* home: http://rubyworks.github.com/ratch
-* code: http://github.com/rubyworks/ratch
-* talk: http://googlegroups.com/
+A Ratch::Shell stands at a directory and works from there, as a shell
+prompt does. Paths given to it are taken from its directory, whatever the
+process's own working directory is.
 
-== Usage
+  require 'ratch'
 
-=== Batch Scripting
+  shell = Ratch::Shell.new('project')
 
-To use for your own scripts, simply add a bang line.
+  shell.file?('README.md')            #=> true
+  shell.glob('lib/**/*.rb')           #=> ["lib/project.rb", ...]
+  shell.read('VERSION')               #=> "1.0.0\n"
+
+  shell.mkdir_p('tmp/cache')
+  shell.cp('README.md', 'tmp')
+  shell.write('tmp/stamp', Time.now.to_s)
+  shell.sh('git status')              #=> true, if the command succeeded
+
+It has the tests of FileTest, the operations of FileUtils (+mkdir+, +rm+,
++cp+, +mv+, +ln+, +install+, +chmod+, +touch+ and their variations),
++read+, +write+ and +append+, +glob+, and +sh+ to run a command.
+
+Moving about:
+
+  lib = shell / 'lib'                 # a new shell at project/lib
+
+  shell.cd('lib')                     # move this shell
+  shell.cd('..')
+
+  shell.cd('lib') do                  # move it for a block only
+    shell.files                       #=> [#<Pathname:project.rb>, ...]
+  end
+
+A shell can be put in a mode in which it only pretends, to rehearse a
+script before it touches anything:
+
+  shell = Ratch::Shell.new('project', :dryrun=>true)
+
+  shell.rm_r('tmp')                   # prints "rm -r tmp" and removes nothing
+  shell.sh('make install')            # prints the command and doesn't run it
+
+The modes are <tt>:noop</tt> (change nothing), <tt>:trace</tt> (report
+each step to standard error), <tt>:dryrun</tt> (both) and <tt>:quiet</tt>.
+The first three can also be given to a single command:
+
+  shell.rm('old.txt', :dryrun=>true)
+
+To build on it, subclass Ratch::Shell, or keep one and delegate to it.
+
+
+== Batches
+
+A Ratch::Batch does the same over a list of files.
+
+  batch = shell.batch('**/*.txt')
+
+  batch.file?                         # are they all files?
+  batch.cp('backup')
+  batch.rename{ |name| name.sub('.txt', '.text') }
+
+It keeps its files in a Ratch::FileList, which is Rake's lazy file list:
+patterns are resolved when the list is first read, and version control
+directories, backup and core files are left out.
+
+
+== Scripts
+
+The +ratch+ command runs a Ruby script inside a shell at the present
+directory, so the script can use all of the above without a receiver.
 
   #!/usr/bin/env ratch
 
-On Windows, of course, you will want to associate the .ratch extension
-name to the ratch executable instead.
-
-=== As a Library
-
-To use Ratch as a library, require 'ratch' and create an instance of
-Ratch::Shell.
-
-If you wish to extend Ratch::Shell for your application, it is recommend
-that you either subclass Ratch::Shell, e.g.
-
-  require 'ratch'
-
-  class MyClass < Ratch::Shell
-
-
+  glob('*.md').each do |file|
+    cp file, 'site'
   end
 
-Or delegate to a Ratch::Shell instance, e.g.
+  sh 'rsync -a site/ host:/var/www'
 
-  require 'ratch'
+The shell's modes can be given on the command line, and anything else is
+in +arguments+:
 
-  class MyClass
-
-    def initialize(path)
-      @shell = Ratch::Shell.new(path)
-    end
-
-  end
-
-For details on all the functionality Ratch provides, please refer to
-the API documentation.
+  $ ./publish.ratch --dryrun
 
 
-== Bonus Feature
+== Utilities
 
-Ratch also includes the `ludo` command, which stands for "lookup and do".
-It will ascend up the directory tree searching for a matching executable 
-script. If it finds one it will execute the script relative the currently
-ascended directory.
+These modules add to a shell when included in a subclass:
+
+Ratch::ZlibUtils::   +gzip+ and +ungzip+
+Ratch::TarUtils::    +tar+, +untar+, +tar_gzip+ and +untar_gzip+
+Ratch::ConfigUtils:: +configuration+, to load a YAML file
+Ratch::RDocUtils::   +rdoc+, to generate documentation (needs the +rdoc+ gem on Ruby 4)
+Ratch::EmailUtils::  +email+, to send a message by SMTP (needs the +net-smtp+ gem)
+Ratch::XDGUtils::    +xdg+ (needs the +xdg+ gem)
+Ratch::CLI::         takes options and +arguments+ from the command line
+
+The email delivery itself is not covered by the tests.
+
+
+== ludo
+
+Ratch also comes with the +ludo+ command, which stands for "lookup and
+do". It looks for an executable script by name in the present directory
+and then in each directory above it, and runs the first it finds, from
+the directory it is in.
+
+  $ cd project/lib/project
+  $ ludo script/test --verbose        # runs project/script/test
 
 
 == Installation
 
-Standard installation procedure apply.
-
   $ gem install ratch
 
-or manually using Setup.rb
-
-  $ tar -xzf ratch-1.0.0.tgz
-  $ cd ratch-1.0.0
-  $ setup.rb
-
-
-== Development
-
-Ratch is hosted on GitHub.
-
-To pull the 'ratch' repository anonymously, use:
-
-    git clone git://github.com/rubyworks/ratch.git
-        
 
 == Copying
 
-Copyright (c) 2008 Thomas Sawyer
+Copyright (c) 2008 Thomas Sawyer, Rubyworks
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this program except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
+Ratch is distributed under the terms of the Apache License, Version 2.0.
+See LICENSE.txt for details.

@@ -1,28 +1,12 @@
-module Ratch
-  # Access to project metadata.
-  def self.metadata
-    @metadata ||= (
-      require 'yaml'
-      YAML.load(File.dirname(__FILE__) + '/ratch.yml')
-    )
-  end
-
-  # Access to project metadata via constants.
-  def self.const_missing(name)
-    metadata[name.to_s.downcase] || super(name)
-  end
-
-  # TODO: Only here b/c of issue with Ruby 1.8.x.
-  VERSION = metadata['version']
-end
-
+require 'ratch/version'
 require 'ratch/script'
 
-# Load utility extension modules.
+# Utility extension modules, to include in a Shell subclass or extend a
+# shell with. Each loads what it depends on only when it is used.
 require 'ratch/utils/cli'
-require 'ratch/utils/pom'
+require 'ratch/utils/config'
+require 'ratch/utils/zlib'
+require 'ratch/utils/tar'
 require 'ratch/utils/rdoc'
 require 'ratch/utils/email'
-#require 'ratch/utils/tar'
-#require 'ratch/utils/zlib'
-
+require 'ratch/utils/xdg'

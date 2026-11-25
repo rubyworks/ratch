@@ -265,25 +265,16 @@ module Ratch
       self
     end
 
-    # Apply the pathmap spec to each of the included file names, returning a
-    # new file list with the modified paths.  (See String#pathmap for
-    # details.)
-    def pathmap(spec=nil)
-      collect { |fn| fn.pathmap(spec) }
-    end
-
-    # Return a new FileList with <tt>String#ext</tt> method applied to
-    # each member of the array.
+    # Return a new FileList with the extension of each file name changed
+    # to +newext+, or removed if none is given.
     #
-    # This method is a shortcut for:
+    #   FileList['a.c', 'b.c'].ext('o')  #=> ['a.o', 'b.o']
     #
-    #    array.collect { |item| item.ext(newext) }
-    #
-    # +ext+ is a user added method for the Array class.
     def ext(newext='')
-      collect { |fn| fn.ext(newext) }
+      newext = newext.to_s
+      newext = '.' + newext unless newext.empty? || newext.start_with?('.')
+      collect { |fn| fn.chomp(File.extname(fn)) + newext }
     end
-
 
     # Grep each of the files in the filelist using the given pattern. If a
     # block is given, call the block on each matching line, passing the file

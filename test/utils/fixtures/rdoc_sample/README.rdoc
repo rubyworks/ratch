@@ -1,4 +1,0 @@
-= RDOC Sample
-
-This is a sample RDoc document used to test the RDoc utility.
-

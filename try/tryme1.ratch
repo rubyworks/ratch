@@ -4,7 +4,6 @@ puts "Hello World"
 
 p arguments
 p quiet?
-p debug?
 
 define_method :okay do
   "okay"
