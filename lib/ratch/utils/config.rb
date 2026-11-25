@@ -36,14 +36,14 @@ module Ratch
     # Since they are YAML files, they can optionally end with '.yaml' or '.yml'.
     def configuration!(file)
       @configuration ||= {}
-      patt = file + "{.yml,.yaml,}"
-      path = Dir.glob(patt, File::FNM_CASEFOLD).find{ |f| File.file?(f) }
+      patt = localize(file) + "{.yml,.yaml,}"
+      path = Dir.glob(patt).find{ |f| File.file?(f) }
       if path
         # The || {} is in case the file is empty.
-        data = YAML::load(File.open(path)) || {}
+        data = YAML.load_file(path) || {}
         @configuration[file] = data
       else
-        raise LoadError, "Missing file -- #{path}"
+        raise LoadError, "Missing file -- #{file}"
       end
     end
 

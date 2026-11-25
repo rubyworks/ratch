@@ -92,7 +92,7 @@ module Ratch
 
     # Pass-thru to singleton class.
     def define_method(name, &block)
-      (class << self; self; end).__send__(:define_method, &block)
+      (class << self; self; end).__send__(:define_method, name, &block)
     end
 
     ## If method is missing, try the singleton class. This allows the script

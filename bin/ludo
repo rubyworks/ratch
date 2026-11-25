@@ -1,16 +1,32 @@
-#! /usr/bin/ruby1.8
+#!/usr/bin/env ruby
 
-# for FileTest.root?
-require 'facets/filetest'
+# ludo: "lookup and do". Looks for an executable script by name, in the
+# present directory and then in each directory above it, and runs the
+# first one found, from the directory it is in, passing along any further
+# arguments.
+#
+#   $ ludo script/test --verbose
 
-name = ARGV[0]
+name, *args = ARGV
 
-if name
-  Dir.chdir '..' until FileTest.executable?(name) or FileTest.root?(Dir.pwd)
-  if FileTest.executable?( name )
-    system name
-  end
-else
-  puts "Script #{name} not found."
+if name.nil? || name == '-h' || name == '--help'
+  $stderr.puts "Usage: ludo SCRIPT [ARGUMENTS]"
+  $stderr.puts "Run the first executable SCRIPT found in this directory or one above it."
+  exit(name.nil? ? 1 : 0)
 end
 
+dir = Dir.pwd
+
+loop do
+  file = File.join(dir, name)
+  if File.file?(file) && File.executable?(file)
+    Dir.chdir(dir)
+    exec(file, *args)
+  end
+  parent = File.dirname(dir)
+  break if parent == dir
+  dir = parent
+end
+
+$stderr.puts "ludo: script not found -- #{name}"
+exit 1

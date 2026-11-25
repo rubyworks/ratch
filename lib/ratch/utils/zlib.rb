@@ -14,11 +14,12 @@ module Ratch
 
     # Create a gzip file.
     def gzip(file, tofile=nil, options={})
+      options, tofile = tofile, nil if Hash === tofile
       noop, verbose = *util_options(options)
 
-      tofile ||= File.basename(file) + '.gz'
+      tofile ||= file.to_s + '.gz'
 
-      puts "gzip #{file}" if verbose
+      $stderr.puts "gzip #{file}" if verbose
 
       file   = localize(file)
       tofile = localize(tofile)
@@ -34,9 +35,9 @@ module Ratch
     def ungzip(file, options={})
       noop, verbose = *util_options(options)
 
-      fname = File.basename(file).chomp(File.extname(file))
+      fname = file.to_s.chomp(File.extname(file.to_s))
 
-      puts "ungzip #{file}" if verbose
+      $stderr.puts "ungzip #{file}" if verbose
 
       fname = localize(fname)
       file  = localize(file)

@@ -8,10 +8,8 @@ class Array #:nodoc:
   # method arguments --ie. [arg1, arg2, ..., hash]
 
   def to_console
-    #flags = (Hash===last ? pop : {})
-    #flags = flags.to_console
-    #flags + ' ' + join(" ")
-    to_argv.join(' ')
+    require 'shellwords'
+    Shellwords.join(to_argv)
   end
 
   # TODO: DEPRECATE
@@ -19,9 +17,9 @@ class Array #:nodoc:
 
   #
   def to_argv
-    flags = (Hash===last ? pop : {})
-    flags = flags.to_argv
-    flags + self
+    args  = dup
+    flags = (Hash===args.last ? args.pop : {})
+    flags.to_argv + args.map{ |a| a.to_s }
   end
 
 #   def to_console
@@ -50,10 +48,12 @@ class Hash
   # The array is accepted in the format of Ruby
   # method arguments --ie. [arg1, arg2, ..., hash]
   def to_console
-    to_argv.join(' ')
+    require 'shellwords'
+    Shellwords.join(to_argv)
   end
 
-  # Convert a Hash into command line parameters.
+  # Convert a Hash into command line parameters, one string per
+  # parameter, as a program receives them (so with no quoting).
   # The array is accepted in the format of Ruby
   # method arguments --ie. [arg1, arg2, ..., hash]
   def to_argv
@@ -62,13 +62,13 @@ class Hash
       m = f.to_s.size == 1 ? '-' : '--'
       case v
       when Array
-        v.each{ |e| flags << "#{m}#{f}='#{e}'" }
+        v.each{ |e| flags << (m == '-' ? "-#{f}#{e}" : "--#{f}=#{e}") }
       when true
         flags << "#{m}#{f}"
       when false, nil
         # nothing
       else
-        flags << "#{m}#{f}='#{v}'"
+        flags << (m == '-' ? "-#{f}#{v}" : "--#{f}=#{v}")
       end
     end
     flags

@@ -16,18 +16,15 @@ module Ratch
       require 'rdoc/rdoc'
 
       options = Hash===files.last ? files.pop : {}
-      options.rekey!(&:to_s)
+      options = options.rekey(&:to_s)
 
-      options['title'] ||= options.delete('T')
-
-      options['debug']   = options['debug']   #|| debug?
-      options['quiet']   = options['quiet']   #|| quiet?
-      options['verbose'] = options['verbose'] #|| verbose?
+      title = options.delete('T')
+      options['title'] ||= title if title
 
       # apply pom (todo?)
       #options['title'] ||= metadata.title
 
-      options = DEFAULT_RDOC_OPTIONS.merge(options)
+      options = DEFAULT_RDOC_OPTIONS.rekey(&:to_s).merge(options)
 
       locally do
         rdoc = RDoc::RDoc.new

@@ -72,8 +72,7 @@ module Ratch
       end
 
       def new_with_environment(options={})
-        environment_options.merge(options.rekey)
-        new(options)
+        new(environment_options.merge(options.rekey))
       end
     end
 
@@ -133,7 +132,7 @@ module Ratch
     #
 
     def email(options={})
-      options.rekey
+      options = options.rekey
 
       message = options[:message] || self.message
       subject = options[:subject] || self.subject
@@ -147,32 +146,33 @@ module Ratch
       raise ArgumentError, "missing email field -- mailto"  unless mailto
       raise ArgumentError, "missing email field -- subject" unless subject
 
-      passwd ||= password("#{account} password:")
+      passwd = self.passwd
 
       mailto = [mailto].flatten.compact
 
-      msg = ""
+      msg = String.new
       msg << "From: #{from}\n"
-      msg << "To: #{mailto.join(';')}\n"
+      msg << "To: #{mailto.join(', ')}\n"
       msg << "Subject: #{subject}\n"
-      msg << ""
-      msg << message
+      msg << "\n"
+      msg << message.to_s
 
       #p server, port, domain, account, passwd, login, secure if verbose?
 
       begin
-        if Net::SMTP.respond_to?(:enable_tls) && secure
-          Net::SMTP.enable_tls
-          Net::SMTP.start(server, port, domain, account, passwd, login, secure) do |smtp|
-            smtp.send_message(msg, from, mailto)
-          end
+        smtp = Net::SMTP.new(server, port)
+        if secure
+          port == 465 ? smtp.enable_tls : smtp.enable_starttls
         else
-          Net::SMTP.start(server, port, domain, account, passwd, login) do |smtp|
-            smtp.send_message(msg, from, mailto)
-          end
+          smtp.disable_starttls
+        end
+        if passwd.to_s.empty?
+          smtp.start(domain){ |s| s.send_message(msg, from, mailto) }
+        else
+          smtp.start(domain, account, passwd, login){ |s| s.send_message(msg, from, mailto) }
         end
         return mailto
-      rescue Exception => e
+      rescue StandardError => e
         return e
       end
     end
@@ -201,88 +201,9 @@ module Ratch
 
     #
     def require_smtp
-      begin
-        require 'facets/net/smtp_tls'
-      rescue LoadError
-        require 'net/smtp'
-      end
+      require 'net/smtp'
     end
 
   end
 
 end
-
-
-
-=begin
-    # Email function to easily send out an email.
-    #
-    # Settings:
-    #
-    #     subject      Subject of email message.
-    #     from         Message FROM address [email].
-    #     to           Email address to send announcemnt.
-    #     server       Email server to route message.
-    #     port         Email server's port.
-    #     domain       Email server's domain name.
-    #     account      Email account name if needed.
-    #     password     Password for login..
-    #     login        Login type: plain, cram_md5 or login [plain].
-    #     secure       Uses TLS security, true or false? [false]
-    #     message      Mesage to send -or-
-    #     file         File that contains message.
-    #
-    def email(message, settings)
-      settings ||= {}
-      settings.rekey!
-
-      server    = settings[:server]
-      account   = settings[:account]  || ENV['EMAIL_ACCOUNT']
-      passwd    = settings[:password] || ENV['EMAIL_PASSWORD']
-      login     = settings[:login].to_sym
-      subject   = settings[:subject]
-      mail_to   = settings[:to]     || settings[:mail_to]
-      mail_from = settings[:from]   || settings[:mail_from]
-      secure    = settings[:secure]
-      domain    = settings[:domain] || server
-
-      port    ||= (secure ? 465 : 25)
-      account ||= mail_from
-      login   ||= :plain
-
-      #mail_to = nil if mail_to.empty?
-
-      raise ArgumentError, "missing email field -- server"  unless server
-      raise ArgumentError, "missing email field -- account" unless account
-      raise ArgumentError, "missing email field -- subject" unless subject
-      raise ArgumentError, "missing email field -- to"      unless mail_to
-      raise ArgumentError, "missing email field -- from"    unless mail_from
-
-      passwd ||= password(account)
-
-      mail_to = [mail_to].flatten.compact
-
-      msg = ""
-      msg << "From: #{mail_from}\n"
-      msg << "To: #{mail_to.join(';')}\n"
-      msg << "Subject: #{subject}\n"
-      msg << ""
-      msg << message
-
-      begin
-        Net::SMTP.enable_tls if Net::SMTP.respond_to?(:enable_tls) and secure
-        Net::SMTP.start(server, port, domain, account, passwd, login) do |s|
-          s.send_message( msg, mail_from, mail_to )
-        end
-        puts "Email sent successfully to #{mail_to.join(';')}."
-        return true
-      rescue => e
-        if trace?
-          raise e
-        else
-          abort "Email delivery failed."
-        end
-      end
-    end
-=end
-
