@@ -37,6 +37,8 @@ Gem::Specification.new do |s|
 
   # For EmailUtils; a bundled gem, not a default one, since Ruby 3.1.
   s.add_development_dependency 'net-smtp'
+  # For RDocUtils; a bundled gem since Ruby 4.0.
+  s.add_development_dependency 'rdoc'
 
   s.add_development_dependency 'rake', '>= 13'
   s.add_development_dependency 'rubytest', '>= 0.11.1'

@@ -101,7 +101,7 @@ These modules add to a shell when included in a subclass:
 Ratch::ZlibUtils::   +gzip+ and +ungzip+
 Ratch::TarUtils::    +tar+, +untar+, +tar_gzip+ and +untar_gzip+
 Ratch::ConfigUtils:: +configuration+, to load a YAML file
-Ratch::RDocUtils::   +rdoc+, to generate documentation
+Ratch::RDocUtils::   +rdoc+, to generate documentation (needs the +rdoc+ gem on Ruby 4)
 Ratch::EmailUtils::  +email+, to send a message by SMTP (needs the +net-smtp+ gem)
 Ratch::XDGUtils::    +xdg+ (needs the +xdg+ gem)
 Ratch::CLI::         takes options and +arguments+ from the command line
